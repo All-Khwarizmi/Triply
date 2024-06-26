@@ -8,12 +8,11 @@ import ReactFlow, {
   type NodeChange,
   type EdgeChange,
   type Edge,
+  addEdge,
+  type Connection,
 } from "reactflow";
 import "reactflow/dist/style.css";
-const initialEdges: Edge[] = [
-  { id: "1-2", source: "1", target: "2", animated: true, label: "To the" },
-  { id: "1-3", source: "1", target: "3", animated: false, label: "And" },
-];
+const initialEdges: Edge[] = [];
 const initialNodes = [
   {
     id: "1",
@@ -45,10 +44,21 @@ function Flow() {
       setEdges((eds) => applyEdgeChanges(changes, eds)),
     []
   );
+  const onConnect = useCallback(
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    []
+  );
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
-      <ReactFlow nodes={nodes} onNodesChange={onNodesChange} edges={edges}>
+      <ReactFlow
+        nodes={nodes}
+        onNodesChange={onNodesChange}
+        edges={edges}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        fitView
+      >
         <Background />
         <Controls />
       </ReactFlow>
