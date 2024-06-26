@@ -1,10 +1,10 @@
 import { ChangeEventHandler, useCallback } from "react";
-import { Handle, Position } from "reactflow";
+import { Handle, type NodeProps, Position } from "reactflow";
 
 const handleStyle = { left: 10 };
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-function TextUpdaterNode({ data }: any) {
+function TextUpdaterNode(props: NodeProps) {
   const onChange = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
     console.log(evt.target.value);
   }, []);
@@ -24,7 +24,7 @@ function TextUpdaterNode({ data }: any) {
           name="text"
           onChange={onChange}
           className={`
-             nodrag text-black border border-gray-300 rounded-md
+              text-black border border-gray-300 rounded-md
         `}
         />
       </div>

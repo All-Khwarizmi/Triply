@@ -14,29 +14,36 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import TextUpdaterNode from "./TextUpdaterNode";
+import TimeLineNode from "./TimeLineNode";
 const initialEdges: Edge[] = [];
 const initialNodes: Node[] = [
+  // {
+  //   id: "1",
+  //   type: "input",
+  //   data: { label: "Welcome" },
+  //   position: { x: 250, y: 25 },
+  // },
+  // {
+  //   id: "2",
+  //   data: { label: "Jungle" },
+  //   position: { x: 100, y: 125 },
+  // },
+  // {
+  //   id: "3",
+  //   data: { label: "Back" },
+  //   position: { x: 400, y: 125 },
+  // },
+  // {
+  //   id: "node-1",
+  //   type: "textUpdater",
+  //   position: { x: 0, y: 0 },
+  //   data: { value: 123 },
+  // },
   {
-    id: "1",
-    type: "input",
-    data: { label: "Welcome" },
-    position: { x: 250, y: 25 },
-  },
-  {
-    id: "2",
-    data: { label: "Jungle" },
-    position: { x: 100, y: 125 },
-  },
-  {
-    id: "3",
-    data: { label: "Back" },
-    position: { x: 400, y: 125 },
-  },
-  {
-    id: "node-1",
-    type: "textUpdater",
+    id: "node-2",
+    type: "timeLine",
     position: { x: 0, y: 0 },
-    data: { value: 123 },
+    data: { value: "Timeline" },
   },
 ];
 function Flow() {
@@ -56,7 +63,10 @@ function Flow() {
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     []
   );
-  const nodeTypes = useMemo(() => ({ textUpdater: TextUpdaterNode }), []);
+  const nodeTypes = useMemo(
+    () => ({ textUpdater: TextUpdaterNode, timeLine: TimeLineNode }),
+    []
+  );
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
