@@ -15,14 +15,14 @@ const DateInput: React.FC = () => {
   };
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 text-black">
       <label className="block mb-2">
         Start Date:
         <input
           type="date"
           value={startDate.format("YYYY-MM-DD")}
           onChange={handleStartDateChange}
-          className="ml-2 p-1 border rounded"
+          className="ml-2 p-1 border rounded text-black"
         />
       </label>
       <label className="block">
@@ -31,7 +31,7 @@ const DateInput: React.FC = () => {
           type="date"
           value={endDate.format("YYYY-MM-DD")}
           onChange={handleEndDateChange}
-          className="ml-2 p-1 border rounded"
+          className="ml-2 p-1 border rounded text-black"
         />
       </label>
     </div>
