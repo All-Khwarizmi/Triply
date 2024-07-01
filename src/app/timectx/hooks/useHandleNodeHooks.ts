@@ -8,15 +8,14 @@ import ReactFlow, {
   addEdge,
   applyNodeChanges,
   applyEdgeChanges,
-  Background,
-  Controls,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import "reactflow/dist/style.css";
+import type { NodeExtend } from "../helpers/list";
 
 // Custom hook template
 const useHandleNodeHooks = () => {
-  const [nodes, setNodes] = useState<Node[]>([]);
+  const [nodes, setNodes] = useState<NodeExtend[]>([]);
   const [edges, setEdges] = useState<Edge[]>([
     {
       id: "edge-1",
