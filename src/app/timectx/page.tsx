@@ -14,17 +14,15 @@ import ReactFlow, {
   Controls,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import Timeline from "./Timeline";
 import DateInput from "./DateInput";
 import CustomNode from "./CustomNode";
-import { TimelineProvider, useTimelineContext } from "./Context";
-import TimeLineNode from "../TimeLineNode";
+import { useTimelineContext } from "./Context";
 import "reactflow/dist/style.css";
 import TimeLineNodeElement from "../timeline/TimelineNodeElement";
 import { StageColumnNode } from "./StageColumn";
-const rfStyle = {
-  //   backgroundColor: "#B8CEFF",
-};
+import AddNodeForm from "./AddNodeElementNode";
+import useHandleNodeHooks from "./hooks/useHandleNodeHooks";
+import { createStartNode } from "./constants/create-node-helpers";
 
 const nodeTypes = {
   customNode: CustomNode,
@@ -33,67 +31,93 @@ const nodeTypes = {
 };
 
 const App: React.FC = () => {
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
-
-  const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
-
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
+  const {
+    nodes,
+    edges,
+    setNodes,
+    setEdges,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    updateNodePosition,
+  } = useHandleNodeHooks();
 
   const { startDate, endDate } = useTimelineContext();
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const totalDays = endDate.diff(startDate, "day");
-    const startNode: Node = {
-      id: "start-node",
-      type: "customNode",
-      position: { x: 0, y: -100 },
-      data: { label: startDate.format("YYYY-MM-DD") },
-    };
+
     const startCulmnNode: Node = {
       id: "start-column-node",
       type: "column",
-      position: { x: 40, y: -60 },
-      data: { label: startDate.format("YYYY-MM-DD") },
+      position: { x: 52, y: -60 },
+      data: {
+        label: startDate.format("YYYY-MM-DD"),
+        name: "Start",
+        body: "The start of the trip",
+        slug: "start-node",
+        nodeId: "start-column-node",
+      },
     };
     const endColumnNode: Node = {
       id: "end-column-node",
       type: "column",
-      position: { x: 840, y: -60 },
-      data: { label: startDate.format("YYYY-MM-DD") },
+      position: { x: 852, y: -60 },
+      data: {
+        label: startDate.format("YYYY-MM-DD"),
+        name: "End",
+        body: "The end of the trip",
+        slug: "end-node",
+        nodeId: "end-column-node",
+      },
     };
     const endNode: Node = {
       id: "end-node",
       type: "customNode",
-      position: { x: 800, y: -100 },
-      data: { label: endDate.format("YYYY-MM-DD") },
+      position: { x: 800, y: -125 },
+      data: {
+        label: endDate.format("YYYY-MM-DD"),
+        name: "End",
+        body: "The end of the trip",
+        slug: "end-node",
+        nodeId: "end-node",
+        updateNodePosition: updateNodePosition,
+        position: { x: 800, y: -125 },
+      },
     };
     const baseLine: Node = {
       id: "node-2",
       type: "timeline",
       position: { x: 0, y: 0 },
-      data: { value: "Timeline" },
+      data: {
+        value: "Timeline",
+        label: "Timeline",
+        name: "Timeline",
+        body: "The timeline of the trip",
+        slug: "node-2",
+        nodeId: "node-2",
+      },
     };
-    setNodes([startNode, endNode, baseLine, startCulmnNode, endColumnNode]);
+    setNodes([
+      createStartNode({
+        startDate,
+        updateNodePosition,
+      }),
+      endNode,
+      baseLine,
+      startCulmnNode,
+      endColumnNode,
+    ]);
   }, [startDate, endDate]);
+  const addNode = (node: Node) => {
+    setNodes((nds) => nds.concat(node));
+  };
 
   return (
     <div className="container mx-auto h-screen">
       <h1 className="text-center text-2xl font-bold">Trip Timeline</h1>
-      {/* <Timeline /> */}
       <DateInput />
+      <AddNodeForm addNode={addNode} updateNodePosition={updateNodePosition} />
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -102,7 +126,6 @@ const App: React.FC = () => {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         fitView
-        // style={rfStyle}
       >
         <Background />
         <Controls />
