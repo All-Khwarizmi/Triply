@@ -19,6 +19,7 @@ export function createStartNode(options: CreateNodeOptions): Node {
     position: { x: 0, y: -125 },
     data: {
       label: options.startDate.format("YYYY-MM-DD"),
+      date: options.startDate.format("YYYY-MM-DD"),
       name: "Start",
       body: "The start of the trip",
       slug: "start-node",
@@ -36,6 +37,7 @@ export function createEndNode(options: CreateNodeOptions): Node {
     position: { x: 800, y: -125 },
     data: {
       label: options.startDate.format("YYYY-MM-DD"),
+      date: options.startDate.format("YYYY-MM-DD"),
       name: "End",
       body: "The end of the trip",
       slug: "end-node",
