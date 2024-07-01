@@ -22,7 +22,10 @@ import TimeLineNodeElement from "../timeline/TimelineNodeElement";
 import { StageColumnNode } from "./StageColumn";
 import AddNodeForm from "./AddNodeElementNode";
 import useHandleNodeHooks from "./hooks/useHandleNodeHooks";
-import { createStartNode } from "./constants/create-node-helpers";
+import {
+  createEndNode,
+  createStartNode,
+} from "./constants/create-node-helpers";
 
 const nodeTypes = {
   customNode: CustomNode,
@@ -71,20 +74,7 @@ const App: React.FC = () => {
         nodeId: "end-column-node",
       },
     };
-    const endNode: Node = {
-      id: "end-node",
-      type: "customNode",
-      position: { x: 800, y: -125 },
-      data: {
-        label: endDate.format("YYYY-MM-DD"),
-        name: "End",
-        body: "The end of the trip",
-        slug: "end-node",
-        nodeId: "end-node",
-        updateNodePosition: updateNodePosition,
-        position: { x: 800, y: -125 },
-      },
-    };
+
     const baseLine: Node = {
       id: "node-2",
       type: "timeline",
@@ -103,7 +93,10 @@ const App: React.FC = () => {
         startDate,
         updateNodePosition,
       }),
-      endNode,
+      createEndNode({
+        startDate,
+        updateNodePosition,
+      }),
       baseLine,
       startCulmnNode,
       endColumnNode,

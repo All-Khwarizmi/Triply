@@ -28,3 +28,20 @@ export function createStartNode(options: CreateNodeOptions): Node {
     },
   };
 }
+
+export function createEndNode(options: CreateNodeOptions): Node {
+  return {
+    id: "end-node",
+    type: "customNode",
+    position: { x: 800, y: -125 },
+    data: {
+      label: options.startDate.format("YYYY-MM-DD"),
+      name: "End",
+      body: "The end of the trip",
+      slug: "end-node",
+      nodeId: "end-node",
+      updateNodePosition: options.updateNodePosition,
+      position: { x: 800, y: -125 },
+    },
+  };
+}
