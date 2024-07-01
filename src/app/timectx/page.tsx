@@ -24,9 +24,7 @@ import AddNodeForm from "./AddNodeElementNode";
 import useHandleNodeHooks from "./hooks/useHandleNodeHooks";
 import {
   createBaseLineNode,
-  createEndColumnNode,
   createEndNode,
-  createStartColumnNode,
   createStartNode,
 } from "./constants/create-node-helpers";
 
@@ -41,7 +39,6 @@ const App: React.FC = () => {
     nodes,
     edges,
     setNodes,
-    setEdges,
     onNodesChange,
     onEdgesChange,
     onConnect,
@@ -58,19 +55,19 @@ const App: React.FC = () => {
         startDate,
         updateNodePosition,
       }),
-      createStartColumnNode({
-        startDate,
-        updateNodePosition,
-      }),
+      // createStartColumnNode({
+      //   startDate,
+      //   updateNodePosition,
+      // }),
       createEndNode({
         startDate,
         updateNodePosition,
       }),
-      createEndColumnNode({
-        startDate,
-        updateNodePosition,
-      }),
-      createBaseLineNode(),
+      // createEndColumnNode({
+      //   startDate,
+      //   updateNodePosition,
+      // }),
+      // createBaseLineNode(),
     ]);
   }, [startDate, endDate]);
   const addNode = (node: Node) => {
