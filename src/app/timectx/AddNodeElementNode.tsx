@@ -26,7 +26,6 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
     const slug = name.toLowerCase().replace(/ /g, "-");
     const daysFromStart = dayjs(date).diff(startDate, "day");
     const xPosition = daysFromStart * 40; // Example calculation for x position
-    console.log("X Position:", xPosition);
     const id =
       name.length > 0 ? crypto.randomUUID() + slug : crypto.randomUUID();
     const customNode: Node = {
