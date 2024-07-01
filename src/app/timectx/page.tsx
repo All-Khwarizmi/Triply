@@ -1,6 +1,6 @@
 "use client";
 import type React from "react";
-import { useCallback, useState, useEffect } from "react";
+import { useEffect } from "react";
 import ReactFlow, {
   type Node,
   type Edge,
@@ -23,7 +23,10 @@ import { StageColumnNode } from "./StageColumn";
 import AddNodeForm from "./AddNodeElementNode";
 import useHandleNodeHooks from "./hooks/useHandleNodeHooks";
 import {
+  createBaseLineNode,
+  createEndColumnNode,
   createEndNode,
+  createStartColumnNode,
   createStartNode,
 } from "./constants/create-node-helpers";
 
@@ -50,46 +53,12 @@ const App: React.FC = () => {
   useEffect(() => {
     const totalDays = endDate.diff(startDate, "day");
 
-    const startCulmnNode: Node = {
-      id: "start-column-node",
-      type: "column",
-      position: { x: 52, y: -60 },
-      data: {
-        label: startDate.format("YYYY-MM-DD"),
-        name: "Start",
-        body: "The start of the trip",
-        slug: "start-node",
-        nodeId: "start-column-node",
-      },
-    };
-    const endColumnNode: Node = {
-      id: "end-column-node",
-      type: "column",
-      position: { x: 852, y: -60 },
-      data: {
-        label: startDate.format("YYYY-MM-DD"),
-        name: "End",
-        body: "The end of the trip",
-        slug: "end-node",
-        nodeId: "end-column-node",
-      },
-    };
-
-    const baseLine: Node = {
-      id: "node-2",
-      type: "timeline",
-      position: { x: 0, y: 0 },
-      data: {
-        value: "Timeline",
-        label: "Timeline",
-        name: "Timeline",
-        body: "The timeline of the trip",
-        slug: "node-2",
-        nodeId: "node-2",
-      },
-    };
     setNodes([
       createStartNode({
+        startDate,
+        updateNodePosition,
+      }),
+      createStartColumnNode({
         startDate,
         updateNodePosition,
       }),
@@ -97,9 +66,11 @@ const App: React.FC = () => {
         startDate,
         updateNodePosition,
       }),
-      baseLine,
-      startCulmnNode,
-      endColumnNode,
+      createEndColumnNode({
+        startDate,
+        updateNodePosition,
+      }),
+      createBaseLineNode(),
     ]);
   }, [startDate, endDate]);
   const addNode = (node: Node) => {
