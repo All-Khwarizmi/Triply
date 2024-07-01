@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from "react";
-import type { NodeProps } from "reactflow";
+import { Handle, Position, type NodeProps } from "reactflow";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
@@ -20,37 +20,43 @@ import { cn } from "@/lib/utils";
 const CustomNode = ({ data }: NodeProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const nodeRef = useRef<HTMLDivElement>(null);
+  const initialYRef = useRef<number>(data.position.y);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
+  const updatePosition = () => {
     if (nodeRef.current) {
       const rect = nodeRef.current.getBoundingClientRect();
       const height = rect.height;
-      const bottom = rect.bottom;
-      const { x, y, width, height: nodeHeight, bottom: nodeBottom } = rect;
-      const top = rect.top;
-      if (data.updateNodePosition) {
+      const newY = initialYRef.current;
+
+      data.updateNodePosition(data.nodeId, {
+        x: data.position.x,
+        y: newY,
+      });
+
+      if (data.nodeId === "end-node") {
         console.log({
           nodeId: data.nodeId,
-          x,
-          y,
-          width,
-          height: nodeHeight,
-          bottom: nodeBottom,
-          top,
-        });
-
-        data.updateNodePosition(data.nodeId, {
-          x: data.position.x,
-          y: isOpen ? data.position.y - height : data.position.y,
+          newY,
+          height: rect.height,
+          bottom: rect.bottom,
+          top: rect.top,
         });
       }
     }
-  }, [data, isOpen]);
+  };
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    updatePosition();
+  }, [isOpen]);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    updatePosition();
+  }, [data]);
 
   return (
     <div
       ref={nodeRef}
+      // style={{ transform: `translateY(${isOpen ? -nodeHeight : 0}px)` }}
       className="nodrag z-10 text-black border rounded-md flex flex-col p-1 border-white bg-gray-300"
     >
       <Collapsible
@@ -90,6 +96,30 @@ const CustomNode = ({ data }: NodeProps) => {
           </Card>
         </CollapsibleContent>
       </Collapsible>
+      <Handle
+        type="source"
+        position={Position.Right}
+        id={
+          data.nodeId === "start-node"
+            ? "start-node"
+            : data.nodeId === "end-node"
+            ? "end-node"
+            : "default"
+        }
+        style={{ background: "#555" }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id={
+          data.nodeId === "start-node"
+            ? "start-node"
+            : data.nodeId === "end-node"
+            ? "end-node"
+            : "default"
+        }
+        style={{ background: "#555" }}
+      />
     </div>
   );
 };
