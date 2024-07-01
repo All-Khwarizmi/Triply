@@ -17,7 +17,14 @@ import "reactflow/dist/style.css";
 // Custom hook template
 const useHandleNodeHooks = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const [edges, setEdges] = useState<Edge[]>([
+    {
+      id: "edge-1",
+      source: "start-node",
+      target: "end-node",
+      type: "smoothstep",
+    },
+  ]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
@@ -41,13 +48,9 @@ const useHandleNodeHooks = () => {
     position: { x: number; y: number }
   ) {
     // Implement the logic to update the position of the node
-    console.log("Updating node with id:", nodeId);
-
     setNodes((nds) =>
       nds.map((node) => {
         if (node.id === nodeId) {
-          console.log("Updating node with id:", nodeId);
-          console.log("Position:", position);
           return {
             ...node,
             position: {
