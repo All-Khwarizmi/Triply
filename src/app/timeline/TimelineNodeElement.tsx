@@ -1,8 +1,6 @@
 import React from "react";
 import { useCallback } from "react";
-import { Handle, type NodeProps, Position } from "reactflow";
-
-const handleStyle = { left: 10 };
+import type { NodeProps } from "reactflow";
 
 function TimeLineNodeElement(props: NodeProps) {
   const timeLineRef = React.useRef<HTMLDivElement>(null);
@@ -12,7 +10,7 @@ function TimeLineNodeElement(props: NodeProps) {
       const rect = timeLineRef.current.getBoundingClientRect();
       const clickX = event.clientX - rect.left;
       const clickY = event.clientY - rect.top;
-      console.log("Clicked at:", "X:",clickX,"Y:", clickY);
+      console.log("Clicked at:", "X:", clickX, "Y:", clickY);
 
       // Calculate the point to insert the node based on clickX
       const totalWidth = rect.width;
@@ -39,9 +37,7 @@ function TimeLineNodeElement(props: NodeProps) {
         flex flex-col p-1
         w-screen border-white bg-gray-300
       `}
-      >
-        {/* Existing content of the node */}
-      </div>
+      />
     </>
   );
 }
