@@ -41,7 +41,7 @@ export function createEndNode(options: CreateNodeOptions): Node {
       slug: "end-node",
       nodeId: "end-node",
       updateNodePosition: options.updateNodePosition,
-      position: { x: 800, y: -125 },
+      position: { x: 800, y: -133 },
     },
   };
 }
@@ -75,7 +75,6 @@ export function createEndColumnNode(options: CreateNodeOptions): Node {
     },
   };
 }
-
 
 export function createBaseLineNode(): Node {
   return {
