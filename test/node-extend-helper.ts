@@ -40,3 +40,8 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
     nextNode: null,
   };
 }
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export function getObjectMethods(obj: any): string[] {
+  return Object.getOwnPropertyNames(Object.getPrototypeOf(obj));
+}
