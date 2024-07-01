@@ -58,7 +58,6 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
     };
 
     addNode(customNode);
-    addNode(columnNode);
 
     setDate(dayjs().format("YYYY-MM-DD"));
     setName("");
