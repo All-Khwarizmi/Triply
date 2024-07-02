@@ -47,3 +47,31 @@ export function getObjectMethods(obj: any): string[] {
 }
 
 export const NODE_Y_POSITIONS = [0, -250, 250];
+
+export function determineNodeYPosition(yPosA: number, yPosB: number): number {
+  const positions = [...NODE_Y_POSITIONS];
+  if (yPosA === yPosB) {
+    throw new Error("Two consecutives nodes cannot have the same y position");
+  }
+  if (!nodeAxisPositionValidation(yPosA, positions)) {
+    throw new Error(`Invalid y position for node A: ${yPosA}`);
+  }
+  if (!nodeAxisPositionValidation(yPosB, positions)) {
+    throw new Error(`Invalid y position for node B: ${yPosB}`);
+  }
+  const allowedPositions = positions.filter(
+    (pos) => pos !== yPosA && pos !== yPosB
+  );
+  if (allowedPositions.length === 0) {
+    throw new Error("No available y positions");
+  }
+
+  return allowedPositions[0];
+}
+
+function nodeAxisPositionValidation(
+  axisPos: number,
+  allowedPositions: number[]
+): boolean {
+  return allowedPositions.includes(axisPos);
+}
