@@ -44,14 +44,14 @@ const CustomNode = ({ data }: NodeProps) => {
       }
     }
   };
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    updatePosition();
-  }, [isOpen]);
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    updatePosition();
-  }, [data]);
+  // // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // useEffect(() => {
+  //   updatePosition();
+  // }, [isOpen]);
+  // // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // useEffect(() => {
+  //   updatePosition();
+  // }, [data]);
 
   return (
     <div
