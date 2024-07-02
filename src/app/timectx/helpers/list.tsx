@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import type { Edge, Node } from "reactflow";
 import { determineNodeYPosition } from "../../../../test/node-extend-helper";
+import type { SaveList } from "./data";
 
 export interface NodeData {
   label: string;
@@ -213,4 +214,20 @@ export class NodeList {
     }
     this._edges = newEdges;
   }
+
+  save(key: string, db: SaveList) {
+    const nodes = this.traverse();
+    const edges = this.edges;
+    const startNode = nodes[0];
+    const endNode = nodes[1];
+    db.setItem(key, JSON.stringify({ nodes: removePrevNextNode(nodes), edges }));
+  }
+}
+
+// Function to get rid of prevNde and nextNode
+export function removePrevNextNode(nodes: NodeExtend[]) {
+  return nodes.map((node) => {
+    const { prevNode, nextNode, ...rest } = node.data;
+    return { ...node, data: rest };
+  });
 }

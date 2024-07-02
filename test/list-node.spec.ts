@@ -12,6 +12,8 @@ import {
   getObjectMethods,
 } from "./node-extend-helper";
 import type { Edge } from "reactflow";
+import { Database } from "../src/app/timectx/helpers/data";
+import { ListNodeDatabaseSchema } from "../src/app/timectx/helpers/schemas";
 
 describe("ListNode start state", () => {
   const startNode = createStartNodeExtend({
@@ -234,12 +236,9 @@ describe("Should be able to update the node metadata", () => {
       updateNodePosition: () => {},
     });
     nodeList.addNode(node);
-    console.log(nodeList.edges);
     nodeList.updateNodeMetadata(node.id, {
       date: dayUpdate.toString(),
     });
-    console.log("______________________________");
-    console.log(nodeList.edges);
 
     const nodes = nodeList.traverse();
     const searchNode = nodes.find((e) => e.id === node.id);
@@ -274,4 +273,33 @@ describe("Should be able to update the node metadata", () => {
   });
 });
 
-// describe("Save and restore", () => {});
+describe("Save and restore", () => {
+  const startNode = createStartNodeExtend({
+    startDate: dayjs(new Date()),
+    updateNodePosition: () => {},
+  });
+  const endNode = createEndNodeExtend({
+    startDate: dayjs(new Date()).add(7, "day"),
+    updateNodePosition: () => {},
+  });
+  const nodeList = new NodeList(startNode, endNode);
+  test("should have a method to save the state", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("save");
+  });
+
+  test("Saving the state should save the state as an object in the database passed as parameter", () => {
+    const database = new Database();
+    const databaseKey = "triply";
+    nodeList.save(databaseKey, database);
+    const item = database.getItem(databaseKey);
+    expect(item).not.to.toBeNull();
+    console.log(JSON.parse(item as string));
+    console.log(item);
+    const parsedItem = ListNodeDatabaseSchema.safeParse(
+      JSON.parse(item as string)
+    );
+    console.log(parsedItem.error?.errors);
+    expect(parsedItem.success).toBe(true);
+  });
+});
