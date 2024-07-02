@@ -9,6 +9,7 @@ import { StageColumnNode } from "./StageColumn";
 import useHandleNodeHooks from "./hooks/useHandleNodeHooks";
 import DrawerMenu from "@/components/ui/DrawerMenu";
 import PanelMenu from "./Panel";
+import Header from "@/components/ui/Header";
 
 const nodeTypes = {
   customNode: CustomNode,
@@ -28,8 +29,9 @@ const App: React.FC = () => {
 
   return (
     <div className="container h-screen mx-auto space-y-8 flex flex-col py-8">
-      <header className="flex justify-between items-center">
-        <h1 className="text-center text-2xl font-bold py-8 ">Triply</h1>{" "}
+      <header className="flex justify-between items-center h-10">
+        <Header />
+
         <DrawerMenu addNode={addNode} updateNodeMetadata={updateNodeMetadata} />
       </header>
       <div className="h-full w-full flex flex-col ">
