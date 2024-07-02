@@ -1,6 +1,10 @@
-import { expect, test, describe } from "vitest";
+import { expect, test, describe, it } from "vitest";
 import dayjs from "dayjs";
-import { NodeList } from "../src/app/timectx/helpers/list";
+import {
+  type NodeData,
+  type NodeExtend,
+  NodeList,
+} from "../src/app/timectx/helpers/list";
 import {
   NODE_Y_POSITIONS,
   createEndNodeExtend,
@@ -222,8 +226,8 @@ describe("Should be able to update the node metadata", () => {
   });
 
   test("should preserve the order of the nodes (by date) after a date change", () => {
-    const date = dayjs(new Date()).add(3, "day");
-    const dayUpdate = date.add(1, "day");
+    const date = dayjs(new Date());
+    const dayUpdate = date.add(4, "day");
     const node = createEndNodeExtend({
       id: "node-50",
       startDate: date,
@@ -231,16 +235,25 @@ describe("Should be able to update the node metadata", () => {
     });
     nodeList.addNode(node);
     nodeList.updateNodeMetadata(node.id, {
-      date: dayUpdate.toString()
+      date: dayUpdate.toString(),
     });
     const nodes = nodeList.traverse();
     const searchNode = nodes.find((e) => e.id === node.id);
     expect(searchNode?.data.date).toEqual(dayUpdate.toString());
+    console.log(nodes);
 
     let prevDate = nodes[0].data.date;
     for (let i = 1; i < nodes.length; i++) {
       expect(dayjs(nodes[i].data.date).isAfter(prevDate)).toBe(true);
       prevDate = nodes[i].data.date;
     }
+
+    // check if the nodes are in the correct order by position. Should be in ascendant order
+    let prevX = nodes[0].position.x;
+    for (let i = 1; i < nodes.length; i++) {
+      expect(nodes[i].position.x).toBeGreaterThan(prevX);
+      prevX = nodes[i].position.x;
+    }
   });
 });
+

@@ -29,7 +29,7 @@ export interface NodeExtend extends Node {
 }
 
 export class NodeList {
-  private readonly _startNode: NodeExtend;
+  private  _startNode: NodeExtend;
   private readonly _endNode: NodeExtend;
   private _edges: Edge[] = [];
 
@@ -184,12 +184,46 @@ export class NodeList {
         currentNode.data = { ...currentNode.data, ...metadata };
         if (metadata.date) {
           this.assignDayOfTrip();
-          this.updateNodeXPosition();
         }
         break;
       }
       currentNode = currentNode.data.nextNode;
     }
+    this.orderNodesByDate();
+  }
+
+  orderNodesByDate() {
+    let swapped: boolean;
+    do {
+      swapped = false;
+      let currentNode = this._startNode;
+      let previousNode = null;
+      while (currentNode?.data.nextNode) {
+        if (
+          dayjs(currentNode.data.date).isAfter(
+            currentNode.data.nextNode.data.date
+          )
+        ) {
+          // Swap nodes
+          const tempNode = currentNode;
+          currentNode = currentNode.data.nextNode;
+          tempNode.data.nextNode = currentNode.data.nextNode;
+          currentNode.data.nextNode = tempNode;
+
+          // Update the nextNode property of the previous node
+          if (previousNode) {
+            previousNode.data.nextNode = currentNode;
+          } else {
+            // If there's no previous node, we're at the start of the list, so update _startNode
+            this._startNode = currentNode;
+          }
+
+          swapped = true;
+        }
+        previousNode = currentNode;
+        currentNode = currentNode.data.nextNode;
+      }
+    } while (swapped);
     this.updateNodeXPosition();
   }
 }
