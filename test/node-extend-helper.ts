@@ -34,7 +34,7 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
       slug: options.id ?? "end-node",
       nodeId: options.id ?? "end-node",
       updateNodePosition: options.updateNodePosition,
-      position: { x: 800, y: -133 },
+      position: { x: 2000, y: -133 },
       prevNode: null,
       nextNode: null,
     },
