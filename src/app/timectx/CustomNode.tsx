@@ -22,16 +22,16 @@ import { Textarea } from "@/components/ui/textarea";
 import type { NodeData } from "./helpers/list";
 
 const NODE_BG_COLORS = [
-  "#B0A8B9",
-  "#D1C4E9",
-  "#B39DDB",
-  "#C5CAE9",
-  "#9FA8DA",
-  "#90CAF9",
-  "#A5D6A7",
-  "#C8E6C9",
-  "#E6EE9C",
-  "#FFF59D",
+  "#4B5563", // Slate Gray
+  "#374151", // Charcoal
+  "#1F2937", // Dark Charcoal
+  "#3B82F6", // Blue
+  "#10B981", // Green
+  "#F59E0B", // Amber
+  "#EF4444", // Red
+  "#6366F1", // Indigo
+  "#8B5CF6", // Purple
+  "#EC4899", // Pink
 ];
 
 const getRandomColor = () =>
@@ -66,14 +66,14 @@ const CustomNode = ({ data }: NodeProps<NodeData>) => {
     <div
       ref={nodeRef}
       className={cn(
-        "nodrag z-10 text-black border rounded-md flex flex-col p-1 border-white"
+        "nodrag z-10 text-black  rounded-md flex flex-col p-4 border-white"
       )}
       style={{ backgroundColor: color }}
     >
       <Collapsible
         open={isOpen}
         onOpenChange={setIsOpen}
-        className={cn("overflow-scroll border rounded-md", {
+        className={cn("overflow-scroll  rounded-md", {
           "border-gray-400": isOpen,
           "min-w-md": !isOpen,
         })}

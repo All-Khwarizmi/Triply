@@ -3,7 +3,6 @@ import type React from "react";
 import ReactFlow, { Background, Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
-import { useTimelineContext } from "./Context";
 import "reactflow/dist/style.css";
 import TimeLineNodeElement from "../timeline/TimelineNodeElement";
 import { StageColumnNode } from "./StageColumn";

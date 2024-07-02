@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import type { Node } from "reactflow";
 import { Button } from "@/components/ui/button";
 import type { NodeExtend } from "./helpers/list";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 interface AddNodeFormProps {
   addNode: (node: NodeExtend) => void;
   updateNodePosition: (
@@ -64,7 +66,7 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
           <label htmlFor="date" className="block">
             Date:
           </label>
-          <input
+          <Input
             id="date"
             type="date"
             value={date}
@@ -76,7 +78,7 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
           <label htmlFor="name" className="block">
             Name:
           </label>
-          <input
+          <Input
             id="name"
             type="text"
             value={name}
@@ -90,7 +92,7 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
           <label htmlFor="body" className="block">
             Body:
           </label>
-          <textarea
+          <Textarea
             id="body"
             value={body}
             onChange={(e) => setBody(e.target.value)}
