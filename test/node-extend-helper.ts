@@ -58,7 +58,11 @@ export const NODE_Y_POSITIONS = [0, -250, 250];
 export function determineNodeYPosition(yPosA: number, yPosB: number): number {
   const positions = [...NODE_Y_POSITIONS];
   if (yPosA === yPosB) {
-    throw new Error("Two consecutives nodes cannot have the same y position");
+    const allowedPositions = positions.filter((pos) => pos !== yPosA);
+    if (allowedPositions.length === 0) {
+      throw new Error("No available y positions");
+    }
+    return allowedPositions[0];
   }
   if (!nodeAxisPositionValidation(yPosA, positions)) {
     throw new Error(`Invalid y position for node A: ${yPosA}`);
