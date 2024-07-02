@@ -43,20 +43,6 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
       },
     };
 
-    const columnNode: Node = {
-      id: `${id}-column`,
-      type: "column",
-      position: { x: xPosition + 40, y: -60 },
-      data: {
-        date,
-        name,
-        body,
-        slug,
-        nodeId: `${id}-column`,
-        updateNodePosition,
-      },
-    };
-
     addNode(customNode);
 
     setDate(dayjs().format("YYYY-MM-DD"));
@@ -66,44 +52,50 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-black">
-      <div>
-        <label htmlFor="date" className="block">
-          Date:
-        </label>
-        <input
-          id="date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="border p-2 rounded w-full"
-        />
+      <div className="flex gap-4">
+        <div>
+          <label htmlFor="date" className="block">
+            Date:
+          </label>
+          <input
+            id="date"
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="name" className="block">
+            Name:
+          </label>
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+        </div>
       </div>
-      <div>
-        <label htmlFor="name" className="block">
-          Name:
-        </label>
-        <input
-          id="name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border p-2 rounded w-full"
-        />
+      <div className="flex gap-4">
+        <div>
+          <label htmlFor="body" className="block">
+            Body:
+          </label>
+          <textarea
+            id="body"
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+        </div>
+        <div className="flex items-center">
+          <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+            Add Node
+          </button>
+        </div>
       </div>
-      <div>
-        <label htmlFor="body" className="block">
-          Body:
-        </label>
-        <textarea
-          id="body"
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          className="border p-2 rounded w-full"
-        />
-      </div>
-      <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-        Add Node
-      </button>
     </form>
   );
 };
