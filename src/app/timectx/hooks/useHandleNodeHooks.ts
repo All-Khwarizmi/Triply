@@ -16,6 +16,7 @@ import { NodeList } from "../helpers/list";
 import dayjs from "dayjs";
 import { createStartNodeExtend } from "../../../../test/node-extend-helper";
 import { createEndNode } from "../helpers/create-node-helpers";
+import { useStoreApi, useReactFlow, Panel } from "reactflow";
 const list = new NodeList(
   createStartNodeExtend({
     startDate: dayjs(new Date()),
@@ -28,6 +29,7 @@ const list = new NodeList(
 );
 // Custom hook template
 const useHandleNodeHooks = () => {
+  const { fitView } = useReactFlow();
   const [nodes, setNodes] = useState<NodeExtend[]>(() => list.traverse());
   const [edges, setEdges] = useState<Edge[]>(list.edges);
 
@@ -71,10 +73,11 @@ const useHandleNodeHooks = () => {
     });
   }
   // Should take a new node and insert it into the nodes array. Should check the date of the node and insert it in the correct position. Also should update the edges array to reflect the new node. Also should take care of the position of the new node so that it is placed in the correct position regarding the other nodes.
-  function addNode(node: Node) {
+  function addNode(node: NodeExtend) {
     list.addNode(node);
     setNodes(list.traverse());
     setEdges(list.edges);
+    fitView();
   }
   return {
     addNode,

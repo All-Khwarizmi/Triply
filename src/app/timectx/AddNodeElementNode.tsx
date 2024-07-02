@@ -5,8 +5,9 @@ import { useTimelineContext } from "./Context";
 import dayjs from "dayjs";
 import type { Node } from "reactflow";
 import { Button } from "@/components/ui/button";
+import type { NodeExtend } from "./helpers/list";
 interface AddNodeFormProps {
-  addNode: (node: Node) => void;
+  addNode: (node: NodeExtend) => void;
   updateNodePosition: (
     nodeId: string,
     position: { x: number; y: number }
@@ -29,11 +30,14 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
     const xPosition = daysFromStart * 40; // Example calculation for x position
     const id =
       name.length > 0 ? crypto.randomUUID() + slug : crypto.randomUUID();
-    const customNode: Node = {
+    const customNode: NodeExtend = {
       id,
       type: "customNode",
       position: { x: xPosition, y: -100 },
       data: {
+        label: date,
+        nextNode: null,
+        prevNode: null,
         date,
         name,
         body,
@@ -41,6 +45,7 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
         nodeId: id,
         updateNodePosition,
         position: { x: xPosition, y: -100 },
+        dayOfTrip: 0,
       },
     };
 

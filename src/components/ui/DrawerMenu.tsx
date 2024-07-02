@@ -14,10 +14,10 @@ import {
 import { MenuIcon, Minus, Plus } from "lucide-react";
 
 import React from "react";
-import type { Node } from "reactflow";
 import { ModeToggle } from "./ModeToggle";
+import type { NodeExtend } from "@/app/timectx/helpers/list";
 
-function DrawerMenu(props: { addNode: (node: Node) => void }) {
+function DrawerMenu(props: { addNode: (node: NodeExtend) => void }) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
