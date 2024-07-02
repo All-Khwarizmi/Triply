@@ -6,14 +6,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -46,20 +39,12 @@ const CustomNode = ({ data }: NodeProps<NodeData>) => {
   const initialYRef = useRef<number>(data.position.y);
   const color = useMemo(() => getRandomColor(), []);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (nodeRef.current) {
-      const rect = nodeRef.current.getBoundingClientRect();
-      const newY = initialYRef.current;
-      // Update node position logic here if needed
-      if (data.nodeId === "end-node") {
-        console.log({ nodeWidth: rect.width });
-      }
-    }
-  }, [isOpen, data]);
-
   const handleSave = () => {
-    // Implement save functionality
+    data.updateNodeMetadata(data.nodeId, {
+      date,
+      name,
+      body: description,
+    });
   };
 
   return (
