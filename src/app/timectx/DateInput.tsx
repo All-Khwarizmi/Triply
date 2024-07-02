@@ -2,6 +2,8 @@
 import type React from "react";
 import dayjs from "dayjs";
 import { useTimelineContext } from "./Context";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const DateInput: React.FC = () => {
   const { startDate, endDate, setStartDate, setEndDate } = useTimelineContext();
@@ -15,25 +17,23 @@ const DateInput: React.FC = () => {
   };
 
   return (
-    <div className="mt-4 text-black">
-      <label className="block mb-2">
-        Start Date:
-        <input
+    <div className="flex  w-full gap-4">
+      <div className="space-y-2">
+        <Label className="">Start Date:</Label>
+        <Input
           type="date"
           value={startDate.format("YYYY-MM-DD")}
           onChange={handleStartDateChange}
-          className="ml-2 p-1 border rounded text-black"
         />
-      </label>
-      <label className="block">
-        End Date:
-        <input
+      </div>
+      <div className="space-y-2">
+        <Label className="">End Date:</Label>
+        <Input
           type="date"
           value={endDate.format("YYYY-MM-DD")}
           onChange={handleEndDateChange}
-          className="ml-2 p-1 border rounded text-black"
         />
-      </label>
+      </div>
     </div>
   );
 };
