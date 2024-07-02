@@ -52,6 +52,7 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-black">
+      <h2 className="text-xl text-center font-bold">Add Node</h2>
       <div className="flex gap-4">
         <div>
           <label htmlFor="date" className="block">
