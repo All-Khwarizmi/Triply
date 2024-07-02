@@ -238,9 +238,9 @@ describe("Should be able to update the node metadata", () => {
     nodeList.updateNodeMetadata(node.id, {
       date: dayUpdate.toString(),
     });
-    console.log('______________________________');
+    console.log("______________________________");
     console.log(nodeList.edges);
-    
+
     const nodes = nodeList.traverse();
     const searchNode = nodes.find((e) => e.id === node.id);
     expect(searchNode?.data.date).toEqual(dayUpdate.toString());
@@ -273,3 +273,5 @@ describe("Should be able to update the node metadata", () => {
     }
   });
 });
+
+// describe("Save and restore", () => {});
