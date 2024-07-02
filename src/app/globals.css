@@ -1,7 +1,6 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
@@ -48,17 +47,35 @@
     --input: 12 6.5% 15.1%;
     --ring: 20.5 90.2% 48.2%;
   }
+.underline-squiggly {
+  position: relative;
+  display: inline-block;
 }
 
-  @layer base {
-    * {
-      @apply border-border;
-    }
-    body {
-      @apply bg-background text-foreground;
-    }
+.underline-squiggly::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -10px; /* Adjust this value if needed */
+  height: 15px; /* Adjust height if needed */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 20'><path fill='none' stroke='currentColor' stroke-width='2' d='M2 10c1.5-5 5.5-5 7 0s5.5 5 7 0 5.5-5 7 0 5.5 5 7 0 5.5-5 7 0 5.5 5 7 0 5.5-5 7 0 5.5 5 7 0'/></svg>");
+  background-repeat: repeat-x;
+  background-size: 80px 20px;
+  z-index: 0;
+  background-color: var(--primary); /* Change the color here */
+  color: var(--primary); /* Change the color here */
+}
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
   }
 
   body {
     height: 100vh;
   }
+}
