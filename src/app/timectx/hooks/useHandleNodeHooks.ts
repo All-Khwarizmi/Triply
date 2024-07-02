@@ -12,18 +12,25 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import "reactflow/dist/style.css";
 import type { NodeExtend } from "../helpers/list";
+import { NodeList } from "../helpers/list";
+import dayjs from "dayjs";
+import { createStartNodeExtend } from "../../../../test/node-extend-helper";
+import { createEndNode } from "../helpers/create-node-helpers";
 
 // Custom hook template
 const useHandleNodeHooks = () => {
-  const [nodes, setNodes] = useState<NodeExtend[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([
-    {
-      id: "edge-1",
-      source: "start-node",
-      target: "end-node",
-      type: "smoothstep",
-    },
-  ]);
+  const list = new NodeList(
+    createStartNodeExtend({
+      startDate: dayjs(new Date()),
+      updateNodePosition: () => {},
+    }),
+    createEndNode({
+      startDate: dayjs(new Date()).add(7, "day"),
+      updateNodePosition: () => {},
+    })
+  );
+  const [nodes, setNodes] = useState<NodeExtend[]>(list.traverse());
+  const [edges, setEdges] = useState<Edge[]>(list.edges);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
