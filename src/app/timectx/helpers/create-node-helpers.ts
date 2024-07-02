@@ -2,6 +2,7 @@ import type { Dayjs } from "dayjs";
 import type { Node } from "reactflow";
 
 export type CreateNodeOptions = {
+  id?: string;
   startDate: Dayjs;
   updateNodePosition: (
     nodeId: string,
@@ -32,7 +33,7 @@ export function createStartNode(options: CreateNodeOptions): Node {
 
 export function createEndNode(options: CreateNodeOptions): Node {
   return {
-    id: "end-node",
+    id: options.id ?? "end-node",
     type: "customNode",
     position: { x: 800, y: -125 },
     data: {
