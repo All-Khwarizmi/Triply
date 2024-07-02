@@ -234,13 +234,16 @@ describe("Should be able to update the node metadata", () => {
       updateNodePosition: () => {},
     });
     nodeList.addNode(node);
+    console.log(nodeList.edges);
     nodeList.updateNodeMetadata(node.id, {
       date: dayUpdate.toString(),
     });
+    console.log('______________________________');
+    console.log(nodeList.edges);
+    
     const nodes = nodeList.traverse();
     const searchNode = nodes.find((e) => e.id === node.id);
     expect(searchNode?.data.date).toEqual(dayUpdate.toString());
-    console.log(nodes);
 
     let prevDate = nodes[0].data.date;
     for (let i = 1; i < nodes.length; i++) {
@@ -254,6 +257,19 @@ describe("Should be able to update the node metadata", () => {
       expect(nodes[i].position.x).toBeGreaterThan(prevX);
       prevX = nodes[i].position.x;
     }
+
+    // check if the nodes are in the correct order by day of the trip. Should be in ascendant order
+    let prevDay = nodes[0].data.dayOfTrip;
+    for (let i = 1; i < nodes.length; i++) {
+      expect(nodes[i].data.dayOfTrip).toBeGreaterThan(prevDay);
+      prevDay = nodes[i].data.dayOfTrip;
+    }
+
+    // check if the edges are correct
+    const edges = nodeList.edges;
+    for (let i = 0; i < edges.length - 1; i++) {
+      expect(edges[i].source).toBe(nodes[i].id);
+      expect(edges[i].target).toBe(nodes[i + 1].id);
+    }
   });
 });
-

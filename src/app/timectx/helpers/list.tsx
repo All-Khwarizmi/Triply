@@ -29,7 +29,7 @@ export interface NodeExtend extends Node {
 }
 
 export class NodeList {
-  private  _startNode: NodeExtend;
+  private _startNode: NodeExtend;
   private readonly _endNode: NodeExtend;
   private _edges: Edge[] = [];
 
@@ -74,43 +74,23 @@ export class NodeList {
     return this._edges;
   }
 
-  findNode(node: NodeExtend) {}
-
   addNode(node: NodeExtend): void {
     let currentNode = this._startNode;
     while (currentNode.data.nextNode) {
       if (dayjs(currentNode.data.nextNode?.data.date).isAfter(node.data.date)) {
         node.data.nextNode = currentNode.data.nextNode;
         currentNode.data.nextNode = node;
+        node.data.prevNode = currentNode;
+        node.data.nextNode.data.prevNode = node;
 
-        // update node position
+        // Update node position
         node.position.y = determineNodeYPosition(
           currentNode.position.y,
           node.data.nextNode.position.y
         );
+
         this.updateNodeXPosition();
-        // Update edges
-        const newEdges: Edge[] = [];
-        for (const edge of this._edges) {
-          if (
-            edge.source === currentNode.id &&
-            edge.target === node.data.nextNode.id
-          ) {
-            const updateEdge = edge;
-
-            updateEdge.id = `${currentNode.data.nodeId}-${node.data.nodeId}`;
-            updateEdge.target = node.data.nodeId;
-
-            newEdges.push({
-              id: `${node.id}-${node.data.nextNode.id}`,
-              source: node.id,
-              target: node.data.nextNode.id,
-            });
-          }
-          newEdges.push(edge);
-        }
-        this._edges = newEdges;
-
+        this.updateEdges();
         break;
       }
       currentNode = currentNode.data.nextNode;
@@ -136,19 +116,12 @@ export class NodeList {
   }
 
   updateNodeXPosition() {
-    let pixelRange = 1000;
+    const pixelRange = this.traverse().length > 5 ? 4000 : 2000;
     const nodes = this.traverse();
     const length = nodes.length;
-    if (nodes.length > 5) {
-      pixelRange = 2000;
-    }
-
     const pixelPerDay = pixelRange / length;
     const slots = new Array<number>(length).fill(pixelPerDay);
-    for (let x = 0; x < length; x++) {
-      if (x === 0) {
-        continue;
-      }
+    for (let x = 1; x < length; x++) {
       slots[x] = slots[x - 1] + slots[x];
     }
     let currentNode = this._startNode;
@@ -179,51 +152,65 @@ export class NodeList {
     >
   ) {
     let currentNode = this._startNode;
+    let nodeToUpdate: NodeExtend | null = null;
+
+    // Find the node to update and remove it from the list
     while (currentNode.data.nextNode) {
       if (currentNode.data.nodeId === nodeId) {
-        currentNode.data = { ...currentNode.data, ...metadata };
-        if (metadata.date) {
-          this.assignDayOfTrip();
+        nodeToUpdate = currentNode;
+        if (nodeToUpdate.data.prevNode) {
+          nodeToUpdate.data.prevNode.data.nextNode = nodeToUpdate.data.nextNode;
+        }
+        if (nodeToUpdate.data.nextNode) {
+          nodeToUpdate.data.nextNode.data.prevNode = nodeToUpdate.data.prevNode;
+        }
+        if (nodeToUpdate === this._startNode && nodeToUpdate.data.nextNode) {
+          this._startNode = nodeToUpdate.data.nextNode;
         }
         break;
       }
       currentNode = currentNode.data.nextNode;
     }
+
+    // Update the node's metadata
+    if (nodeToUpdate) {
+      nodeToUpdate.data = { ...nodeToUpdate.data, ...metadata };
+      // Reinsert the node into the correct position
+      this.addNode(nodeToUpdate);
+    }
+
+    // Ensure nodes are ordered correctly
     this.orderNodesByDate();
   }
 
   orderNodesByDate() {
-    let swapped: boolean;
-    do {
-      swapped = false;
-      let currentNode = this._startNode;
-      let previousNode = null;
-      while (currentNode?.data.nextNode) {
-        if (
-          dayjs(currentNode.data.date).isAfter(
-            currentNode.data.nextNode.data.date
-          )
-        ) {
-          // Swap nodes
-          const tempNode = currentNode;
-          currentNode = currentNode.data.nextNode;
-          tempNode.data.nextNode = currentNode.data.nextNode;
-          currentNode.data.nextNode = tempNode;
+    const nodes = this.traverse();
+    nodes.sort((a, b) => dayjs(a.data.date).unix() - dayjs(b.data.date).unix());
 
-          // Update the nextNode property of the previous node
-          if (previousNode) {
-            previousNode.data.nextNode = currentNode;
-          } else {
-            // If there's no previous node, we're at the start of the list, so update _startNode
-            this._startNode = currentNode;
-          }
+    // Update linked list pointers
+    this._startNode = nodes[0];
+    for (let i = 0; i < nodes.length - 1; i++) {
+      nodes[i].data.nextNode = nodes[i + 1];
+      nodes[i + 1].data.prevNode = nodes[i];
+    }
+    nodes[nodes.length - 1].data.nextNode = null;
 
-          swapped = true;
-        }
-        previousNode = currentNode;
-        currentNode = currentNode.data.nextNode;
-      }
-    } while (swapped);
+    // Update positions and edges
     this.updateNodeXPosition();
+    this.updateEdges();
+  }
+
+  updateEdges() {
+    const newEdges: Edge[] = [];
+    let currentNode = this._startNode;
+    while (currentNode.data.nextNode) {
+      newEdges.push({
+        id: `${currentNode.data.nodeId}-${currentNode.data.nextNode.data.nodeId}`,
+        source: currentNode.data.nodeId,
+        target: currentNode.data.nextNode.data.nodeId,
+      });
+      currentNode = currentNode.data.nextNode;
+    }
+    this._edges = newEdges;
   }
 }
