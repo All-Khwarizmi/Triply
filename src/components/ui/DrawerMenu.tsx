@@ -15,9 +15,17 @@ import { MenuIcon, Minus, Plus } from "lucide-react";
 
 import React from "react";
 import { ModeToggle } from "./ModeToggle";
-import type { NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
 
-function DrawerMenu(props: { addNode: (node: NodeExtend) => void }) {
+function DrawerMenu(props: {
+  addNode: (node: NodeExtend) => void;
+  updateNodeMetadata: (
+    nodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
+}) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -41,6 +49,7 @@ function DrawerMenu(props: { addNode: (node: NodeExtend) => void }) {
             <AddNodeForm
               addNode={props.addNode}
               updateNodePosition={() => {}}
+              updateNodeMetadata={props.updateNodeMetadata}
             />
           </div>
 

@@ -1,6 +1,5 @@
-import { useCallback, useState, useEffect, use, useRef } from "react";
-import ReactFlow, {
-  type Node,
+import { useCallback, useState } from "react";
+import {
   type Edge,
   type NodeChange,
   type EdgeChange,
@@ -11,12 +10,12 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import "reactflow/dist/style.css";
-import type { NodeExtend } from "../helpers/list";
+import type { NodeData, NodeExtend } from "../helpers/list";
 import { NodeList } from "../helpers/list";
 import dayjs from "dayjs";
 import { createStartNodeExtend } from "../../../../test/node-extend-helper";
 import { createEndNode } from "../helpers/create-node-helpers";
-import { useStoreApi, useReactFlow, Panel } from "reactflow";
+import { useReactFlow } from "reactflow";
 const list = new NodeList(
   createStartNodeExtend({
     startDate: dayjs(new Date()),
@@ -79,7 +78,19 @@ const useHandleNodeHooks = () => {
     setEdges(list.edges);
     fitView();
   }
+
+  function updateNodeMetadata(
+    nodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) {
+    list.updateNodeMetadata(nodeId, metadata);
+    setNodes(list.traverse());
+  }
+
   return {
+    updateNodeMetadata,
     addNode,
     nodes,
     setNodes,

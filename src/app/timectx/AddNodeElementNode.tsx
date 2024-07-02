@@ -5,11 +5,17 @@ import { useTimelineContext } from "./Context";
 import dayjs from "dayjs";
 import type { Node } from "reactflow";
 import { Button } from "@/components/ui/button";
-import type { NodeExtend } from "./helpers/list";
+import type { NodeData, NodeExtend } from "./helpers/list";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 interface AddNodeFormProps {
   addNode: (node: NodeExtend) => void;
+  updateNodeMetadata: (
+    nodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
   updateNodePosition: (
     nodeId: string,
     position: { x: number; y: number }
@@ -17,6 +23,7 @@ interface AddNodeFormProps {
 }
 
 const AddNodeForm: React.FC<AddNodeFormProps> = ({
+  updateNodeMetadata,
   addNode,
   updateNodePosition,
 }) => {
@@ -48,6 +55,7 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
         updateNodePosition,
         position: { x: xPosition, y: -100 },
         dayOfTrip: 0,
+        updateNodeMetadata,
       },
     };
 

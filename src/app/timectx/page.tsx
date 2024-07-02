@@ -17,14 +17,20 @@ const nodeTypes = {
 };
 
 const App: React.FC = () => {
-  const { nodes, addNode, edges, onNodesChange, onEdgesChange } =
-    useHandleNodeHooks();
+  const {
+    nodes,
+    addNode,
+    edges,
+    onNodesChange,
+    onEdgesChange,
+    updateNodeMetadata,
+  } = useHandleNodeHooks();
 
   return (
     <div className="container h-screen mx-auto space-y-8 flex flex-col py-8">
       <header className="flex justify-between items-center">
         <h1 className="text-center text-2xl font-bold py-8 ">Triply</h1>{" "}
-        <DrawerMenu addNode={addNode} />
+        <DrawerMenu addNode={addNode} updateNodeMetadata={updateNodeMetadata} />
       </header>
       <div className="h-full w-full flex flex-col ">
         <ReactFlow
