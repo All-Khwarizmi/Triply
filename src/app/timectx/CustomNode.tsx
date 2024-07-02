@@ -74,7 +74,10 @@ const CustomNode = ({ data }: NodeProps) => {
       >
         <CollapsibleTrigger asChild>
           <div className="p-4 bg-gray-300 cursor-pointer">
-            {data.name ?? data.date}
+            <div className="flex justify-between">
+              <div>{data.date}</div>
+            </div>
+            <div>{data.name}</div>
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent>
