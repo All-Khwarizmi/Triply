@@ -16,6 +16,7 @@ import {
   createStartNodeExtend,
   createEndNodeExtend,
 } from "../../../test/node-extend-helper";
+import DrawerMenu from "@/components/ui/DrawerMenu";
 
 const nodeTypes = {
   customNode: CustomNode,
@@ -38,22 +39,12 @@ const App: React.FC = () => {
   const { startDate, endDate } = useTimelineContext();
 
   return (
-    <div className="container mx-auto h-screen space-y-8">
-      <h1 className="text-center text-2xl font-bold">Trip Timeline</h1>
-      <div
-        className="h-full w-full flex flex-col "
-        style={{
-          height: "calc(100vh - 4rem)",
-        }}
-      >
-        <div className="flex gap-8 w-full justify-center items-center">
-          <DateInput />
-          <AddNodeForm
-            addNode={addNode}
-            updateNodePosition={updateNodePosition}
-          />
-        </div>
-
+    <div className="container h-screen mx-auto space-y-8 flex flex-col py-8">
+      <header className="flex justify-between items-center">
+        <h1 className="text-center text-2xl font-bold py-8">Trip Timeline</h1>{" "}
+        <DrawerMenu addNode={addNode} />
+      </header>
+      <div className="h-full w-full flex flex-col ">
         <ReactFlow
           nodes={nodes}
           edges={edges}
