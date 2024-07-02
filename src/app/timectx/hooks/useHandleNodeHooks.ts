@@ -86,7 +86,10 @@ const useHandleNodeHooks = () => {
     >
   ) {
     list.updateNodeMetadata(nodeId, metadata);
+
     setNodes(list.traverse());
+    setEdges(list.edges);
+    console.log(list.traverse());
   }
 
   return {
