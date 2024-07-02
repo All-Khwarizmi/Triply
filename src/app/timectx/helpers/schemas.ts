@@ -181,3 +181,9 @@ export const EdgeSchema = z.union([
   SmoothStepEdgeTypeSchema,
   BezierEdgeTypeSchema,
 ]);
+
+export const ListNodePropsLocalStorageSavingSchema = z.object({
+  startNode: NodeExtendSchema,
+  endNode: NodeExtendSchema,
+  edges: z.array(EdgeSchema).optional(),
+});
