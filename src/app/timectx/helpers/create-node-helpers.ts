@@ -1,9 +1,16 @@
 import type { Dayjs } from "dayjs";
 import type { Node } from "reactflow";
+import type { NodeData } from "./list";
 
 export type CreateNodeOptions = {
   id?: string;
   startDate: Dayjs;
+  updateNodeMetadata?: (
+    nodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
   updateNodePosition: (
     nodeId: string,
     position: {
