@@ -181,5 +181,24 @@ export class NodeList {
     this._endNode.data.dayOfTrip = ++day;
   }
 
-  updateNodeMetadata(nodeId: string, metadata: Partial<NodeData>) {}
+  updateNodeMetadata(
+    nodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) {
+    let currentNode = this._startNode;
+    while (currentNode.data.nextNode) {
+      if (currentNode.data.nodeId === nodeId) {
+        currentNode.data = { ...currentNode.data, ...metadata };
+        if (metadata.date) {
+          this.assignDayOfTrip();
+          this.updateNodeXPosition();
+        }
+        break;
+      }
+      currentNode = currentNode.data.nextNode;
+    }
+    this.updateNodeXPosition();
+  }
 }

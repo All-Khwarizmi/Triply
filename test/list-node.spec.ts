@@ -134,7 +134,6 @@ describe("ListNode update node position", () => {
     const methods = getObjectMethods(nodeList);
     expect(methods).toContain("updateNodeYPosition");
   });
-  
 
   test("Each node should have any of the Y positions", () => {
     const nodes = nodeList.traverse();
@@ -205,5 +204,44 @@ describe("Should be able to update the node metadata", () => {
   test("should have a method to update node metadata", () => {
     const methods = getObjectMethods(nodeList);
     expect(methods).toContain("updateNodeMetadata");
+  });
+
+  test("should update the node metadata", () => {
+    const node = createEndNodeExtend({
+      id: "node-42",
+      startDate: dayjs(new Date()).add(3, "day"),
+      updateNodePosition: () => {},
+    });
+    nodeList.addNode(node);
+    nodeList.updateNodeMetadata(node.id, {
+      body: "body",
+    });
+    const nodes = nodeList.traverse();
+    const searchNode = nodes.find((e) => e.id === node.id);
+    expect(searchNode?.data.body).toBe("body");
+  });
+
+  test("should preserve the order of the nodes (by date) after a date change", () => {
+    const date = dayjs(new Date()).add(3, "day");
+    const dayUpdate = date.add(1, "day");
+    const node = createEndNodeExtend({
+      id: "node-50",
+      startDate: date,
+      updateNodePosition: () => {},
+    });
+    nodeList.addNode(node);
+    nodeList.updateNodeMetadata(node.id, {
+      date: dayUpdate.toString()
+    });
+    const nodes = nodeList.traverse();
+    const searchNode = nodes.find((e) => e.id === node.id);
+    expect(searchNode?.data.date).toEqual(dayUpdate.toString());
+    console.log(nodes);
+
+    let prevDate = nodes[0].data.date;
+    for (let i = 1; i < nodes.length; i++) {
+      expect(dayjs(nodes[i].data.date).isAfter(prevDate)).toBe(true);
+      prevDate = nodes[i].data.date;
+    }
   });
 });
