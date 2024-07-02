@@ -130,15 +130,10 @@ describe("ListNode update node position", () => {
     target: endNode.data.nodeId,
   };
   const nodeList = new NodeList(startNode, endNode);
-  test("should have a method to updatePosition", () => {
-    const methods = getObjectMethods(nodeList);
-    expect(methods).toContain("updateNodePosition");
-  });
 
   test("Each node should have any of the Y positions", () => {
     const nodes = nodeList.traverse();
     for (const node of nodes) {
-      console.log(node.position.y);
       expect(NODE_Y_POSITIONS).toContain(node.position.y);
     }
     const node = createEndNodeExtend({
@@ -150,23 +145,40 @@ describe("ListNode update node position", () => {
     const nodesII = nodeList.traverse();
 
     for (const node of nodesII) {
-      console.log(node.position.y);
       expect(NODE_Y_POSITIONS).toContain(node.position.y);
     }
   });
 
-  // test("should not be two consecutives nodes on the same Y axis plan", () => {
-  //   const node = createEndNodeExtend({
-  //     id: "node-42",
-  //     startDate: dayjs(new Date()).add(3, "day"),
-  //     updateNodePosition: () => {},
-  //   });
-  //   nodeList.addNode(node);
-  //   const nodes = nodeList.traverse();
-  //   let prevY = nodes[0].position.y;
-  //   for (let i = 1; i < nodes.length; i++) {
-  //     expect(nodes[i].position.y).not.toBe(prevY);
-  //     prevY = nodes[i].position.y;
-  //   }
-  // });
+  test("should not be two consecutives nodes on the same Y axis plan", () => {
+    const node = createEndNodeExtend({
+      id: "node-42",
+      startDate: dayjs(new Date()).add(3, "day"),
+      updateNodePosition: () => {},
+    });
+    nodeList.addNode(node);
+    const nodes = nodeList.traverse();
+    let prevY = nodes[0].position.y;
+    for (let i = 1; i < nodes.length; i++) {
+      expect(nodes[i].position.y).not.toBe(prevY);
+      prevY = nodes[i].position.y;
+    }
+  });
+  test("should have a method to updatePosition", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("updateNodeXPosition");
+  });
+
+  test("Each node should be spread on the X axis and be separated by at least 200px", () => {
+    const nodes = nodeList.traverse();
+    console.log("nodes", nodes);
+    let prevX = nodes[0].position.x;
+    // console.log("length", nodes.length);
+    for (let i = 1; i < nodes.length; i++) {
+      // console.log(`node id: ${nodes[i].id}`, nodes[i].position.x);
+      // console.log(nodes[i].position.x - prevX);
+      // console.log("prevX", prevX);
+      expect(nodes[i].position.x - prevX).toBeGreaterThanOrEqual(200);
+      prevX = nodes[i].position.x;
+    }
+  });
 });

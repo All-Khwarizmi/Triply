@@ -29,7 +29,6 @@ export class NodeList {
     this._startNode = startNode;
 
     this._startNode.position = { x: this._startNode.position.x, y: 0 };
-    console.log(this._startNode.position);
     this._startNode.data.position = { x: this._startNode.position.x, y: 0 };
     this._endNode = endNode;
     this._endNode.position = { x: this._endNode.position.x, y: -250 };
@@ -75,17 +74,13 @@ export class NodeList {
         currentNode.data.nextNode = node;
 
         // update node position
-        const currentNodeYPossition = currentNode.position.y;
-        const afterNextNodeYPosition = node.data.nextNode.position.y;
-        const newYpos = determineNodeYPosition(
-          currentNodeYPossition,
-          afterNextNodeYPosition
+        node.position.y = determineNodeYPosition(
+          currentNode.position.y,
+          node.data.nextNode.position.y
         );
-        node.position.y = newYpos;
-
+        this.updateNodeXPosition();
         // Update edges
         const newEdges: Edge[] = [];
-        // console.log(this._edges);
         for (const edge of this._edges) {
           if (
             edge.source === currentNode.id &&
@@ -112,5 +107,28 @@ export class NodeList {
     }
   }
 
-  updateNodePosition() {}
+  updateNodeXPosition() {
+    let pixelRange = 1000;
+    const nodes = this.traverse();
+    const length = nodes.length;
+    if (nodes.length > 5) {
+      pixelRange = 2000;
+    }
+
+    const pixelPerDay = pixelRange / length;
+    const slots = new Array<number>(length).fill(pixelPerDay);
+    for (let x = 0; x < length; x++) {
+      if (x === 0) {
+        continue;
+      }
+      slots[x] = slots[x - 1] + slots[x];
+    }
+    let currentNode = this._startNode;
+    while (currentNode.data.nextNode) {
+      currentNode.position.x = slots.shift() || 0;
+      currentNode.data.position.x = currentNode.position.x;
+      currentNode = currentNode.data.nextNode;
+    }
+    this._endNode.position.x = slots.shift() || 0;
+  }
 }
