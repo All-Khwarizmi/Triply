@@ -37,22 +37,23 @@ const App: React.FC = () => {
 
   const { startDate, endDate } = useTimelineContext();
 
-
-
   return (
-    <div className="container mx-auto h-screen">
+    <div className="container mx-auto h-screen space-y-8">
       <h1 className="text-center text-2xl font-bold">Trip Timeline</h1>
       <div
-        className="h-full w-full flex "
+        className="h-full w-full flex flex-col "
         style={{
           height: "calc(100vh - 4rem)",
         }}
       >
-        <DateInput />
-        <AddNodeForm
-          addNode={addNode}
-          updateNodePosition={updateNodePosition}
-        />
+        <div className="flex gap-8 w-full justify-center items-center">
+          <DateInput />
+          <AddNodeForm
+            addNode={addNode}
+            updateNodePosition={updateNodePosition}
+          />
+        </div>
+
         <ReactFlow
           nodes={nodes}
           edges={edges}
