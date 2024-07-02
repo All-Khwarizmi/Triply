@@ -17,6 +17,7 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
       position: { x: 0, y: -125 },
       prevNode: null,
       nextNode: null,
+      dayOfTrip: 1,
     },
   };
 }
@@ -37,6 +38,7 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
       position: { x: 2000, y: -133 },
       prevNode: null,
       nextNode: null,
+      dayOfTrip: 2,
     },
   };
 }

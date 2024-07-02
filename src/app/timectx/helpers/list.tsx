@@ -10,6 +10,7 @@ export interface NodeExtend extends Node {
     body: string;
     slug: string;
     nodeId: string;
+    dayOfTrip: number;
     updateNodePosition: (
       nodeId: string,
       position: { x: number; y: number }
@@ -124,10 +125,13 @@ export class NodeList {
       slots[x] = slots[x - 1] + slots[x];
     }
     let currentNode = this._startNode;
+    let day = 1;
     while (currentNode.data.nextNode) {
       currentNode.position.x = slots.shift() || 0;
       currentNode.data.position.x = currentNode.position.x;
       currentNode = currentNode.data.nextNode;
+      currentNode.data.dayOfTrip = day;
+      day++;
     }
     this._endNode.position.x = slots.shift() || 0;
   }
