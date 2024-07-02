@@ -1,11 +1,7 @@
 "use client";
 import type React from "react";
 import { useEffect } from "react";
-import ReactFlow, {
-  type Node,
-  Background,
-  Controls,
-} from "reactflow";
+import ReactFlow, { type Node, Background, Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import DateInput from "./DateInput";
 import CustomNode from "./CustomNode";
@@ -15,10 +11,11 @@ import TimeLineNodeElement from "../timeline/TimelineNodeElement";
 import { StageColumnNode } from "./StageColumn";
 import AddNodeForm from "./AddNodeElementNode";
 import useHandleNodeHooks from "./hooks/useHandleNodeHooks";
+import { createEndNode, createStartNode } from "./helpers/create-node-helpers";
 import {
-  createEndNode,
-  createStartNode,
-} from "./helpers/create-node-helpers";
+  createStartNodeExtend,
+  createEndNodeExtend,
+} from "../../../test/node-extend-helper";
 
 const nodeTypes = {
   customNode: CustomNode,
@@ -29,6 +26,7 @@ const nodeTypes = {
 const App: React.FC = () => {
   const {
     nodes,
+    addNode,
     edges,
     setNodes,
     onNodesChange,
@@ -38,33 +36,8 @@ const App: React.FC = () => {
   } = useHandleNodeHooks();
 
   const { startDate, endDate } = useTimelineContext();
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    const totalDays = endDate.diff(startDate, "day");
 
-    setNodes([
-      createStartNode({
-        startDate,
-        updateNodePosition,
-      }),
-      // createStartColumnNode({
-      //   startDate,
-      //   updateNodePosition,
-      // }),
-      createEndNode({
-        startDate,
-        updateNodePosition,
-      }),
-      // createEndColumnNode({
-      //   startDate,
-      //   updateNodePosition,
-      // }),
-      // createBaseLineNode(),
-    ]);
-  }, [startDate, endDate]);
-  const addNode = (node: Node) => {
-    setNodes((nds) => nds.concat(node));
-  };
+
 
   return (
     <div className="container mx-auto h-screen">
