@@ -1,7 +1,7 @@
+import type { Edge } from "reactflow";
 import type { NodeExtend } from "./list";
 
 export interface ListNodePropsLocalStorageSaving {
-  startNode: NodeExtend;
-  endNode: NodeExtend;
-  edges?: NodeExtend[];
+  nodes: NodeExtend[];
+  edges: Edge[];
 }

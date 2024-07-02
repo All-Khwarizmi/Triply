@@ -8,22 +8,29 @@ export const NodeDataSchema = z.object({
   slug: z.string(),
   nodeId: z.string(),
   dayOfTrip: z.number(),
-  updateNodePosition: z.function(
-    z.tuple([z.string(), z.object({ x: z.number(), y: z.number() })], z.void())
-  ),
-  updateNodeMetadata: z.function(
-    z.tuple([
-      z.string(),
-      z.object({
-        label: z.string().optional(),
-        body: z.string().optional(),
-        name: z.string().optional(),
-        slug: z.string().optional(),
-        date: z.string().optional(),
-      }),
-    ]),
-    z.void()
-  ),
+  updateNodePosition: z
+    .function(
+      z.tuple(
+        [z.string(), z.object({ x: z.number(), y: z.number() })],
+        z.void()
+      )
+    )
+    .optional(),
+  updateNodeMetadata: z
+    .function(
+      z.tuple([
+        z.string(),
+        z.object({
+          label: z.string().optional(),
+          body: z.string().optional(),
+          name: z.string().optional(),
+          slug: z.string().optional(),
+          date: z.string().optional(),
+        }),
+      ]),
+      z.void()
+    )
+    .optional(),
   position: z.object({ x: z.number(), y: z.number() }),
 });
 
@@ -67,60 +74,6 @@ export const NodeSchema = z.object({
 export const NodeExtendSchema = NodeSchema.extend({
   data: NodeDataSchema,
 });
-
-/* type EdgeLabelOptions = {
-    label?: string | ReactNode;
-    labelStyle?: CSSProperties;
-    labelShowBg?: boolean;
-    labelBgStyle?: CSSProperties;
-    labelBgPadding?: [number, number];
-    labelBgBorderRadius?: number;
-};
-type DefaultEdge<T = any> = {
-    id: string;
-    type?: string;
-    source: string;
-    target: string;
-    sourceHandle?: string | null;
-    targetHandle?: string | null;
-    style?: CSSProperties;
-    animated?: boolean;
-    hidden?: boolean;
-    deletable?: boolean;
-    data?: T;
-    className?: string;
-    sourceNode?: Node;
-    targetNode?: Node;
-    selected?: boolean;
-    markerStart?: EdgeMarkerType;
-    markerEnd?: EdgeMarkerType;
-    zIndex?: number;
-    ariaLabel?: string;
-    interactionWidth?: number;
-    focusable?: boolean;
-    /**
-     * @deprecated Use `reconnectable` instead
-     
-    updatable?: EdgeUpdatable;
-    reconnectable?: boolean | HandleType;
-} & EdgeLabelOptions;
-export type EdgeUpdatable = boolean | HandleType;
-export type SmoothStepPathOptions = {
-    offset?: number;
-    borderRadius?: number;
-};
-type SmoothStepEdgeType<T> = DefaultEdge<T> & {
-    type: 'smoothstep';
-    pathOptions?: SmoothStepPathOptions;
-};
-export type BezierPathOptions = {
-    curvature?: number;
-};
-type BezierEdgeType<T> = DefaultEdge<T> & {
-    type: 'default';
-    pathOptions?: BezierPathOptions;
-};
-export type Edge<T = any> = DefaultEdge<T> | SmoothStepEdgeType<T> | BezierEdgeType<T>; */
 
 export const EdgeLabelOptionsSchema = z.object({
   label: z.union([z.string(), z.unknown()]).optional(),
@@ -182,8 +135,7 @@ export const EdgeSchema = z.union([
   BezierEdgeTypeSchema,
 ]);
 
-export const ListNodePropsLocalStorageSavingSchema = z.object({
-  startNode: NodeExtendSchema,
-  endNode: NodeExtendSchema,
-  edges: z.array(EdgeSchema).optional(),
+export const ListNodeDatabaseSchema = z.object({
+  nodes: z.array(NodeExtendSchema),
+  edges: z.array(EdgeSchema),
 });
