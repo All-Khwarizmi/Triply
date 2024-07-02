@@ -28,20 +28,13 @@ const list = new NodeList(
 );
 // Custom hook template
 const useHandleNodeHooks = () => {
-  const listRef = useRef(list);
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    listRef.current = list;
-  }, [list.traverse()]);
-  console.log(list);
   const [nodes, setNodes] = useState<NodeExtend[]>(() => list.traverse());
   const [edges, setEdges] = useState<Edge[]>(list.edges);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
       setNodes((nds) => applyNodeChanges(changes, nds)),
-    [list.traverse()]
+    []
   );
 
   const onEdgesChange = useCallback(
@@ -82,7 +75,6 @@ const useHandleNodeHooks = () => {
     list.addNode(node);
     setNodes(list.traverse());
     setEdges(list.edges);
-    console.log(list);
   }
   return {
     addNode,
