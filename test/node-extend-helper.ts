@@ -45,3 +45,5 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
 export function getObjectMethods(obj: any): string[] {
   return Object.getOwnPropertyNames(Object.getPrototypeOf(obj));
 }
+
+export const NODE_Y_POSITIONS = [0, -250, 250];
