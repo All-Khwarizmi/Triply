@@ -236,7 +236,6 @@ describe("Should be able to update the node metadata", () => {
     const nodes = nodeList.traverse();
     const searchNode = nodes.find((e) => e.id === node.id);
     expect(searchNode?.data.date).toEqual(dayUpdate.toString());
-    console.log(nodes);
 
     let prevDate = nodes[0].data.date;
     for (let i = 1; i < nodes.length; i++) {

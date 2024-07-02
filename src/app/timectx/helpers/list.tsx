@@ -14,27 +14,18 @@ export interface NodeData {
     nodeId: string,
     position: { x: number; y: number }
   ) => void;
+  updateNodeMetadata: (
+    nodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
   position: { x: number; y: number };
   prevNode: NodeExtend | null;
   nextNode: NodeExtend | null;
 }
 export interface NodeExtend extends Node {
-  data: {
-    label: string;
-    date: string;
-    name: string;
-    body: string;
-    slug: string;
-    nodeId: string;
-    dayOfTrip: number;
-    updateNodePosition: (
-      nodeId: string,
-      position: { x: number; y: number }
-    ) => void;
-    position: { x: number; y: number };
-    prevNode: NodeExtend | null;
-    nextNode: NodeExtend | null;
-  };
+  data: NodeData;
 }
 
 export class NodeList {
