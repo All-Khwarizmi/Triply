@@ -2,6 +2,8 @@ import type { CreateNodeOptions } from "@/app/timectx/helpers/create-node-helper
 import type { NodeExtend } from "@/app/timectx/helpers/list";
 
 export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
+  const updateNodeMetadata = options.updateNodeMetadata ?? (() => {});
+
   return {
     id: "start-node",
     type: "customNode",
@@ -18,11 +20,13 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
       prevNode: null,
       nextNode: null,
       dayOfTrip: 1,
+      updateNodeMetadata,
     },
   };
 }
 
 export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
+  const updateNodeMetadata = options.updateNodeMetadata ?? (() => {});
   return {
     id: options.id ?? "end-node",
     type: "customNode",
@@ -39,6 +43,7 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
       prevNode: null,
       nextNode: null,
       dayOfTrip: 2,
+      updateNodeMetadata,
     },
   };
 }
