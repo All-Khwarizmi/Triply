@@ -27,7 +27,12 @@ export class NodeList {
   constructor(startNode: NodeExtend, endNode: NodeExtend) {
     this._startNode = startNode;
 
+    this._startNode.position = { x: this._startNode.position.x, y: 0 };
+    console.log(this._startNode.position);
+    this._startNode.data.position = { x: this._startNode.position.x, y: 0 };
     this._endNode = endNode;
+    this._endNode.position = { x: this._endNode.position.x, y: -250 };
+    this._endNode.data.position = { x: this._endNode.position.x, y: -250 };
 
     this._startNode.data.nextNode = this._endNode;
     this._endNode.data.prevNode = this._startNode;
@@ -67,7 +72,7 @@ export class NodeList {
       if (dayjs(currentNode.data.nextNode?.data.date).isAfter(node.data.date)) {
         node.data.nextNode = currentNode.data.nextNode;
         currentNode.data.nextNode = node;
-        
+
         // Update edges
         const newEdges: Edge[] = [];
         // console.log(this._edges);
@@ -76,7 +81,6 @@ export class NodeList {
             edge.source === currentNode.id &&
             edge.target === node.data.nextNode.id
           ) {
-   
             const updateEdge = edge;
 
             updateEdge.id = `${currentNode.data.nodeId}-${node.data.nodeId}`;
@@ -97,4 +101,6 @@ export class NodeList {
       currentNode = currentNode.data.nextNode;
     }
   }
+
+  updateNodePosition() {}
 }

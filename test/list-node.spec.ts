@@ -94,7 +94,6 @@ describe("ListNode start state", () => {
 
   // Test to add plenty of nodes and check if the edges are correct
   test("should be able to add multiple nodes to the list and update the edges", () => {
-   
     const node43 = createEndNodeExtend({
       id: "node-43",
       startDate: dayjs(new Date()).add(3, "day"),
@@ -113,4 +112,56 @@ describe("ListNode start state", () => {
     const edge2 = edges.find((e) => e.id === `${node44.id}-${endNode.id}`);
     expect(edge2).toBeDefined();
   });
+});
+
+describe("ListNode update node position", () => {
+  const startNode = createStartNodeExtend({
+    startDate: dayjs(new Date()),
+    updateNodePosition: () => {},
+  });
+  const endNode = createEndNodeExtend({
+    startDate: dayjs(new Date()).add(7, "day"),
+    updateNodePosition: () => {},
+  });
+  const startEdge: Edge = {
+    id: `${startNode.data.nodeId}-${endNode.data.nodeId}`,
+    source: startNode.data.nodeId,
+    target: endNode.data.nodeId,
+  };
+  const nodeList = new NodeList(startNode, endNode);
+  test("should have a method to updatePosition", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("updateNodePosition");
+  });
+
+  const NODE_Y_POSITIONS = [0, -250, 250];
+
+  test("Each node should have any of the Y positions", () => {
+    // const node = createEndNodeExtend({
+    //   id: "node-42",
+    //   startDate: dayjs(new Date()).add(3, "day"),
+    //   updateNodePosition: () => {},
+    // });
+    // nodeList.addNode(node);
+    const nodes = nodeList.traverse();
+    for (const node of nodes) {
+      console.log(node.position.y);
+      expect(NODE_Y_POSITIONS).toContain(node.position.y);
+    }
+  });
+
+  // test("should not be two consecutives nodes on the same Y axis plan", () => {
+  //   const node = createEndNodeExtend({
+  //     id: "node-42",
+  //     startDate: dayjs(new Date()).add(3, "day"),
+  //     updateNodePosition: () => {},
+  //   });
+  //   nodeList.addNode(node);
+  //   const nodes = nodeList.traverse();
+  //   let prevY = nodes[0].position.y;
+  //   for (let i = 1; i < nodes.length; i++) {
+  //     expect(nodes[i].position.y).not.toBe(prevY);
+  //     prevY = nodes[i].position.y;
+  //   }
+  // });
 });
