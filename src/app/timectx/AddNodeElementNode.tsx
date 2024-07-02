@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTimelineContext } from "./Context";
 import dayjs from "dayjs";
 import type { Node } from "reactflow";
+import { Button } from "@/components/ui/button";
 interface AddNodeFormProps {
   addNode: (node: Node) => void;
   updateNodePosition: (
@@ -51,7 +52,7 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 text-black">
+    <form onSubmit={handleSubmit} className="space-y-4 ">
       <h2 className="text-xl text-center font-bold">Add Node</h2>
       <div className="flex gap-4">
         <div>
@@ -79,7 +80,7 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
           />
         </div>
       </div>
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4">
         <div>
           <label htmlFor="body" className="block">
             Body:
@@ -91,11 +92,7 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
             className="border p-2 rounded w-full"
           />
         </div>
-        <div className="flex items-center">
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-            Add Node
-          </button>
-        </div>
+        <Button type="submit">Submit</Button>
       </div>
     </form>
   );
