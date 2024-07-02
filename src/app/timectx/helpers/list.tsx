@@ -2,6 +2,22 @@ import dayjs from "dayjs";
 import type { Edge, Node } from "reactflow";
 import { determineNodeYPosition } from "../../../../test/node-extend-helper";
 
+export interface NodeData {
+  label: string;
+  date: string;
+  name: string;
+  body: string;
+  slug: string;
+  nodeId: string;
+  dayOfTrip: number;
+  updateNodePosition: (
+    nodeId: string,
+    position: { x: number; y: number }
+  ) => void;
+  position: { x: number; y: number };
+  prevNode: NodeExtend | null;
+  nextNode: NodeExtend | null;
+}
 export interface NodeExtend extends Node {
   data: {
     label: string;
