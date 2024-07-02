@@ -67,3 +67,117 @@ export const NodeSchema = z.object({
 export const NodeExtendSchema = NodeSchema.extend({
   data: NodeDataSchema,
 });
+
+/* type EdgeLabelOptions = {
+    label?: string | ReactNode;
+    labelStyle?: CSSProperties;
+    labelShowBg?: boolean;
+    labelBgStyle?: CSSProperties;
+    labelBgPadding?: [number, number];
+    labelBgBorderRadius?: number;
+};
+type DefaultEdge<T = any> = {
+    id: string;
+    type?: string;
+    source: string;
+    target: string;
+    sourceHandle?: string | null;
+    targetHandle?: string | null;
+    style?: CSSProperties;
+    animated?: boolean;
+    hidden?: boolean;
+    deletable?: boolean;
+    data?: T;
+    className?: string;
+    sourceNode?: Node;
+    targetNode?: Node;
+    selected?: boolean;
+    markerStart?: EdgeMarkerType;
+    markerEnd?: EdgeMarkerType;
+    zIndex?: number;
+    ariaLabel?: string;
+    interactionWidth?: number;
+    focusable?: boolean;
+    /**
+     * @deprecated Use `reconnectable` instead
+     
+    updatable?: EdgeUpdatable;
+    reconnectable?: boolean | HandleType;
+} & EdgeLabelOptions;
+export type EdgeUpdatable = boolean | HandleType;
+export type SmoothStepPathOptions = {
+    offset?: number;
+    borderRadius?: number;
+};
+type SmoothStepEdgeType<T> = DefaultEdge<T> & {
+    type: 'smoothstep';
+    pathOptions?: SmoothStepPathOptions;
+};
+export type BezierPathOptions = {
+    curvature?: number;
+};
+type BezierEdgeType<T> = DefaultEdge<T> & {
+    type: 'default';
+    pathOptions?: BezierPathOptions;
+};
+export type Edge<T = any> = DefaultEdge<T> | SmoothStepEdgeType<T> | BezierEdgeType<T>; */
+
+export const EdgeLabelOptionsSchema = z.object({
+  label: z.union([z.string(), z.unknown()]).optional(),
+  labelStyle: z.record(z.string()).optional(),
+  labelShowBg: z.boolean().optional(),
+  labelBgStyle: z.record(z.string()).optional(),
+  labelBgPadding: z.tuple([z.number(), z.number()]).optional(),
+  labelBgBorderRadius: z.number().optional(),
+});
+
+export const DefaultEdgeSchema = z.object({
+  id: z.string(),
+  type: z.string().optional(),
+  source: z.string(),
+  target: z.string(),
+  sourceHandle: z.union([z.string(), z.null()]).optional(),
+  targetHandle: z.union([z.string(), z.null()]).optional(),
+  style: z.record(z.string()).optional(),
+  animated: z.boolean().optional(),
+  hidden: z.boolean().optional(),
+  deletable: z.boolean().optional(),
+  data: z.unknown().optional(),
+  className: z.string().optional(),
+  sourceNode: z.unknown().optional(),
+  targetNode: z.unknown().optional(),
+  selected: z.boolean().optional(),
+  markerStart: z.unknown().optional(),
+  markerEnd: z.unknown().optional(),
+  zIndex: z.number().optional(),
+  ariaLabel: z.string().optional(),
+  interactionWidth: z.number().optional(),
+  focusable: z.boolean().optional(),
+  updatable: z.union([z.boolean(), z.unknown()]).optional(),
+  reconnectable: z.union([z.boolean(), z.string()]).optional(),
+});
+
+export const SmoothStepPathOptionsSchema = z.object({
+  offset: z.number().optional(),
+  borderRadius: z.number().optional(),
+});
+
+export const SmoothStepEdgeTypeSchema = DefaultEdgeSchema.extend({
+  type: z.literal("smoothstep"),
+  pathOptions: SmoothStepPathOptionsSchema.optional(),
+});
+
+export const BezierPathOptionsSchema = z.object({
+  curvature: z.number().optional(),
+});
+
+export const BezierEdgeTypeSchema = DefaultEdgeSchema.extend({
+  type: z.literal("default"),
+  pathOptions: BezierPathOptionsSchema.optional(),
+});
+
+export const EdgeSchema = z.union([
+  DefaultEdgeSchema,
+  SmoothStepEdgeTypeSchema,
+  BezierEdgeTypeSchema,
+]);
