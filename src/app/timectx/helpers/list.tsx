@@ -116,7 +116,7 @@ export class NodeList {
   }
 
   updateNodeXPosition() {
-    const pixelRange = this.traverse().length > 5 ? 4000 : 2000;
+    const pixelRange = this.traverse().length > 5 ? 3000 : 1500;
     const nodes = this.traverse();
     const length = nodes.length;
     const pixelPerDay = pixelRange / length;
