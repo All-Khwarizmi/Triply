@@ -5,9 +5,8 @@ import { ReactFlowProvider } from "reactflow";
 
 function Page() {
   return (
-    <ReactFlowProvider>
       <App />
-    </ReactFlowProvider>
+   
   );
 }
 

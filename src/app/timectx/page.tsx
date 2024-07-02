@@ -1,6 +1,6 @@
 "use client";
 import type React from "react";
-import ReactFlow, { Background, Controls } from "reactflow";
+import ReactFlow, { Background, Controls, ReactFlowProvider } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
 import "reactflow/dist/style.css";

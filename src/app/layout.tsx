@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { TimelineProvider } from "./timectx/Context";
+import { ReactFlowProvider } from "reactflow";
+import ReactFlowProviderWrapper from "./ReactFlowProviderWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +34,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main>
-            <TimelineProvider>{children}</TimelineProvider>
+            <ReactFlowProviderWrapper>
+              <TimelineProvider>{children}</TimelineProvider>
+            </ReactFlowProviderWrapper>
           </main>
         </ThemeProvider>
       </body>
