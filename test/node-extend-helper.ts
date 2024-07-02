@@ -15,15 +15,15 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
       nodeId: "start-node",
       updateNodePosition: options.updateNodePosition,
       position: { x: 0, y: -125 },
+      prevNode: null,
+      nextNode: null,
     },
-    prevNode: null,
-    nextNode: null,
   };
 }
 
 export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
   return {
-    id: "end-node",
+    id: options.id ?? "end-node",
     type: "customNode",
     position: { x: 800, y: -125 },
     data: {
@@ -31,13 +31,13 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
       date: options.startDate.format("YYYY-MM-DD"),
       name: "End",
       body: "The end of the trip",
-      slug: "end-node",
-      nodeId: "end-node",
+      slug: options.id ?? "end-node",
+      nodeId: options.id ?? "end-node",
       updateNodePosition: options.updateNodePosition,
       position: { x: 800, y: -133 },
+      prevNode: null,
+      nextNode: null,
     },
-    prevNode: null,
-    nextNode: null,
   };
 }
 
