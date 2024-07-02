@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, use, useRef } from "react";
 import ReactFlow, {
   type Node,
   type Edge,
@@ -16,26 +16,32 @@ import { NodeList } from "../helpers/list";
 import dayjs from "dayjs";
 import { createStartNodeExtend } from "../../../../test/node-extend-helper";
 import { createEndNode } from "../helpers/create-node-helpers";
-
+const list = new NodeList(
+  createStartNodeExtend({
+    startDate: dayjs(new Date()),
+    updateNodePosition: () => {},
+  }),
+  createEndNode({
+    startDate: dayjs(new Date()).add(14, "day"),
+    updateNodePosition: () => {},
+  })
+);
 // Custom hook template
 const useHandleNodeHooks = () => {
-  const list = new NodeList(
-    createStartNodeExtend({
-      startDate: dayjs(new Date()),
-      updateNodePosition: () => {},
-    }),
-    createEndNode({
-      startDate: dayjs(new Date()).add(7, "day"),
-      updateNodePosition: () => {},
-    })
-  );
-  const [nodes, setNodes] = useState<NodeExtend[]>(list.traverse());
+  const listRef = useRef(list);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    listRef.current = list;
+  }, [list.traverse()]);
+  console.log(list);
+  const [nodes, setNodes] = useState<NodeExtend[]>(() => list.traverse());
   const [edges, setEdges] = useState<Edge[]>(list.edges);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
       setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
+    [list.traverse()]
   );
 
   const onEdgesChange = useCallback(
@@ -73,26 +79,13 @@ const useHandleNodeHooks = () => {
   }
   // Should take a new node and insert it into the nodes array. Should check the date of the node and insert it in the correct position. Also should update the edges array to reflect the new node. Also should take care of the position of the new node so that it is placed in the correct position regarding the other nodes.
   function addNode(node: Node) {
-    if (nodes.length < 2) {
-      throw new Error(
-        "The timeline should have at least two nodes to add a new node."
-      );
-    }
-    // Check the position of the last node before the new one (by date). We take the index for reference.
-    const lastNodeIndex = nodes.findIndex((n) => n.data.date > node.data.date);
-    // If the last node is the start node, we insert the new node after it.
-    if (lastNodeIndex === -1) {
-      throw new Error(
-        "The new node date is not set properly or there are not nodes in the timeline."
-      );
-    }
-    if (lastNodeIndex === 0) {
-      throw new Error(
-        "The new node date is not set properly or there are not nodes in the timeline."
-      );
-    }
+    list.addNode(node);
+    setNodes(list.traverse());
+    setEdges(list.edges);
+    console.log(list);
   }
   return {
+    addNode,
     nodes,
     setNodes,
     edges,
