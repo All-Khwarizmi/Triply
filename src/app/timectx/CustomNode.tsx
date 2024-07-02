@@ -28,30 +28,26 @@ const CustomNode = ({ data }: NodeProps) => {
       const height = rect.height;
       const newY = initialYRef.current;
 
-      data.updateNodePosition(data.nodeId, {
-        x: data.position.x,
-        y: newY,
-      });
+      // data.updateNodePosition(data.nodeId, {
+      //   x: data.position.x,
+      //   y: newY,
+      // });
 
       if (data.nodeId === "end-node") {
         console.log({
-          nodeId: data.nodeId,
-          newY,
-          height: rect.height,
-          bottom: rect.bottom,
-          top: rect.top,
+          nodeWidth: rect.width,
         });
       }
     }
   };
-  // // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  // useEffect(() => {
-  //   updatePosition();
-  // }, [isOpen]);
-  // // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  // useEffect(() => {
-  //   updatePosition();
-  // }, [data]);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    updatePosition();
+  }, [isOpen]);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    updatePosition();
+  }, [data]);
 
   return (
     <div
