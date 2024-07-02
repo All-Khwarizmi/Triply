@@ -3,13 +3,6 @@ import type React from "react";
 import { useEffect } from "react";
 import ReactFlow, {
   type Node,
-  type Edge,
-  type NodeChange,
-  type EdgeChange,
-  type Connection,
-  addEdge,
-  applyNodeChanges,
-  applyEdgeChanges,
   Background,
   Controls,
 } from "reactflow";
@@ -23,10 +16,9 @@ import { StageColumnNode } from "./StageColumn";
 import AddNodeForm from "./AddNodeElementNode";
 import useHandleNodeHooks from "./hooks/useHandleNodeHooks";
 import {
-  createBaseLineNode,
   createEndNode,
   createStartNode,
-} from "./constants/create-node-helpers";
+} from "./helpers/create-node-helpers";
 
 const nodeTypes = {
   customNode: CustomNode,
@@ -77,20 +69,30 @@ const App: React.FC = () => {
   return (
     <div className="container mx-auto h-screen">
       <h1 className="text-center text-2xl font-bold">Trip Timeline</h1>
-      <DateInput />
-      <AddNodeForm addNode={addNode} updateNodePosition={updateNodePosition} />
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        // onConnect={onConnect}
-        nodeTypes={nodeTypes}
-        fitView
+      <div
+        className="h-full w-full flex "
+        style={{
+          height: "calc(100vh - 4rem)",
+        }}
       >
-        <Background />
-        <Controls />
-      </ReactFlow>
+        <DateInput />
+        <AddNodeForm
+          addNode={addNode}
+          updateNodePosition={updateNodePosition}
+        />
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          // onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          fitView
+        >
+          <Background />
+          <Controls />
+        </ReactFlow>
+      </div>
     </div>
   );
 };
