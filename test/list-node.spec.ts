@@ -130,6 +130,11 @@ describe("ListNode update node position", () => {
     target: endNode.data.nodeId,
   };
   const nodeList = new NodeList(startNode, endNode);
+  test("should have a method to update node position", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("updateNodeYPosition");
+  });
+  
 
   test("Each node should have any of the Y positions", () => {
     const nodes = nodeList.traverse();
@@ -165,11 +170,7 @@ describe("ListNode update node position", () => {
   test("Each node should be spread on the X axis and be separated by at least 200px", () => {
     const nodes = nodeList.traverse();
     let prevX = nodes[0].position.x;
-    // console.log("length", nodes.length);
     for (let i = 1; i < nodes.length; i++) {
-      // console.log(`node id: ${nodes[i].id}`, nodes[i].position.x);
-      // console.log(nodes[i].position.x - prevX);
-      // console.log("prevX", prevX);
       expect(nodes[i].position.x - prevX).toBeGreaterThanOrEqual(200);
       prevX = nodes[i].position.x;
     }
@@ -180,12 +181,29 @@ describe("ListNode update node position", () => {
   });
   test("each node should have a day of the trip in ascendant order", () => {
     const nodes = nodeList.traverse();
-    console.log("nodes", nodes);
 
     let prevDate = nodes[0].data.dayOfTrip;
     for (let i = 1; i < nodes.length; i++) {
       expect(nodes[i].data.dayOfTrip).toBeGreaterThan(prevDate);
       prevDate = nodes[i].data.dayOfTrip;
     }
+  });
+});
+
+describe("Should be able to update the node metadata", () => {
+  const startNode = createStartNodeExtend({
+    startDate: dayjs(new Date()),
+    updateNodePosition: () => {},
+  });
+  const endNode = createEndNodeExtend({
+    startDate: dayjs(new Date()).add(7, "day"),
+    updateNodePosition: () => {},
+  });
+
+  const nodeList = new NodeList(startNode, endNode);
+
+  test("should have a method to update node metadata", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("updateNodeMetadata");
   });
 });

@@ -127,6 +127,23 @@ export class NodeList {
     this.assignDayOfTrip();
   }
 
+  updateNodeYPosition() {
+    let currentNode = this._startNode;
+    let prevY = currentNode.position.y;
+    while (currentNode.data.nextNode) {
+      currentNode.position.y = determineNodeYPosition(
+        prevY,
+        currentNode.data.nextNode.position.y
+      );
+      prevY = currentNode.position.y;
+      currentNode = currentNode.data.nextNode;
+    }
+    this._endNode.position.y = determineNodeYPosition(
+      prevY,
+      this._endNode.position.y
+    );
+  }
+
   updateNodeXPosition() {
     let pixelRange = 1000;
     const nodes = this.traverse();
@@ -163,4 +180,6 @@ export class NodeList {
     }
     this._endNode.data.dayOfTrip = ++day;
   }
+
+  updateNodeMetadata(nodeId: string, metadata: Partial<NodeData>) {}
 }
