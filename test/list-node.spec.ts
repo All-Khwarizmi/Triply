@@ -86,8 +86,31 @@ describe("ListNode start state", () => {
     expect(searchNode).toBeTruthy();
     const edges = nodeList.edges;
     const edge = edges.find((e) => e.id === `${startNode.id}-${node.id}`);
-    console.log(edge);
     expect(edge).toBeDefined();
-    
+
+    const edge2 = edges.find((e) => e.id === `${node.id}-${endNode.id}`);
+    expect(edge2).toBeDefined();
+  });
+
+  // Test to add plenty of nodes and check if the edges are correct
+  test("should be able to add multiple nodes to the list and update the edges", () => {
+   
+    const node43 = createEndNodeExtend({
+      id: "node-43",
+      startDate: dayjs(new Date()).add(3, "day"),
+      updateNodePosition: () => {},
+    });
+    nodeList.addNode(node43);
+    const node44 = createEndNodeExtend({
+      id: "node-44",
+      startDate: dayjs(new Date()).add(3, "day"),
+      updateNodePosition: () => {},
+    });
+    nodeList.addNode(node44);
+    const edges = nodeList.edges;
+    const edge = edges.find((e) => e.id === `${node43.id}-${node44.id}`);
+    expect(edge).toBeDefined();
+    const edge2 = edges.find((e) => e.id === `${node44.id}-${endNode.id}`);
+    expect(edge2).toBeDefined();
   });
 });
