@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import type { Edge, Node } from "reactflow";
+import { determineNodeYPosition } from "../../../../test/node-extend-helper";
 
 export interface NodeExtend extends Node {
   data: {
@@ -72,6 +73,15 @@ export class NodeList {
       if (dayjs(currentNode.data.nextNode?.data.date).isAfter(node.data.date)) {
         node.data.nextNode = currentNode.data.nextNode;
         currentNode.data.nextNode = node;
+
+        // update node position
+        const currentNodeYPossition = currentNode.position.y;
+        const afterNextNodeYPosition = node.data.nextNode.position.y;
+        const newYpos = determineNodeYPosition(
+          currentNodeYPossition,
+          afterNextNodeYPosition
+        );
+        node.position.y = newYpos;
 
         // Update edges
         const newEdges: Edge[] = [];

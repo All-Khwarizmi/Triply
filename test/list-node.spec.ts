@@ -2,6 +2,7 @@ import { expect, test, describe } from "vitest";
 import dayjs from "dayjs";
 import { NodeList } from "../src/app/timectx/helpers/list";
 import {
+  NODE_Y_POSITIONS,
   createEndNodeExtend,
   createStartNodeExtend,
   getObjectMethods,
@@ -134,17 +135,21 @@ describe("ListNode update node position", () => {
     expect(methods).toContain("updateNodePosition");
   });
 
-  const NODE_Y_POSITIONS = [0, -250, 250];
-
   test("Each node should have any of the Y positions", () => {
-    // const node = createEndNodeExtend({
-    //   id: "node-42",
-    //   startDate: dayjs(new Date()).add(3, "day"),
-    //   updateNodePosition: () => {},
-    // });
-    // nodeList.addNode(node);
     const nodes = nodeList.traverse();
     for (const node of nodes) {
+      console.log(node.position.y);
+      expect(NODE_Y_POSITIONS).toContain(node.position.y);
+    }
+    const node = createEndNodeExtend({
+      id: "node-42",
+      startDate: dayjs(new Date()).add(3, "day"),
+      updateNodePosition: () => {},
+    });
+    nodeList.addNode(node);
+    const nodesII = nodeList.traverse();
+
+    for (const node of nodesII) {
       console.log(node.position.y);
       expect(NODE_Y_POSITIONS).toContain(node.position.y);
     }
