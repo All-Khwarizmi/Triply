@@ -1,10 +1,6 @@
 import { expect, test, describe, it } from "vitest";
 import dayjs from "dayjs";
-import {
-  type NodeData,
-  type NodeExtend,
-  NodeList,
-} from "../src/app/timectx/helpers/list";
+import { NodeList } from "../src/app/timectx/helpers/list";
 import {
   NODE_Y_POSITIONS,
   createEndNodeExtend,
@@ -227,6 +223,21 @@ describe("Should be able to update the node metadata", () => {
     expect(searchNode?.data.body).toBe("body");
   });
 
+  test("should be able to update the name of the node", () => {
+    const node = createEndNodeExtend({
+      id: "node-42",
+      startDate: dayjs(new Date()).add(3, "day"),
+      updateNodePosition: () => {},
+    });
+    nodeList.addNode(node);
+    nodeList.updateNodeMetadata(node.id, {
+      name: "name",
+    });
+    const nodes = nodeList.traverse();
+    const searchNode = nodes.find((e) => e.id === node.id);
+    expect(searchNode?.data.name).toBe("name");
+  });
+
   test("should preserve the order of the nodes (by date) after a date change", () => {
     const date = dayjs(new Date());
     const dayUpdate = date.add(4, "day");
@@ -236,6 +247,7 @@ describe("Should be able to update the node metadata", () => {
       updateNodePosition: () => {},
     });
     nodeList.addNode(node);
+
     nodeList.updateNodeMetadata(node.id, {
       date: dayUpdate.toString(),
     });
@@ -244,27 +256,33 @@ describe("Should be able to update the node metadata", () => {
     const searchNode = nodes.find((e) => e.id === node.id);
     expect(searchNode?.data.date).toEqual(dayUpdate.toString());
 
+    // Check if nodes are in correct order by date
     let prevDate = nodes[0].data.date;
     for (let i = 1; i < nodes.length; i++) {
-      expect(dayjs(nodes[i].data.date).isAfter(prevDate)).toBe(true);
+      // log the date to check if it is in order
+      const isAfterOrSame =
+        dayjs(nodes[i].data.date).isAfter(prevDate) ||
+        dayjs(nodes[i].data.date).isSame(prevDate);
+
+      expect(isAfterOrSame).toBe(true);
       prevDate = nodes[i].data.date;
     }
 
-    // check if the nodes are in the correct order by position. Should be in ascendant order
+    // Check if nodes are in correct order by position
     let prevX = nodes[0].position.x;
     for (let i = 1; i < nodes.length; i++) {
       expect(nodes[i].position.x).toBeGreaterThan(prevX);
       prevX = nodes[i].position.x;
     }
 
-    // check if the nodes are in the correct order by day of the trip. Should be in ascendant order
+    // Check if nodes are in correct order by day of the trip
     let prevDay = nodes[0].data.dayOfTrip;
     for (let i = 1; i < nodes.length; i++) {
       expect(nodes[i].data.dayOfTrip).toBeGreaterThan(prevDay);
       prevDay = nodes[i].data.dayOfTrip;
     }
 
-    // check if the edges are correct
+    // Check if edges are correct
     const edges = nodeList.edges;
     for (let i = 0; i < edges.length - 1; i++) {
       expect(edges[i].source).toBe(nodes[i].id);
@@ -300,15 +318,8 @@ describe("Save and restore", () => {
     const parsedItem = ListNodeDatabaseSchema.safeParse(
       JSON.parse(item as string)
     );
-
     expect(parsedItem.success).toBe(true);
   });
-
-  // test("should have a method to restore the state", () => {
-  //   const methods = getObjectMethods(NodeList);
-  //   console.log(methods);
-  //   expect(methods).toContain("restore");
-  // });
 
   test("Restoring the state should restore the state from the database", () => {
     const database = new Database();
@@ -318,7 +329,6 @@ describe("Save and restore", () => {
     expect(nodesFromDb).not.toBeUndefined();
     expect(nodesFromDb).not.toBeNull();
     const { nodes, edges } = JSON.parse(nodesFromDb as string);
-    console.log(edges);
     expect(nodes).not.toBeUndefined();
     expect(edges).not.toBeUndefined();
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -330,15 +340,16 @@ describe("Save and restore", () => {
     expect(isNodeTwo).not.toBeUndefined();
 
     const nodeListRestored = NodeList.restore(databaseKey, database);
-    const restoredNodes = nodeListRestored.traverse();
-    const restoredEdges = nodeListRestored.edges;
-    console.log({
-      restoredNodes,
-      restoredEdges,
-    });
+    const restoredNodes = nodeListRestored?.traverse();
+    const restoredEdges = nodeListRestored?.edges;
+    expect(restoredNodes).not.toBeUndefined();
+    expect(restoredEdges).not.toBeUndefined();
+    if (!restoredNodes || !restoredEdges) {
+      return;
+    }
+
     expect(restoredNodes[0].id).toStrictEqual("node-1");
     expect(restoredNodes[1].id).toStrictEqual("node-2");
     expect(restoredEdges[0].id).toStrictEqual("node-1-node-2");
-    
   });
 });

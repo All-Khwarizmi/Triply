@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-import { isNode, type Edge, type Node } from "reactflow";
+import type { Edge, Node } from "reactflow";
 import { determineNodeYPosition } from "../../../../test/node-extend-helper";
 import type { SaveList } from "./data";
-import { isNodeExtend } from "../../../../test/schemas.spec";
+// import { isNodeExtend } from "../../../../test/schemas.spec";
 import { EdgeSchema, NodeExtendSchema } from "./schemas";
 
 export interface NodeData {
@@ -55,6 +55,7 @@ export class NodeList {
     });
 
     this.updateNodeXPosition();
+    this.assignDayOfTrip();
   }
 
   get nodes(): NodeExtend[] {
@@ -119,7 +120,7 @@ export class NodeList {
   }
 
   updateNodeXPosition() {
-    const pixelRange = this.traverse().length > 5 ? 3000 : 1500;
+    const pixelRange = this.traverse().length > 5 ? 3500 : 2000;
     const nodes = this.traverse();
     const length = nodes.length;
     const pixelPerDay = pixelRange / length;
@@ -145,7 +146,7 @@ export class NodeList {
       currentNode = currentNode.data.nextNode;
       day++;
     }
-    this._endNode.data.dayOfTrip = ++day;
+    this._endNode.data.dayOfTrip = day;
   }
 
   updateNodeMetadata(
@@ -154,36 +155,17 @@ export class NodeList {
       Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
     >
   ) {
-    let currentNode = this._startNode;
-    let nodeToUpdate: NodeExtend | null = null;
-
-    // Find the node to update and remove it from the list
-    while (currentNode.data.nextNode) {
+    let currentNode: NodeExtend | null = this._startNode;
+    while (currentNode) {
       if (currentNode.data.nodeId === nodeId) {
-        nodeToUpdate = currentNode;
-        if (nodeToUpdate.data.prevNode) {
-          nodeToUpdate.data.prevNode.data.nextNode = nodeToUpdate.data.nextNode;
-        }
-        if (nodeToUpdate.data.nextNode) {
-          nodeToUpdate.data.nextNode.data.prevNode = nodeToUpdate.data.prevNode;
-        }
-        if (nodeToUpdate === this._startNode && nodeToUpdate.data.nextNode) {
-          this._startNode = nodeToUpdate.data.nextNode;
+        currentNode.data = { ...currentNode.data, ...metadata };
+        if (metadata.date) {
+          this.orderNodesByDate();
         }
         break;
       }
       currentNode = currentNode.data.nextNode;
     }
-
-    // Update the node's metadata
-    if (nodeToUpdate) {
-      nodeToUpdate.data = { ...nodeToUpdate.data, ...metadata };
-      // Reinsert the node into the correct position
-      this.addNode(nodeToUpdate);
-    }
-
-    // Ensure nodes are ordered correctly
-    this.orderNodesByDate();
   }
 
   orderNodesByDate() {
@@ -259,7 +241,7 @@ export class NodeList {
     );
   }
 
-  static restore(key: string, db: SaveList): NodeList {
+  static restore(key: string, db: SaveList): NodeList  {
     const data = db.getItem(key);
     if (!data) {
       throw new Error("No data found");
@@ -309,7 +291,7 @@ export class NodeList {
     if (!isEdgesValid) {
       throw new Error("Invalid edge data");
     }
-    if (nodes.length > 2) {
+    if (nodes.length < 2) {
       throw new Error("Invalid node data");
     }
     // Check for the node with the min and max date to be the start and end node
@@ -325,7 +307,10 @@ export class NodeList {
       }
       return acc;
     });
-    if (!isNodeExtend(startNode) || !isNodeExtend(endNode)) {
+    if (
+      !NodeExtendSchema.safeParse(startNode).success ||
+      !NodeExtendSchema.safeParse(endNode).success
+    ) {
       throw new Error("Invalid start or end node");
     }
     const nodeList = new NodeList(startNode, endNode);
