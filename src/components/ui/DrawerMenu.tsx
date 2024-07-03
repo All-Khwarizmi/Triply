@@ -37,15 +37,12 @@ function DrawerMenu(props: {
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
             <DrawerTitle>
-              <div className="flex justify-between">
-                <h1>Menu</h1>
+              <div className="flex justify-center py-4">
                 <ModeToggle />
               </div>
             </DrawerTitle>
-            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
           </DrawerHeader>
-          <div className="flex h-full mt-8 flex-col gap-8 w-full justify-center items-center">
-            <DateInput />
+          <div className="flex h-full mt-4 flex-col gap-8 w-full justify-center items-center">
             <AddNodeForm
               addNode={props.addNode}
               updateNodePosition={() => {}}
