@@ -1,6 +1,6 @@
 import React from "react";
 import { useReactFlow, Panel } from "reactflow";
-function PanelMenu() {
+function PanelMenu(props: { saveList: () => void }) {
   const { zoomIn, zoomOut, setCenter, fitView } = useReactFlow();
   return (
     <Panel
@@ -13,6 +13,8 @@ function PanelMenu() {
       <button onClick={() => zoomOut({ duration: 800 })}>zoom out</button>
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <button onClick={() => fitView()}>center</button>
+      {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+      <button onClick={props.saveList}>save</button>
     </Panel>
   );
 }
