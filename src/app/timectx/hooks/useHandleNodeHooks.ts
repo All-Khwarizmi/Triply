@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   type Edge,
   type NodeChange,
@@ -13,24 +13,70 @@ import "reactflow/dist/style.css";
 import type { NodeData, NodeExtend } from "../helpers/list";
 import { NodeList } from "../helpers/list";
 import dayjs from "dayjs";
-import { createStartNodeExtend } from "../../../../test/node-extend-helper";
-import { createEndNode } from "../helpers/create-node-helpers";
+import {
+  createEndNodeExtend,
+  createStartNodeExtend,
+} from "../../../../test/node-extend-helper";
 import { useReactFlow } from "reactflow";
-const list = new NodeList(
-  createStartNodeExtend({
-    startDate: dayjs(new Date()),
-    updateNodePosition: () => {},
-  }),
-  createEndNode({
-    startDate: dayjs(new Date()).add(14, "day"),
-    updateNodePosition: () => {},
-  })
-);
+
+let list: NodeList;
+
 // Custom hook template
 const useHandleNodeHooks = () => {
   const { fitView } = useReactFlow();
-  const [nodes, setNodes] = useState<NodeExtend[]>(() => list.traverse());
-  const [edges, setEdges] = useState<Edge[]>(list.edges);
+  const [nodes, setNodes] = useState<NodeExtend[]>(() => list?.traverse());
+  const [edges, setEdges] = useState<Edge[]>(list?.edges);
+  function updateNodeMetadata(
+    nodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) {
+    console.log("Updating node metadata", { nodeId, metadata });
+    list.updateNodeMetadata(nodeId, metadata);
+
+    console.log(list.traverse());
+    setNodes(list.traverse());
+    setEdges(list.edges);
+  }
+
+  useEffect(() => {
+    let nodeListFromStorage: NodeList | null = null;
+    try {
+      nodeListFromStorage = NodeList.restore("triply", localStorage);
+    } catch (error) {
+      console.error("Error restoring from storage", error);
+    }
+    if (nodeListFromStorage) {
+      console.log("Restoring from storage");
+
+      console.log(nodeListFromStorage.traverse());
+      list = nodeListFromStorage;
+      // Reassign updateNodePosition and updateNodeMetadata functions
+      // biome-ignore lint/complexity/noForEach: <explanation>
+      list.traverse().forEach((node) => {
+        node.data.updateNodePosition = updateNodePosition;
+        node.data.updateNodeMetadata = updateNodeMetadata;
+      });
+      setNodes(list.traverse());
+      setEdges(list.edges);
+    } else {
+      list = new NodeList(
+        createStartNodeExtend({
+          startDate: dayjs(new Date()),
+          updateNodePosition: () => {},
+          updateNodeMetadata,
+        }),
+        createEndNodeExtend({
+          startDate: dayjs(new Date()).add(14, "day"),
+          updateNodePosition: () => {},
+          updateNodeMetadata,
+        })
+      );
+      setNodes(list.traverse());
+      setEdges(list.edges);
+    }
+  }, []);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
@@ -79,20 +125,12 @@ const useHandleNodeHooks = () => {
     fitView();
   }
 
-  function updateNodeMetadata(
-    nodeId: string,
-    metadata: Partial<
-      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
-    >
-  ) {
-    list.updateNodeMetadata(nodeId, metadata);
-
-    setNodes(list.traverse());
-    setEdges(list.edges);
-    console.log(list.traverse());
+  function saveList() {
+    list.save("triply", localStorage);
   }
 
   return {
+    saveList,
     updateNodeMetadata,
     addNode,
     nodes,
