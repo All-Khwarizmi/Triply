@@ -39,6 +39,11 @@ const CustomNode = ({ data }: NodeProps<NodeData>) => {
   const initialYRef = useRef<number>(data.position.y);
   const color = useMemo(() => getRandomColor(), []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (nodeRef.current) {
+    }
+  }, [isOpen, data]);
   const handleSave = () => {
     data.updateNodeMetadata(data.nodeId, {
       date,
@@ -120,7 +125,7 @@ const CustomNode = ({ data }: NodeProps<NodeData>) => {
                 />
               </div>
               <div className="mt-auto">
-                <Button onClick={handleSave} className="w-full">
+                <Button onClick={handleSave} type="button" className="w-full">
                   Save Changes
                 </Button>
               </div>
@@ -144,4 +149,4 @@ const CustomNode = ({ data }: NodeProps<NodeData>) => {
   );
 };
 
-export default memo(CustomNode);
+export default CustomNode;
