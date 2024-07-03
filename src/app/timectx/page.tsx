@@ -19,6 +19,7 @@ const nodeTypes = {
 
 const App: React.FC = () => {
   const {
+    saveList,
     nodes,
     addNode,
     edges,
@@ -43,7 +44,7 @@ const App: React.FC = () => {
           nodeTypes={nodeTypes}
           fitView
         >
-          <PanelMenu />
+          <PanelMenu saveList={saveList} />
           <Background />
           <Controls />
         </ReactFlow>
