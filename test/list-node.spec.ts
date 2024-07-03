@@ -274,11 +274,13 @@ describe("Should be able to update the node metadata", () => {
 });
 
 describe("Save and restore", () => {
-  const startNode = createStartNodeExtend({
+  const startNode = createEndNodeExtend({
+    id: "node-1",
     startDate: dayjs(new Date()),
     updateNodePosition: () => {},
   });
   const endNode = createEndNodeExtend({
+    id: "node-2",
     startDate: dayjs(new Date()).add(7, "day"),
     updateNodePosition: () => {},
   });
@@ -294,12 +296,49 @@ describe("Save and restore", () => {
     nodeList.save(databaseKey, database);
     const item = database.getItem(databaseKey);
     expect(item).not.to.toBeNull();
-    console.log(JSON.parse(item as string));
-    console.log(item);
+
     const parsedItem = ListNodeDatabaseSchema.safeParse(
       JSON.parse(item as string)
     );
-    console.log(parsedItem.error?.errors);
+
     expect(parsedItem.success).toBe(true);
+  });
+
+  // test("should have a method to restore the state", () => {
+  //   const methods = getObjectMethods(NodeList);
+  //   console.log(methods);
+  //   expect(methods).toContain("restore");
+  // });
+
+  test("Restoring the state should restore the state from the database", () => {
+    const database = new Database();
+    const databaseKey = "triply";
+    nodeList.save(databaseKey, database);
+    const nodesFromDb = database.getItem(databaseKey);
+    expect(nodesFromDb).not.toBeUndefined();
+    expect(nodesFromDb).not.toBeNull();
+    const { nodes, edges } = JSON.parse(nodesFromDb as string);
+    console.log(edges);
+    expect(nodes).not.toBeUndefined();
+    expect(edges).not.toBeUndefined();
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    const isNodeOne = nodes.find((e: any) => e.id === "node-1");
+    expect(isNodeOne).not.toBeUndefined();
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    const isNodeTwo = nodes.find((e: any) => e.id === "node-2");
+
+    expect(isNodeTwo).not.toBeUndefined();
+
+    const nodeListRestored = NodeList.restore(databaseKey, database);
+    const restoredNodes = nodeListRestored.traverse();
+    const restoredEdges = nodeListRestored.edges;
+    console.log({
+      restoredNodes,
+      restoredEdges,
+    });
+    expect(restoredNodes[0].id).toStrictEqual("node-1");
+    expect(restoredNodes[1].id).toStrictEqual("node-2");
+    expect(restoredEdges[0].id).toStrictEqual("node-1-node-2");
+    
   });
 });

@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
-import type { Edge, Node } from "reactflow";
+import { isNode, type Edge, type Node } from "reactflow";
 import { determineNodeYPosition } from "../../../../test/node-extend-helper";
 import type { SaveList } from "./data";
+import { isNodeExtend } from "../../../../test/schemas.spec";
+import { EdgeSchema, NodeExtendSchema } from "./schemas";
 
 export interface NodeData {
   label: string;
@@ -215,12 +217,125 @@ export class NodeList {
     this._edges = newEdges;
   }
 
+  resetNextPrevNodes(edges: Edge[]) {
+    //  we are restoring the nodes from a saved state and we had to remove the next and prev nodes to save the data (circular reference while stringifying the data), so we need to reassign the next and prev nodes. We do so thanks to the edges data.
+    let currentNode: NodeExtend | null = this._startNode;
+
+    do {
+      const edge = edges.find(
+        (edge) => edge.source === currentNode?.data.nodeId
+      );
+      if (edge) {
+        const nextNode = this.traverse().find(
+          (node) => node.data.nodeId === edge.target
+        );
+        if (nextNode && currentNode) {
+          currentNode.data.nextNode = nextNode;
+          nextNode.data.prevNode = currentNode;
+        }
+      }
+      if (currentNode) {
+        currentNode = currentNode.data.nextNode;
+      }
+    } while (currentNode?.data.nextNode);
+    this._endNode.data.prevNode = currentNode;
+
+    this.updateNodeYPosition();
+    this.updateNodeXPosition();
+
+    this.assignDayOfTrip();
+
+    this.updateEdges();
+  }
+
   save(key: string, db: SaveList) {
     const nodes = this.traverse();
     const edges = this.edges;
     const startNode = nodes[0];
     const endNode = nodes[1];
-    db.setItem(key, JSON.stringify({ nodes: removePrevNextNode(nodes), edges }));
+    db.setItem(
+      key,
+      JSON.stringify({ nodes: removePrevNextNode(nodes), edges })
+    );
+  }
+
+  static restore(key: string, db: SaveList): NodeList {
+    const data = db.getItem(key);
+    if (!data) {
+      throw new Error("No data found");
+    }
+    const { nodes, edges } = JSON.parse(data);
+    let isNodesValid = true;
+    const parsedNodes: NodeExtend[] = [];
+    for (const node of nodes) {
+      const validNode = NodeExtendSchema.safeParse(node);
+      if (!validNode.success) {
+        isNodesValid = false;
+        break;
+      }
+      parsedNodes.push({
+        id: validNode.data.id,
+        type: validNode.data.type,
+        position: validNode.data.position,
+
+        data: {
+          prevNode: null,
+          nextNode: null,
+          updateNodePosition: () => {},
+          updateNodeMetadata: () => {},
+          position: { x: 0, y: 0 },
+          body: validNode.data.data.body,
+          date: validNode.data.data.date,
+          label: validNode.data.data.label,
+          name: validNode.data.data.name,
+          slug: validNode.data.data.slug,
+          nodeId: validNode.data.data.nodeId,
+          dayOfTrip: validNode.data.data.dayOfTrip,
+        },
+      });
+    }
+    if (!isNodesValid) {
+      throw new Error("Invalid node data");
+    }
+    let isEdgesValid = true;
+    for (const edge of edges) {
+      const isEdgeValid = EdgeSchema.safeParse(edge);
+      if (!isEdgeValid.success) {
+        console.log(isEdgeValid.error.errors);
+        isEdgesValid = false;
+        break;
+      }
+    }
+    if (!isEdgesValid) {
+      throw new Error("Invalid edge data");
+    }
+    if (nodes.length > 2) {
+      throw new Error("Invalid node data");
+    }
+    // Check for the node with the min and max date to be the start and end node
+    const startNode = parsedNodes.reduce((acc, node) => {
+      if (dayjs(node.data.date).isBefore(dayjs(acc.data.date))) {
+        return node;
+      }
+      return acc;
+    });
+    const endNode = parsedNodes.reduce((acc, node) => {
+      if (dayjs(node.data.date).isAfter(dayjs(acc.data.date))) {
+        return node;
+      }
+      return acc;
+    });
+    if (!isNodeExtend(startNode) || !isNodeExtend(endNode)) {
+      throw new Error("Invalid start or end node");
+    }
+    const nodeList = new NodeList(startNode, endNode);
+    for (let i = 0; i < nodes.length; i++) {
+      if (!nodeList.traverse().find((node) => node.id === nodes[i].id)) {
+        nodeList.addNode(parsedNodes[i]);
+      }
+    }
+    nodeList.resetNextPrevNodes(edges);
+    return nodeList;
   }
 }
 
