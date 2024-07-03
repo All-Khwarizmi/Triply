@@ -53,7 +53,7 @@ export function getObjectMethods(obj: any): string[] {
   return Object.getOwnPropertyNames(Object.getPrototypeOf(obj));
 }
 
-export const NODE_Y_POSITIONS = [0, -250, 250];
+export const NODE_Y_POSITIONS = [0, -50, 50];
 
 export function determineNodeYPosition(yPosA: number, yPosB: number): number {
   const positions = [...NODE_Y_POSITIONS];

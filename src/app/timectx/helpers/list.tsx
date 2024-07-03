@@ -42,8 +42,8 @@ export class NodeList {
     this._startNode.position = { x: this._startNode.position.x, y: 0 };
     this._startNode.data.position = { x: this._startNode.position.x, y: 0 };
     this._endNode = endNode;
-    this._endNode.position = { x: this._endNode.position.x, y: -250 };
-    this._endNode.data.position = { x: this._endNode.position.x, y: -250 };
+    this._endNode.position = { x: this._endNode.position.x, y: -50 };
+    this._endNode.data.position = { x: this._endNode.position.x, y: -50 };
 
     this._startNode.data.nextNode = this._endNode;
     this._endNode.data.prevNode = this._startNode;
@@ -241,7 +241,7 @@ export class NodeList {
     );
   }
 
-  static restore(key: string, db: SaveList): NodeList  {
+  static restore(key: string, db: SaveList): NodeList {
     const data = db.getItem(key);
     if (!data) {
       throw new Error("No data found");
