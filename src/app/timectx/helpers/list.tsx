@@ -70,6 +70,7 @@ export class NodeList {
       id: `${this._startNode.data.nodeId}-${this._endNode.data.nodeId}`,
       target: this._endNode.data.nodeId,
       source: this._startNode.data.nodeId,
+      animated: true,
     });
 
     this.updateNodeXPosition();
@@ -212,6 +213,8 @@ export class NodeList {
         id: `${currentNode.data.nodeId}-${currentNode.data.nextNode.data.nodeId}`,
         source: currentNode.data.nodeId,
         target: currentNode.data.nextNode.data.nodeId,
+        animated: true,
+        
       });
       currentNode = currentNode.data.nextNode;
     }
