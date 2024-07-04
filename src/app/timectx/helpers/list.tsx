@@ -26,6 +26,10 @@ export interface NodeData {
   position: { x: number; y: number };
   prevNode: NodeExtend | null;
   nextNode: NodeExtend | null;
+  typeOfTrip: "trip" | "roadtrip";
+  isParent: boolean;
+  status?: "new" | "conditional" | "must-do" | "if-time";
+  children?: NodeExtend[];
 }
 export interface NodeExtend extends Node {
   data: NodeData;
@@ -273,6 +277,9 @@ export class NodeList {
           slug: validNode.data.data.slug,
           nodeId: validNode.data.data.nodeId,
           dayOfTrip: validNode.data.data.dayOfTrip,
+          typeOfTrip: validNode.data.data.typeOfTrip,
+          isParent: validNode.data.data.isParent,
+          status: validNode.data.data.status,
         },
       });
     }
