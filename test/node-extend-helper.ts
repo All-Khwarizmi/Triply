@@ -1,5 +1,7 @@
 import type { CreateNodeOptions } from "@/app/timectx/helpers/create-node-helpers";
 import type { NodeExtend } from "@/app/timectx/helpers/list";
+import { randomUUID } from "node:crypto";
+import dayjs from "dayjs";
 
 export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
   const updateNodeMetadata = options.updateNodeMetadata ?? (() => {});
@@ -21,6 +23,9 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
       nextNode: null,
       dayOfTrip: 1,
       updateNodeMetadata,
+      isParent: false,
+      typeOfTrip: "trip",
+      status: "new",
     },
   };
 }
@@ -44,6 +49,35 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
       nextNode: null,
       dayOfTrip: 2,
       updateNodeMetadata,
+      isParent: false,
+      typeOfTrip: "trip",
+      status: "new",
+    },
+  };
+}
+
+export function createNodeExtend(node: Partial<NodeExtend>): NodeExtend {
+  const id = node.id ?? randomUUID();
+  return {
+    id: node.id ?? randomUUID(),
+    type: "customNode",
+    position: { x: 0, y: 0 },
+    data: {
+      label: node.data?.label ?? "node",
+      date: node.data?.date ?? dayjs().format("YYYY-MM-DD"),
+      name: node.data?.name ?? `${id}-node`,
+      body: node.data?.body ?? "node body",
+      slug: node.data?.slug ?? "node slug",
+      nodeId: node.data?.nodeId ?? id,
+      updateNodePosition: node.data?.updateNodePosition ?? (() => {}),
+      position: node.data?.position ?? { x: 0, y: 0 },
+      prevNode: node.data?.prevNode ?? null,
+      nextNode: node.data?.nextNode ?? null,
+      dayOfTrip: node.data?.dayOfTrip ?? 1,
+      updateNodeMetadata: node.data?.updateNodeMetadata ?? (() => {}),
+      isParent: node.data?.isParent ?? false,
+      typeOfTrip: node.data?.typeOfTrip ?? "trip",
+      status: node.data?.status ?? "new",
     },
   };
 }
