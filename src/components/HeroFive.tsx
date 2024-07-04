@@ -1,27 +1,12 @@
 "use client";
-
-import * as z from "zod";
 import Image from "next/image";
-import Link from "next/link";
 import Balancer from "react-wrap-balancer";
-import { ArrowRight } from "lucide-react";
 
-// UI Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-// Custom Components
 import { Section, Container } from "./hero-five-props";
 
-// Assets
-
 import Header from "./ui/Header";
-
-const formSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-});
 
 export default function Hero() {
   return (
