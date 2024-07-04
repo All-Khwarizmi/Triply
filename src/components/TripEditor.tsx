@@ -1,5 +1,5 @@
 "use client";
-import type React from "react";
+import React, { type PropsWithRef } from "react";
 import ReactFlow, { Background, Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "@/app/timectx/CustomNode";
@@ -8,11 +8,14 @@ import { StageColumnNode } from "@/app/timectx/StageColumn";
 import useHandleNodeHooks from "@/app/timectx/hooks/useHandleNodeHooks";
 import type { Range } from "react-date-range";
 
+export interface TripEditorProps {
+  tripDates: Range;
+}
 const nodeTypes = {
   customNode: CustomNode,
   column: StageColumnNode,
 };
-function TripEditor(props: { tripDates: Range }) {
+function TripEditor(props: PropsWithRef<TripEditorProps>) {
   const {
     saveList,
     nodes,
