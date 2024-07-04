@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { expect, test, describe } from "vitest";
 import { createEndNodeExtend } from "./node-extend-helper";
 import { NodeExtendSchema } from "../src/app/timectx/helpers/schemas";
-import type { NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeExtend } from "../src/app/timectx/helpers/list";
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function isNodeExtend(node: any): node is NodeExtend {

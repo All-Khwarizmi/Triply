@@ -3,11 +3,11 @@ import type { Edge, Node } from "reactflow";
 import {
   createEndNodeExtend,
   determineNodeYPosition,
+  isNodeExtend,
 } from "../../../../test/node-extend-helper";
 import type { SaveList } from "./data";
 // import { isNodeExtend } from "../../../../test/schemas.spec";
 import { EdgeSchema, NodeExtendSchema } from "./schemas";
-import { isNodeExtend } from "../../../../test/schemas.spec";
 
 export interface NodeData {
   label: string;
