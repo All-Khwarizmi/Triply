@@ -21,7 +21,6 @@ import { useReactFlow } from "reactflow";
 import type { Range } from "react-date-range";
 let list: NodeList;
 
-// Custom hook template
 const useHandleNodeHooks = (options: { tripDates: Range }) => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes] = useState<NodeExtend[]>(() => list?.traverse());
@@ -40,6 +39,7 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
     setEdges(list.edges);
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     let nodeListFromStorage: NodeList | null = null;
     try {
@@ -76,7 +76,7 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
       setNodes(list.traverse());
       setEdges(list.edges);
     }
-  }, [options]);
+  }, []);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
