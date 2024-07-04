@@ -26,7 +26,9 @@ const App: React.FC = () => {
     onNodesChange,
     onEdgesChange,
     updateNodeMetadata,
-  } = useHandleNodeHooks();
+  } = useHandleNodeHooks({
+    tripDates: { startDate: new Date(), endDate: new Date() },
+  });
 
   return (
     <div className="container h-screen mx-auto space-y-8 flex flex-col py-8">
