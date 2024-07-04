@@ -14,6 +14,7 @@ import Header from "./ui/Header";
 import { ModeToggle } from "./ui/ModeToggle";
 import { useState } from "react";
 import dayjs from "dayjs";
+import TripEditor from "./TripEditor";
 
 export default function Hero() {
   const [startTrip, setStartTrip] = useState<boolean>(false);
@@ -22,6 +23,7 @@ export default function Hero() {
     endDate: dayjs().add(7, "days").toDate(),
     key: "selection",
   });
+  const [startTripping, setStartTripping] = useState<boolean>(false);
 
   function handleSubmission(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -62,7 +64,7 @@ export default function Hero() {
                 onChange={handleSelect}
               />
               <Button className="w-full" type="submit">
-                Submit
+                Start Tripping
               </Button>
             </form>
           ) : (
@@ -72,17 +74,23 @@ export default function Hero() {
               </Button>
             </Section>
           )}
-          <div className="my-8 h-96 w-full overflow-hidden rounded-lg border md:h-[480px] md:rounded-xl">
-            <Image
-              className="not-prose h-full w-full object-cover object-bottom"
-              src={"/hero.jpg"}
-              width={1920}
-              height={1080}
-              alt="hero image"
-              placeholder="blur"
-              blurDataURL="/hero.jpg"
-            />
-          </div>
+          {startTripping === true ? (
+            <TripEditor tripDates={tripDates} />
+          ) : (
+            <>
+              <div className="my-8 h-96 w-full overflow-hidden rounded-lg border md:h-[480px] md:rounded-xl">
+                <Image
+                  className="not-prose h-full w-full object-cover object-bottom"
+                  src={"/hero.jpg"}
+                  width={1920}
+                  height={1080}
+                  alt="hero image"
+                  placeholder="blur"
+                  blurDataURL="/hero.jpg"
+                />
+              </div>
+            </>
+          )}
         </div>
       </Container>
     </Section>
