@@ -18,11 +18,11 @@ import {
   createStartNodeExtend,
 } from "../../../../test/node-extend-helper";
 import { useReactFlow } from "reactflow";
-
+import type { Range } from "react-date-range";
 let list: NodeList;
 
 // Custom hook template
-const useHandleNodeHooks = () => {
+const useHandleNodeHooks = (options: { tripDates: Range }) => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes] = useState<NodeExtend[]>(() => list?.traverse());
   const [edges, setEdges] = useState<Edge[]>(list?.edges);
@@ -63,12 +63,12 @@ const useHandleNodeHooks = () => {
     } else {
       list = new NodeList(
         createStartNodeExtend({
-          startDate: dayjs(new Date()),
+          startDate: dayjs(options.tripDates.startDate),
           updateNodePosition: () => {},
           updateNodeMetadata,
         }),
         createEndNodeExtend({
-          startDate: dayjs(new Date()).add(14, "day"),
+          startDate: dayjs(options.tripDates.endDate),
           updateNodePosition: () => {},
           updateNodeMetadata,
         })
@@ -76,7 +76,7 @@ const useHandleNodeHooks = () => {
       setNodes(list.traverse());
       setEdges(list.edges);
     }
-  }, []);
+  }, [options]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
