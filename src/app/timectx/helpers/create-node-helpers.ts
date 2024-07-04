@@ -5,19 +5,21 @@ import type { NodeData } from "./list";
 export type CreateNodeOptions = {
   id?: string;
   startDate: Dayjs;
+  endDate?: Dayjs;
   updateNodeMetadata?: (
     nodeId: string,
     metadata: Partial<
       Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
     >
   ) => void;
-  updateNodePosition: (
+  updateNodePosition?: (
     nodeId: string,
     position: {
       x: number;
       y: number;
     }
   ) => void;
+  typeOfTrip?: "trip" | "roadtrip";
 };
 
 export function createStartNode(options: CreateNodeOptions): Node {
