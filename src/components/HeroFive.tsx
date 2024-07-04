@@ -7,10 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Section, Container } from "./hero-five-props";
 
 import Header from "./ui/Header";
+import { ModeToggle } from "./ui/ModeToggle";
 
 export default function Hero() {
   return (
     <Section>
+      <Container className="flex justify-end py-0">
+        <ModeToggle />
+      </Container>
       <Container>
         <div className="flex flex-col items-center text-center mb-6">
           <Header />
