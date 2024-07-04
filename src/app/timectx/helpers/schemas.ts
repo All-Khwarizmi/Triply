@@ -8,15 +8,14 @@ export const NodeDataSchema = z.object({
   slug: z.string(),
   nodeId: z.string(),
   typeOfTrip: z.union([z.literal("trip"), z.literal("roadtrip")]),
+  endDate: z.string().optional(),
   isParent: z.boolean(),
-  status: z
-    .union([
-      z.literal("new"),
-      z.literal("conditional"),
-      z.literal("must-do"),
-      z.literal("if-time"),
-    ])
-    .optional(),
+  status: z.union([
+    z.literal("new"),
+    z.literal("conditional"),
+    z.literal("must-do"),
+    z.literal("if-time"),
+  ]),
   dayOfTrip: z.number(),
   updateNodePosition: z
     .function(

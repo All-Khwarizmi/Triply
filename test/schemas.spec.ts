@@ -16,6 +16,9 @@ export function isNodeExtend(node: any): node is NodeExtend {
   if (node.data.prevNode && !isNodeExtend(node.data.prevNode)) {
     return false;
   }
+  if (node.data.typeOfTrip === "roadtrip" && !node.data.endDate) {
+    return false;
+  }
   return true;
 }
 
