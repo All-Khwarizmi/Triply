@@ -1,7 +1,7 @@
 import type { CreateNodeOptions } from "@/app/timectx/helpers/create-node-helpers";
 import type { NodeExtend } from "@/app/timectx/helpers/list";
 import { randomUUID } from "node:crypto";
-import dayjs from "dayjs";
+import type dayjs from "dayjs";
 
 export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
   const updateNodeMetadata = options.updateNodeMetadata ?? (() => {});
@@ -56,28 +56,28 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
   };
 }
 
-export function createNodeExtend(node: Partial<NodeExtend>): NodeExtend {
-  const id = node.id ?? randomUUID();
+export function createNodeExtend(node: dayjs.Dayjs): NodeExtend {
+  const id = randomUUID();
   return {
-    id: node.id ?? randomUUID(),
+    id,
     type: "customNode",
     position: { x: 0, y: 0 },
     data: {
-      label: node.data?.label ?? "node",
-      date: node.data?.date ?? dayjs().format("YYYY-MM-DD"),
-      name: node.data?.name ?? `${id}-node`,
-      body: node.data?.body ?? "node body",
-      slug: node.data?.slug ?? "node slug",
-      nodeId: node.data?.nodeId ?? id,
-      updateNodePosition: node.data?.updateNodePosition ?? (() => {}),
-      position: node.data?.position ?? { x: 0, y: 0 },
-      prevNode: node.data?.prevNode ?? null,
-      nextNode: node.data?.nextNode ?? null,
-      dayOfTrip: node.data?.dayOfTrip ?? 1,
-      updateNodeMetadata: node.data?.updateNodeMetadata ?? (() => {}),
-      isParent: node.data?.isParent ?? false,
-      typeOfTrip: node.data?.typeOfTrip ?? "trip",
-      status: node.data?.status ?? "new",
+      label: node.format("YYYY-MM-DD"),
+      date: node.format("YYYY-MM-DD"),
+      name: "default",
+      body: "Node",
+      slug: "node",
+      nodeId: id,
+      updateNodePosition: () => {},
+      position: { x: 0, y: 0 },
+      prevNode: null,
+      nextNode: null,
+      dayOfTrip: 1,
+      updateNodeMetadata: () => {},
+      isParent: false,
+      typeOfTrip: "trip",
+      status: "new",
     },
   };
 }
@@ -119,4 +119,77 @@ function nodeAxisPositionValidation(
   allowedPositions: number[]
 ): boolean {
   return allowedPositions.includes(axisPos);
+}
+
+function getRandomElement(arr: string[]) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateRandomNodeName() {
+  const adjectives = [
+    "Beautiful",
+    "Cozy",
+    "Luxurious",
+    "Scenic",
+    "Hidden",
+    "Charming",
+    "Peaceful",
+    "Rustic",
+    "Enchanting",
+    "Historic",
+  ];
+
+  const nouns = [
+    "Departure",
+    "Airport",
+    "Flight",
+    "Hotel",
+    "Inn",
+    "Cabin",
+    "Lodge",
+    "Retreat",
+    "Resort",
+    "Villa",
+    "Bungalow",
+    "Cottage",
+    "Chalet",
+    "Sightseeing",
+    "Tour",
+    "Beach",
+    "Hike",
+    "Museum",
+    "Park",
+    "Dinner",
+    "Shopping",
+    "Concert",
+    "Festival",
+    "Event",
+    "Spa",
+    "Relaxation",
+    "Adventure",
+    "Exploration",
+    "Excursion",
+    "Return",
+    "Arrival",
+    "Homecoming",
+  ];
+
+  const complements = [
+    "in the Woods",
+    "by the Sea",
+    "on the Mountain",
+    "in the Valley",
+    "by the Lake",
+    "in the Meadow",
+    "on the River",
+    "near the Waterfall",
+    "in the Forest",
+    "at the Beach",
+  ];
+
+  const adjective = getRandomElement(adjectives);
+  const noun = getRandomElement(nouns);
+  const complement = getRandomElement(complements);
+
+  return `${adjective} ${noun} ${complement}`;
 }
