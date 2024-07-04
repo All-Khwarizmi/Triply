@@ -7,6 +7,16 @@ export const NodeDataSchema = z.object({
   body: z.string(),
   slug: z.string(),
   nodeId: z.string(),
+  typeOfTrip: z.union([z.literal("trip"), z.literal("roadtrip")]),
+  isParent: z.boolean(),
+  status: z
+    .union([
+      z.literal("new"),
+      z.literal("conditional"),
+      z.literal("must-do"),
+      z.literal("if-time"),
+    ])
+    .optional(),
   dayOfTrip: z.number(),
   updateNodePosition: z
     .function(
