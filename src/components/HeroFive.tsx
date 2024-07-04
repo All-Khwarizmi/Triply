@@ -16,7 +16,22 @@ import { ModeToggle } from "./ui/ModeToggle";
 import { useState } from "react";
 import dayjs from "dayjs";
 import TripEditor from "./TripEditor";
+import { Transition } from "react-transition-group";
+import { useRef } from "react";
 
+const duration = 300;
+
+const defaultStyle = {
+  transition: `opacity ${duration}ms ease-in-out`,
+  opacity: 0,
+};
+
+const transitionStyles = {
+  entering: { opacity: 1 },
+  entered: { opacity: 1 },
+  exiting: { opacity: 0 },
+  exited: { opacity: 0 },
+};
 export default function Hero() {
   const [startTrip, setStartTrip] = useState<boolean>(false);
   const [tripDates, setTripDates] = useState<Range>({
@@ -54,13 +69,13 @@ export default function Hero() {
               Start your adventure by choosing your trip dates.
             </Balancer>
           </h3>
-          {startTrip ? (
+          {startTrip && !startTripping ? (
             <form
               onSubmit={handleSubmission}
-              className="space-y-2 text-left py-4 flex justify-center flex-col gap-4"
+              className="space-y-2 text-left py-4 flex justify-center flex-col gap-4 animate-fade-in"
             >
               <DateRangePicker
-                className="text-black !bg-slate-700"
+                className="text-black !bg-slate-700 animate-in transition-transform"
                 ranges={[tripDates]}
                 onChange={handleSelect}
               />
@@ -69,7 +84,7 @@ export default function Hero() {
               </Button>
             </form>
           ) : (
-            <Section>
+            <Section className="animate-fade-out">
               <Button className="" onClick={() => setStartTrip(true)}>
                 Start Tripping
               </Button>
