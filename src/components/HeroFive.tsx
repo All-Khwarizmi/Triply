@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Section, Container } from "./hero-five-props";
+import "reactflow/dist/style.css";
 
 import Header from "./ui/Header";
 import { ModeToggle } from "./ui/ModeToggle";
@@ -27,7 +28,7 @@ export default function Hero() {
 
   function handleSubmission(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStartTrip(true);
+    setStartTripping(true);
   }
 
   const handleSelect = (ranges: RangeKeyDict) => {
@@ -36,7 +37,7 @@ export default function Hero() {
   };
 
   return (
-    <Section>
+    <Section className="h-screen">
       <Container className="flex justify-end py-0">
         <ModeToggle />
       </Container>
