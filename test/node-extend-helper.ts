@@ -5,6 +5,7 @@ import type dayjs from "dayjs";
 
 export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
   const updateNodeMetadata = options.updateNodeMetadata ?? (() => {});
+  const updateNodePosition = options.updateNodePosition ?? (() => {});
 
   return {
     id: "start-node",
@@ -17,7 +18,7 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
       body: "The start of the trip",
       slug: "start-node",
       nodeId: "start-node",
-      updateNodePosition: options.updateNodePosition,
+      updateNodePosition,
       position: { x: 0, y: -125 },
       prevNode: null,
       nextNode: null,
@@ -32,6 +33,7 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
 
 export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
   const updateNodeMetadata = options.updateNodeMetadata ?? (() => {});
+  const updateNodePosition = options.updateNodePosition ?? (() => {});
   return {
     id: options.id ?? "end-node",
     type: "customNode",
@@ -43,14 +45,15 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
       body: "The end of the trip",
       slug: options.id ?? "end-node",
       nodeId: options.id ?? "end-node",
-      updateNodePosition: options.updateNodePosition,
+      updateNodePosition,
       position: { x: 2000, y: -133 },
       prevNode: null,
       nextNode: null,
       dayOfTrip: 2,
       updateNodeMetadata,
       isParent: false,
-      typeOfTrip: "trip",
+      typeOfTrip: options.typeOfTrip ?? "trip",
+      endDate: options.endDate?.format("YYYY-MM-DD"),
       status: "new",
     },
   };
