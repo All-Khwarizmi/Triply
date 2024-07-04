@@ -3,9 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { TimelineProvider } from "./timectx/Context";
-import { ReactFlowProvider } from "reactflow";
 import ReactFlowProviderWrapper from "./ReactFlowProviderWrapper";
-
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
