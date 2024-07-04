@@ -1,6 +1,6 @@
 import type { CreateNodeOptions } from "@/app/timectx/helpers/create-node-helpers";
-import type { NodeExtend } from "@/app/timectx/helpers/list";
-import { randomUUID } from "node:crypto";
+import type { NodeExtend } from "../src/app/timectx/helpers/list";
+import { NodeExtendSchema } from "../src/app/timectx/helpers/schemas";
 import type dayjs from "dayjs";
 
 export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
@@ -60,7 +60,7 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
 }
 
 export function createNodeExtend(node: dayjs.Dayjs): NodeExtend {
-  const id = randomUUID();
+  const id = crypto.randomUUID();
   return {
     id,
     type: "customNode",
@@ -195,4 +195,22 @@ function generateRandomNodeName() {
   const complement = getRandomElement(complements);
 
   return `${adjective} ${noun} ${complement}`;
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export function isNodeExtend(node: any): node is NodeExtend {
+  const isValid = NodeExtendSchema.safeParse(node);
+  if (!isValid.success) {
+    return false;
+  }
+  if (node.data.nextNode && !isNodeExtend(node.data.nextNode)) {
+    return false;
+  }
+  if (node.data.prevNode && !isNodeExtend(node.data.prevNode)) {
+    return false;
+  }
+  if (node.data.typeOfTrip === "roadtrip" && !node.data.endDate) {
+    return false;
+  }
+  return true;
 }
