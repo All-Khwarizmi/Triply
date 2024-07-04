@@ -1,9 +1,13 @@
 import dayjs from "dayjs";
 import type { Edge, Node } from "reactflow";
-import { determineNodeYPosition } from "../../../../test/node-extend-helper";
+import {
+  createEndNodeExtend,
+  determineNodeYPosition,
+} from "../../../../test/node-extend-helper";
 import type { SaveList } from "./data";
 // import { isNodeExtend } from "../../../../test/schemas.spec";
 import { EdgeSchema, NodeExtendSchema } from "./schemas";
+import { isNodeExtend } from "../../../../test/schemas.spec";
 
 export interface NodeData {
   label: string;
@@ -27,6 +31,7 @@ export interface NodeData {
   prevNode: NodeExtend | null;
   nextNode: NodeExtend | null;
   typeOfTrip: "trip" | "roadtrip";
+  endDate?: string;
   isParent: boolean;
   status?: "new" | "conditional" | "must-do" | "if-time";
   children?: NodeExtend[];
@@ -40,18 +45,27 @@ export class NodeList {
   private readonly _endNode: NodeExtend;
   private _edges: Edge[] = [];
 
-  constructor(startNode: NodeExtend, endNode: NodeExtend) {
+  constructor(startNode: NodeExtend, endNode?: NodeExtend) {
     this._startNode = startNode;
 
     this._startNode.position = { x: this._startNode.position.x, y: 0 };
     this._startNode.data.position = { x: this._startNode.position.x, y: 0 };
-    this._endNode = endNode;
+
+    if (!endNode) {
+      this._endNode = createEndNodeExtend({
+        startDate: dayjs(this._startNode.data.date).add(7, "day"),
+        updateNodeMetadata: () => {},
+        updateNodePosition: () => {},
+      });
+    } else {
+      this._endNode = endNode;
+    }
+
     this._endNode.position = { x: this._endNode.position.x, y: -50 };
     this._endNode.data.position = { x: this._endNode.position.x, y: -50 };
 
     this._startNode.data.nextNode = this._endNode;
     this._endNode.data.prevNode = this._startNode;
-
     this._edges.push({
       id: `${this._startNode.data.nodeId}-${this._endNode.data.nodeId}`,
       target: this._endNode.data.nodeId,
@@ -83,6 +97,7 @@ export class NodeList {
   }
 
   addNode(node: NodeExtend): void {
+    if (!isNodeExtend(node)) throw new Error("Invalid node data");
     let currentNode = this._startNode;
     while (currentNode.data.nextNode) {
       if (dayjs(currentNode.data.nextNode?.data.date).isAfter(node.data.date)) {
@@ -328,6 +343,92 @@ export class NodeList {
     }
     nodeList.resetNextPrevNodes(edges);
     return nodeList;
+  }
+
+  addChildNode(parentNodeId: string, node: NodeExtend) {
+    if (node.data.typeOfTrip === "roadtrip") {
+      throw new Error("Roadtrip node should have an end date");
+    }
+
+    let currentNode = this._startNode;
+    while (currentNode.data.nextNode) {
+      if (currentNode.data.nodeId === parentNodeId) {
+        console.log(
+          "parent start date",
+          currentNode.data.date,
+          "parent end date",
+          currentNode.data.endDate,
+          "child date",
+          node.data.date
+        );
+        if (
+          !(
+            dayjs(node.data.date).isAfter(dayjs(currentNode.data.date)) ||
+            dayjs(node.data.date).isSame(dayjs(currentNode.data.date))
+          ) ||
+          !(
+            dayjs(node.data.date).isBefore(dayjs(currentNode.data.endDate)) ||
+            dayjs(node.data.date).isSame(dayjs(currentNode.data.endDate))
+          )
+        ) {
+          throw new Error(
+            "Child node should be within the parent node date range"
+          );
+        }
+        if (currentNode.data.children) {
+          currentNode.data.children.push(node);
+        } else {
+          currentNode.data.children = [node];
+        }
+
+        currentNode.data.isParent = true;
+
+        break;
+      }
+      currentNode = currentNode.data.nextNode;
+    }
+  }
+
+  removeChildNode(parentNodeId: string, childNodeId: string) {
+    let currentNode = this._startNode;
+    while (currentNode.data.nextNode) {
+      if (currentNode.data.nodeId === parentNodeId) {
+        if (currentNode.data.children) {
+          currentNode.data.children = currentNode.data.children.filter(
+            (child) => child.data.nodeId !== childNodeId
+          );
+          if (currentNode.data.children.length === 0) {
+            currentNode.data.isParent = false;
+          }
+        }
+        break;
+      }
+      currentNode = currentNode.data.nextNode;
+    }
+  }
+
+  updateChildNode(
+    parentNodeId: string,
+    childNodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) {
+    let currentNode = this._startNode;
+    while (currentNode.data.nextNode) {
+      if (currentNode.data.nodeId === parentNodeId) {
+        if (currentNode.data.children) {
+          const childNode = currentNode.data.children.find(
+            (child) => child.data.nodeId === childNodeId
+          );
+          if (childNode) {
+            childNode.data = { ...childNode.data, ...metadata };
+          }
+        }
+        break;
+      }
+      currentNode = currentNode.data.nextNode;
+    }
   }
 }
 

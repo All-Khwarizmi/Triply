@@ -14,11 +14,9 @@ import { ListNodeDatabaseSchema } from "../src/app/timectx/helpers/schemas";
 describe("ListNode start state", () => {
   const startNode = createStartNodeExtend({
     startDate: dayjs(new Date()),
-    updateNodePosition: () => {},
   });
   const endNode = createEndNodeExtend({
     startDate: dayjs(new Date()).add(7, "day"),
-    updateNodePosition: () => {},
   });
   const startEdge: Edge = {
     id: `${startNode.data.nodeId}-${endNode.data.nodeId}`,
@@ -80,7 +78,6 @@ describe("ListNode start state", () => {
     const node = createEndNodeExtend({
       id: "node-42",
       startDate: dayjs(new Date()).add(3, "day"),
-      updateNodePosition: () => {},
     });
     nodeList.addNode(node);
     const searchNode = nodeList.traverse().find((e) => {
@@ -100,13 +97,11 @@ describe("ListNode start state", () => {
     const node43 = createEndNodeExtend({
       id: "node-43",
       startDate: dayjs(new Date()).add(3, "day"),
-      updateNodePosition: () => {},
     });
     nodeList.addNode(node43);
     const node44 = createEndNodeExtend({
       id: "node-44",
       startDate: dayjs(new Date()).add(3, "day"),
-      updateNodePosition: () => {},
     });
     nodeList.addNode(node44);
     const edges = nodeList.edges;
@@ -120,11 +115,9 @@ describe("ListNode start state", () => {
 describe("ListNode update node position", () => {
   const startNode = createStartNodeExtend({
     startDate: dayjs(new Date()),
-    updateNodePosition: () => {},
   });
   const endNode = createEndNodeExtend({
     startDate: dayjs(new Date()).add(7, "day"),
-    updateNodePosition: () => {},
   });
   const startEdge: Edge = {
     id: `${startNode.data.nodeId}-${endNode.data.nodeId}`,
@@ -145,7 +138,6 @@ describe("ListNode update node position", () => {
     const node = createEndNodeExtend({
       id: "node-42",
       startDate: dayjs(new Date()).add(3, "day"),
-      updateNodePosition: () => {},
     });
     nodeList.addNode(node);
     const nodesII = nodeList.traverse();
@@ -194,11 +186,9 @@ describe("ListNode update node position", () => {
 describe("Should be able to update the node metadata", () => {
   const startNode = createStartNodeExtend({
     startDate: dayjs(new Date()),
-    updateNodePosition: () => {},
   });
   const endNode = createEndNodeExtend({
     startDate: dayjs(new Date()).add(7, "day"),
-    updateNodePosition: () => {},
   });
 
   const nodeList = new NodeList(startNode, endNode);
@@ -212,7 +202,6 @@ describe("Should be able to update the node metadata", () => {
     const node = createEndNodeExtend({
       id: "node-42",
       startDate: dayjs(new Date()).add(3, "day"),
-      updateNodePosition: () => {},
     });
     nodeList.addNode(node);
     nodeList.updateNodeMetadata(node.id, {
@@ -227,7 +216,6 @@ describe("Should be able to update the node metadata", () => {
     const node = createEndNodeExtend({
       id: "node-42",
       startDate: dayjs(new Date()).add(3, "day"),
-      updateNodePosition: () => {},
     });
     nodeList.addNode(node);
     nodeList.updateNodeMetadata(node.id, {
@@ -244,7 +232,6 @@ describe("Should be able to update the node metadata", () => {
     const node = createEndNodeExtend({
       id: "node-50",
       startDate: date,
-      updateNodePosition: () => {},
     });
     nodeList.addNode(node);
 
@@ -295,12 +282,10 @@ describe("Save and restore", () => {
   const startNode = createEndNodeExtend({
     id: "node-1",
     startDate: dayjs(new Date()),
-    updateNodePosition: () => {},
   });
   const endNode = createEndNodeExtend({
     id: "node-2",
     startDate: dayjs(new Date()).add(7, "day"),
-    updateNodePosition: () => {},
   });
   const nodeList = new NodeList(startNode, endNode);
   test("should have a method to save the state", () => {
@@ -351,5 +336,272 @@ describe("Save and restore", () => {
     expect(restoredNodes[0].id).toStrictEqual("node-1");
     expect(restoredNodes[1].id).toStrictEqual("node-2");
     expect(restoredEdges[0].id).toStrictEqual("node-1-node-2");
+  });
+});
+
+describe("Roadtrip type of custom node workflow", () => {
+  const startNode = createStartNodeExtend({
+    startDate: dayjs(new Date()),
+  });
+  const nodeList = new NodeList(startNode);
+
+  test("the newly created node should be of type trip, parent flag should be false and not contain any children", () => {
+    const tripNode = createEndNodeExtend({
+      id: "node-1",
+      startDate: dayjs(new Date()).add(3, "day"),
+    });
+    nodeList.addNode(tripNode);
+    const nodes = nodeList.traverse();
+    const tripNodeFound = nodes.find((e) => e.id === tripNode.id);
+    expect(tripNodeFound).toBeDefined();
+    expect(tripNodeFound?.data.typeOfTrip).toBe("trip");
+    expect(tripNodeFound?.data.isParent).toBe(false);
+    expect(tripNodeFound?.data.children).toBeUndefined();
+  });
+
+  test("If adding a roadtrip the type should match, and have and endDate. should throw otherwise", () => {
+    const roadTripNode = createEndNodeExtend({
+      typeOfTrip: "roadtrip",
+      endDate: dayjs(new Date()).add(7, "day"),
+      id: "node-2",
+      startDate: dayjs(new Date()).add(3, "day"),
+    });
+    nodeList.addNode(roadTripNode);
+    const nodes = nodeList.traverse();
+    const roadTripNodeFound = nodes.find((e) => e.id === roadTripNode.id);
+    expect(roadTripNodeFound).toBeDefined();
+    expect(roadTripNodeFound?.data.typeOfTrip).toBe("roadtrip");
+    expect(roadTripNodeFound?.data.endDate).toBeDefined();
+
+    const roadTripNodeII = createEndNodeExtend({
+      typeOfTrip: "roadtrip",
+      id: "node-3",
+      startDate: dayjs(new Date()).add(3, "day"),
+    });
+    console.log(roadTripNodeII);
+    expect(() => {
+      nodeList.addNode(roadTripNodeII);
+    }).toThrow();
+  });
+
+  test("should have a method to add children to a trip node", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("addChildNode");
+  });
+  test("If isParent flag is true, children should be defined and contain children", () => {
+    const roadTripNode = createEndNodeExtend({
+      typeOfTrip: "roadtrip",
+      id: "node-2",
+      startDate: dayjs(new Date()).add(3, "day"),
+      endDate: dayjs(new Date()).add(14, "day"),
+    });
+    nodeList.addNode(roadTripNode);
+    const nodes = nodeList.traverse();
+    const roadTripNodeFound = nodes.find((e) => e.id === roadTripNode.id);
+    expect(roadTripNodeFound).toBeDefined();
+    expect(roadTripNodeFound?.data.isParent).toBe(false);
+    expect(roadTripNodeFound?.data.children).not.toBeDefined();
+
+    const childNode = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-3-first-child",
+      startDate: dayjs(new Date()).add(4, "day"),
+    });
+
+    nodeList.addChildNode(roadTripNode.id, childNode);
+    const nodesII = nodeList.traverse();
+    const roadTripNodeFoundII = nodesII.find((e) => e.id === roadTripNode.id);
+    expect(roadTripNodeFoundII).toBeDefined();
+    expect(roadTripNodeFoundII?.data.isParent).toBe(true);
+
+    expect(roadTripNodeFoundII?.data.children).toBeDefined();
+    expect(roadTripNodeFoundII?.data.children).toContain(childNode);
+  });
+
+  test("should throw if you try to add child node that is of type of roadtrip ", () => {
+    const childNode = createEndNodeExtend({
+      typeOfTrip: "roadtrip",
+      id: "node-4-second-child-bad",
+      startDate: dayjs(new Date()).add(3, "day"),
+    });
+
+    expect(() => {
+      nodeList.addChildNode("node-1", childNode);
+    }).toThrow();
+  });
+
+  test("should throw if you try to add a child node which date is not comprise in between the start and  end parent dates", () => {
+    const roadTripNode = createEndNodeExtend({
+      typeOfTrip: "roadtrip",
+      id: "node-5-bad-child",
+      startDate: dayjs(new Date()).add(3, "day"),
+      endDate: dayjs(new Date()).add(7, "day"),
+    });
+    nodeList.addNode(roadTripNode);
+    const childNode = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-6",
+      startDate: dayjs(new Date()).add(7, "day"),
+    });
+
+    expect(() => {
+      nodeList.addChildNode("node-5-bad-child", childNode);
+    }).not.toThrow();
+  });
+
+  // Children should be ordered by date
+  test("should have children ordered by date", () => {
+    const roadTripNode = createEndNodeExtend({
+      typeOfTrip: "roadtrip",
+      id: "node-7",
+      startDate: dayjs(new Date()).add(3, "day"),
+      endDate: dayjs(new Date()).add(7, "day"),
+    });
+    nodeList.addNode(roadTripNode);
+    const childNode = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-8",
+      startDate: dayjs(new Date()).add(4, "day"),
+    });
+
+    const childNodeII = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-9",
+      startDate: dayjs(new Date()).add(5, "day"),
+    });
+
+    const childNodeIII = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-10",
+      startDate: dayjs(new Date()).add(6, "day"),
+    });
+
+    nodeList.addChildNode("node-7", childNode);
+    nodeList.addChildNode("node-7", childNodeII);
+    nodeList.addChildNode("node-7", childNodeIII);
+
+    const nodes = nodeList.traverse();
+    const roadTripNodeFound = nodes.find((e) => e.id === "node-7");
+    expect(roadTripNodeFound).toBeDefined();
+    expect(roadTripNodeFound?.data.isParent).toBe(true);
+    expect(roadTripNodeFound?.data.children).toBeDefined();
+    expect(roadTripNodeFound?.data.children?.[0].id).toBe("node-8");
+    expect(roadTripNodeFound?.data.children?.[1].id).toBe("node-9");
+    expect(roadTripNodeFound?.data.children?.[2].id).toBe("node-10");
+  });
+
+  test("should have a method to remove children", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("removeChildNode");
+  });
+
+  test("should remove a child node from the parent node", () => {
+    const roadTripNode = createEndNodeExtend({
+      typeOfTrip: "roadtrip",
+      id: "node-11",
+      startDate: dayjs(new Date()).add(3, "day"),
+      endDate: dayjs(new Date()).add(7, "day"),
+    });
+    nodeList.addNode(roadTripNode);
+    const childNode = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-12",
+      startDate: dayjs(new Date()).add(4, "day"),
+    });
+
+    const childNodeII = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-13",
+      startDate: dayjs(new Date()).add(5, "day"),
+    });
+
+    const childNodeIII = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-14",
+      startDate: dayjs(new Date()).add(6, "day"),
+    });
+
+    nodeList.addChildNode("node-11", childNode);
+    nodeList.addChildNode("node-11", childNodeII);
+    nodeList.addChildNode("node-11", childNodeIII);
+
+    const nodes = nodeList.traverse();
+    const roadTripNodeFound = nodes.find((e) => e.id === "node-11");
+    expect(roadTripNodeFound).toBeDefined();
+    expect(roadTripNodeFound?.data.isParent).toBe(true);
+    expect(roadTripNodeFound?.data.children).toBeDefined();
+    expect(roadTripNodeFound?.data.children?.[0].id).toBe("node-12");
+    expect(roadTripNodeFound?.data.children?.[1].id).toBe("node-13");
+    expect(roadTripNodeFound?.data.children?.[2].id).toBe("node-14");
+
+    nodeList.removeChildNode("node-11", "node-13");
+    const nodesII = nodeList.traverse();
+    const roadTripNodeFoundII = nodesII.find((e) => e.id === "node-11");
+    expect(roadTripNodeFoundII).toBeDefined();
+    expect(roadTripNodeFoundII?.data.isParent).toBe(true);
+    expect(roadTripNodeFoundII?.data.children).toBeDefined();
+    expect(roadTripNodeFoundII?.data.children?.[0].id).toBe("node-12");
+    expect(
+      roadTripNodeFoundII?.data.children?.find((e) => e.id === "node-13")
+    ).toBeUndefined();
+    expect(roadTripNodeFoundII?.data.children?.[1].id).toBe("node-14");
+  });
+
+  test("should have a method to update children", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("updateChildNode");
+  });
+
+  test("should update the child node", () => {
+    const roadTripNode = createEndNodeExtend({
+      typeOfTrip: "roadtrip",
+      id: "node-15",
+      startDate: dayjs(new Date()).add(3, "day"),
+      endDate: dayjs(new Date()).add(7, "day"),
+    });
+    nodeList.addNode(roadTripNode);
+    const childNode = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-16",
+      startDate: dayjs(new Date()).add(4, "day"),
+    });
+
+    const childNodeII = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-17",
+      startDate: dayjs(new Date()).add(5, "day"),
+    });
+
+    const childNodeIII = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-18",
+      startDate: dayjs(new Date()).add(6, "day"),
+    });
+
+    nodeList.addChildNode("node-15", childNode);
+    nodeList.addChildNode("node-15", childNodeII);
+    nodeList.addChildNode("node-15", childNodeIII);
+
+    const nodes = nodeList.traverse();
+    const roadTripNodeFound = nodes.find((e) => e.id === "node-15");
+    expect(roadTripNodeFound).toBeDefined();
+    expect(roadTripNodeFound?.data.isParent).toBe(true);
+    expect(roadTripNodeFound?.data.children).toBeDefined();
+    expect(roadTripNodeFound?.data.children?.[0].id).toBe("node-16");
+    expect(roadTripNodeFound?.data.children?.[1].id).toBe("node-17");
+    expect(roadTripNodeFound?.data.children?.[2].id).toBe("node-18");
+
+    nodeList.updateChildNode("node-15", "node-16", {
+      body: "updated body",
+    });
+    const nodesII = nodeList.traverse();
+    const roadTripNodeFoundII = nodesII.find((e) => e.id === "node-15");
+    expect(roadTripNodeFoundII).toBeDefined();
+    expect(roadTripNodeFoundII?.data.isParent).toBe(true);
+    expect(roadTripNodeFoundII?.data.children).toBeDefined();
+    expect(roadTripNodeFoundII?.data.children?.[0].id).toBe("node-16");
+    expect(roadTripNodeFoundII?.data.children?.[0].data.body).toBe(
+      "updated body"
+    );
   });
 });
