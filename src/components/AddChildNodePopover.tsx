@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "./ui/button";
 import dayjs from "dayjs";
-import type { NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
 import { createTripNodeExtend } from "../../test/node-extend-helper";
 import {
   Select,
@@ -21,6 +21,14 @@ import {
 } from "@/components/ui/select";
 function AddChildNodePopover(props: {
   handleAddChild: ({ childNode }: { childNode: NodeExtend }) => void;
+  updateChildNode: (
+    parentNodeId: string,
+    childNodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
+  removeChildNode: (parentNodeId: string, childNodeId: string) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [tripDate, setTripDate] = useState<string>(
@@ -35,6 +43,8 @@ function AddChildNodePopover(props: {
       name: tripName,
       body: tripBody,
       status,
+      updateChildNode: props.updateChildNode,
+      removeChildNode: props.removeChildNode,
     });
     props.handleAddChild({ childNode: node });
     setOpen(false);
