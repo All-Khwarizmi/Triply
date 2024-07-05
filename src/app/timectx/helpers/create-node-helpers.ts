@@ -5,6 +5,8 @@ import type { NodeData } from "./list";
 export type CreateNodeOptions = {
   id?: string;
   type?: "tripNode" | "roadtrip";
+  name?: string;
+  body?: string;
   startDate: Dayjs;
   endDate?: Dayjs;
   updateNodeMetadata?: (
