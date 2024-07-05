@@ -7,7 +7,6 @@ import {
   type Range,
 } from "react-date-range";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Section, Container } from "./hero-five-props";
 import "reactflow/dist/style.css";
 
@@ -16,8 +15,6 @@ import { ModeToggle } from "./ui/ModeToggle";
 import { useState } from "react";
 import dayjs from "dayjs";
 import TripEditor from "./TripEditor";
-import { Transition } from "react-transition-group";
-import { useRef } from "react";
 
 const duration = 300;
 
