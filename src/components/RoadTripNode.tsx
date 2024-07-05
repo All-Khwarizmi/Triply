@@ -1,5 +1,4 @@
 "use client";
-import { mockData } from "./mock-data";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,12 +10,14 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import type { NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
 import TripNode from "./TripNode";
+import { Handle, type NodeProps, Position } from "reactflow";
+import ChildTripNode from "./ChildTripNode";
 
-export default function RoadTripNode(props: { node: NodeExtend }) {
+export default function RoadTripNode({ data }: NodeProps<NodeData>) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [childNodes, setChildNodes] = useState(props.node.data.children || []);
+  const [childNodes, setChildNodes] = useState(data.children || []);
   const [dialogContent, setDialogContent] = useState<NodeExtend | null>(null);
 
   const handleAddChild = () => {
@@ -68,9 +69,7 @@ export default function RoadTripNode(props: { node: NodeExtend }) {
         <div className="pl-10 pt-4">
           {childNodes.map((node) => (
             <div key={node.id} className="relative mb-4">
-              <TripNode
-                node={node}
-              />
+              <ChildTripNode node={node} />
               <Button
                 variant="ghost"
                 onClick={() => handleRemoveChild(node.id)}
@@ -108,6 +107,18 @@ export default function RoadTripNode(props: { node: NodeExtend }) {
           </DialogContent>
         )}
       </Dialog>
+      <Handle
+        type="source"
+        position={Position.Right}
+        id={data.nodeId}
+        style={{ background: "#555" }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id={data.nodeId}
+        style={{ background: "#555" }}
+      />
     </>
   );
 }

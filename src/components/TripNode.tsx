@@ -17,8 +17,9 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import type { NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import { Handle, type NodeProps, Position } from "reactflow";
 
 // function getNodeStatusColor(status: NodeExtend["data"]["status"]) {
 //   const colors = {
@@ -55,15 +56,12 @@ function getNodeStatusColor(
   return colors[status] || colors.default;
 }
 
-export default function TripNode(props: { node: NodeExtend }) {
+export default function TripNode({ data }: NodeProps<NodeData>) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { resolvedTheme, theme } = useTheme();
 
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
-  const backgroundColor = getNodeStatusColor(
-    props.node.data.status,
-    isDarkMode
-  );
+  const backgroundColor = getNodeStatusColor(data.status, isDarkMode);
 
   useEffect(() => {
     setIsDarkMode(theme === "dark" || resolvedTheme === "dark");
@@ -82,10 +80,10 @@ export default function TripNode(props: { node: NodeExtend }) {
           </div>
           <div className="flex-1 space-y-1">
             <h4 className="text-lg font-medium">
-              {props.node.data.name || "Trip to Yosemite"}
+              {data.name || "Trip to Yosemite"}
             </h4>
             <p className="text-sm text-secondary-foreground/80">
-              {props.node.data.date || "July 4-8, 2024"}
+              {data.date || "July 4-8, 2024"}
             </p>
           </div>
           <ChevronRightIcon className="w-5 h-5 text-secondary-foreground" />
@@ -95,18 +93,16 @@ export default function TripNode(props: { node: NodeExtend }) {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>
-              {props.node.data.name || "Trip to Yosemite"}
-            </DialogTitle>
+            <DialogTitle>{data.name || "Trip to Yosemite"}</DialogTitle>
             <DialogDescription>
-              {props.node.data.date || "July 4-8, 2024"}
+              {data.date || "July 4-8, 2024"}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-semibold">Trip Details</h3>
               <p>
-                {props.node.data.body ||
+                {data.body ||
                   "Join us for an unforgettable trip to Yosemite National Park! be exploring the stunning waterfalls, hiking through the breathtaking landscapes, and taking in the serene beauty of this natural wonder."}
               </p>
             </div>
@@ -118,6 +114,18 @@ export default function TripNode(props: { node: NodeExtend }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <Handle
+        type="source"
+        position={Position.Right}
+        id={data.nodeId}
+        style={{ background: "#555" }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id={data.nodeId}
+        style={{ background: "#555" }}
+      />
     </>
   );
 }
