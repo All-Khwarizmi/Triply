@@ -92,7 +92,6 @@ export default function TripNode(props: { node: NodeExtend }) {
               {props.node.data.date || "July 4-8, 2024"}
             </p>
           </div>
-          <ChevronRightIcon className="w-5 h-5 text-secondary-foreground" />
         </CardContent>
       </Card>
 
