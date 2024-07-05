@@ -90,7 +90,9 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
               </Button>
             </div>
           ))}
-          <AddChildNodePopover handleAddChild={handleAddChild} />
+          <AddChildNodePopover
+            handleAddChild={handleAddChild}
+          />
         </div>
       )}
 
