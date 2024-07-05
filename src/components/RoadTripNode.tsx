@@ -34,6 +34,8 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
           name: childNode.data.name || generateRandomNodeName(),
           isChild: true,
           parentId: data.nodeId,
+          removeChildNode: data.removeChildNode,
+          updateChildNode: data.updateChildNode,
         },
       });
     }
@@ -81,16 +83,13 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
           {childNodes.map((node) => (
             <div key={node.id} className="relative mb-4">
               <ChildTripNode node={node} />
-              <Button
-                variant="ghost"
-                onClick={() => handleRemoveChild(node.id)}
-                className="absolute top-2 right-2 py-2"
-              >
-                <TrashIcon className="w-5 h-5 text-secondary-foreground" />
-              </Button>
             </div>
           ))}
-          <AddChildNodePopover handleAddChild={handleAddChild} />
+          <AddChildNodePopover
+            handleAddChild={handleAddChild}
+            updateChildNode={data.updateChildNode || (() => {})}
+            removeChildNode={handleRemoveChild}
+          />
         </div>
       )}
 
