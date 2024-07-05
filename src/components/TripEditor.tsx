@@ -4,22 +4,27 @@ import ReactFlow, { Background, Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "@/app/timectx/CustomNode";
 import PanelMenu from "@/app/timectx/Panel";
-import { StageColumnNode } from "@/app/timectx/StageColumn";
 import useHandleNodeHooks from "@/app/timectx/hooks/useHandleNodeHooks";
 import type { Range } from "react-date-range";
+import TripNode from "./TripNode";
+import RoadTripNode from "./RoadTripNode";
 
 export interface TripEditorProps {
   tripDates: Range;
 }
 const nodeTypes = {
   customNode: CustomNode,
-  column: StageColumnNode,
+  tripNode: TripNode,
+  roadtrip: RoadTripNode,
 };
 function TripEditor(props: PropsWithRef<TripEditorProps>) {
   const {
     saveList,
     nodes,
     addNode,
+    addChildNode,
+    removeChildNode,
+    updateChildNode,
     edges,
     onNodesChange,
     onEdgesChange,
@@ -35,7 +40,13 @@ function TripEditor(props: PropsWithRef<TripEditorProps>) {
         nodeTypes={nodeTypes}
         fitView
       >
-        <PanelMenu saveList={saveList} />
+        <PanelMenu
+          saveList={saveList}
+          updateChildNode={updateChildNode}
+          removeChildNode={removeChildNode}
+          addChildNode={addChildNode}
+          addNode={addNode}
+        />
         <Background />
         <Controls />
       </ReactFlow>
