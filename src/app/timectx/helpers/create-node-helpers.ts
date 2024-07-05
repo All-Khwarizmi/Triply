@@ -23,6 +23,7 @@ export type CreateNodeOptions = {
     }
   ) => void;
   typeOfTrip?: "trip" | "roadtrip";
+  status?: "new" | "conditional" | "must-do" | "if-time";
 };
 
 export function createStartNode(options: CreateNodeOptions): Node {

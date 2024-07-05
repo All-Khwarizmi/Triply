@@ -80,7 +80,7 @@ export function createTripNodeExtend(options: CreateNodeOptions): NodeExtend {
       updateNodeMetadata: () => {},
       isParent: false,
       typeOfTrip: "trip",
-      status: "new",
+      status: options.status ?? "new",
     },
   };
 }
