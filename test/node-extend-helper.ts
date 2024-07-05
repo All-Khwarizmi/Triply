@@ -9,7 +9,7 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
 
   return {
     id: "start-node",
-    type: "customNode",
+    type: options.type ?? "tripNode",
     position: { x: 0, y: -125 },
     data: {
       label: options.startDate.format("YYYY-MM-DD"),
@@ -36,7 +36,7 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
   const updateNodePosition = options.updateNodePosition ?? (() => {});
   return {
     id: options.id ?? "end-node",
-    type: "customNode",
+    type: options.type ?? "tripNode",
     position: { x: 800, y: -125 },
     data: {
       label: options.startDate.format("YYYY-MM-DD"),
