@@ -1,5 +1,5 @@
 import type { CreateNodeOptions } from "@/app/timectx/helpers/create-node-helpers";
-import type { NodeExtend } from "../src/app/timectx/helpers/list";
+import type { NodeData, NodeExtend } from "../src/app/timectx/helpers/list";
 import { NodeExtendSchema } from "../src/app/timectx/helpers/schemas";
 import type dayjs from "dayjs";
 
@@ -81,6 +81,54 @@ export function createNodeExtend(node: dayjs.Dayjs): NodeExtend {
       isParent: false,
       typeOfTrip: "trip",
       status: "new",
+    },
+  };
+}
+
+interface CreateRoadtripNodeOptions extends CreateNodeOptions {
+  endDate: dayjs.Dayjs;
+  name: string;
+  updateChildNode: (
+    parentNodeId: string,
+    childNodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
+  removeChildNode: (parentNodeId: string, childNodeId: string) => void;
+  addChildNode: (parentNodeId: string, node: NodeExtend) => void;
+}
+
+export function createRoadTripNodeExtend(
+  options: CreateRoadtripNodeOptions
+): NodeExtend {
+  const updateNodeMetadata = options.updateNodeMetadata ?? (() => {});
+  const updateNodePosition = options.updateNodePosition ?? (() => {});
+  const id = crypto.randomUUID();
+  return {
+    id: id,
+    type: "roadtrip",
+    position: { x: 0, y: -125 },
+    data: {
+      label: options.startDate.format("YYYY-MM-DD"),
+      date: options.startDate.format("YYYY-MM-DD"),
+      name: options.name,
+      body: "The start of the roadtrip",
+      slug: id,
+      nodeId: id,
+      updateNodePosition,
+      position: { x: 0, y: -125 },
+      prevNode: null,
+      nextNode: null,
+      dayOfTrip: 1,
+      updateNodeMetadata,
+      isParent: false,
+      typeOfTrip: "roadtrip",
+      status: "new",
+      endDate: options.endDate.format("YYYY-MM-DD"),
+      addChildNode: options.addChildNode,
+      removeChildNode: options.removeChildNode,
+      updateChildNode: options.updateChildNode,
     },
   };
 }
