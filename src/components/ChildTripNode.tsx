@@ -15,6 +15,8 @@ import type { NodeExtend } from "@/app/timectx/helpers/list";
 import { useTheme } from "next-themes";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { da } from "date-fns/locale";
+import { Label } from "./ui/label";
 
 function getNodeStatusColor(
   status: NodeExtend["data"]["status"],
@@ -56,6 +58,21 @@ export default function TripNode(props: { node: NodeExtend }) {
     setIsDarkMode(theme === "dark" || resolvedTheme === "dark");
   }, [theme, resolvedTheme]);
 
+  function handleSave() {
+    if (props.node.data.updateChildNode) {
+      props.node.data.updateChildNode(
+        props.node.data.parentId ?? "",
+        props.node.id,
+        {
+          ...props.node.data,
+          body: editableBody,
+          name: editableName,
+          date: editableDate,
+        }
+      );
+    }
+    setIsDialogOpen(false);
+  }
   return (
     <>
       <Card
@@ -87,10 +104,19 @@ export default function TripNode(props: { node: NodeExtend }) {
             </DialogTitle>
           </DialogHeader>
           <DialogDescription>
+            <Label htmlFor="trip-date">Trip Date</Label>
             <Input
               type="date"
               value={editableDate}
               onChange={(e) => setEditableDate(e.target.value)}
+              className="w-full border border-gray-300 rounded px-2 py-1"
+            />
+          </DialogDescription>
+          <DialogDescription>
+            <Label htmlFor="trip-name">Trip Name</Label>
+            <Input
+              value={editableName}
+              onChange={(e) => setEditableName(e.target.value)}
               className="w-full border border-gray-300 rounded px-2 py-1"
             />
           </DialogDescription>
@@ -105,6 +131,8 @@ export default function TripNode(props: { node: NodeExtend }) {
             </div>
           </div>
           <DialogFooter>
+            <Button onClick={handleSave}>Save</Button>
+
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
               Close
             </Button>

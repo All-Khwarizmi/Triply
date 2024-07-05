@@ -14,6 +14,7 @@ import { createTripNodeExtend } from "../../test/node-extend-helper";
 function AddChildNodePopover(props: {
   handleAddChild: ({ childNode }: { childNode: NodeExtend }) => void;
 }) {
+  const [open, setOpen] = useState(false);
   const [tripDate, setTripDate] = useState<string>(
     dayjs().format("YYYY-MM-DD")
   );
@@ -26,9 +27,10 @@ function AddChildNodePopover(props: {
       body: tripBody,
     });
     props.handleAddChild({ childNode: node });
+    setOpen(false);
   }
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
         <Button>Add Child Node</Button>
       </PopoverTrigger>
