@@ -56,6 +56,9 @@ const AddNodeForm: React.FC<AddNodeFormProps> = ({
         position: { x: xPosition, y: -100 },
         dayOfTrip: 0,
         updateNodeMetadata,
+        isParent: false,
+        status: "new",
+        typeOfTrip: "trip",
       },
     };
 
