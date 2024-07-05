@@ -15,7 +15,6 @@ import type { NodeExtend } from "@/app/timectx/helpers/list";
 import { useTheme } from "next-themes";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { da } from "date-fns/locale";
 import { Label } from "./ui/label";
 
 function getNodeStatusColor(
