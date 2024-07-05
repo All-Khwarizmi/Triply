@@ -33,6 +33,7 @@ interface AddRoadtripButtonProps {
   addChildNode: (parentNodeId: string, node: NodeExtend) => void;
 }
 function AddRoadtripButton(props: AddRoadtripButtonProps) {
+  const [open, setOpen] = useState<boolean>(false);
   const [tripDates, setTripDates] = useState<Range>({
     startDate: new Date(),
     endDate: dayjs().add(7, "days").toDate(),
@@ -40,7 +41,6 @@ function AddRoadtripButton(props: AddRoadtripButtonProps) {
   });
   const [tripName, setTripName] = useState<string>("");
   const handleSelect = (ranges: RangeKeyDict) => {
-    console.log(ranges.selection);
     setTripDates(ranges.selection);
   };
   function handleSubmission() {
@@ -57,10 +57,11 @@ function AddRoadtripButton(props: AddRoadtripButtonProps) {
       name: tripName === "" ? defaultTripName : tripName,
     });
     props.addNode(node);
+    setOpen(false);
   }
   return (
     <>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger>
           <Button variant={"outline"}>Add Roadtrip</Button>
         </PopoverTrigger>

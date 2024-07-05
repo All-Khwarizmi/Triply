@@ -23,7 +23,6 @@ function PanelMenu(props: PanelMenuProps) {
       position="top-right"
       className="flex gap-4  p-4  rounded-lg shadow-md"
     >
-      {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <AddRoadtripButton
         addNode={props.addNode}
         updateChildNode={props.updateChildNode}
