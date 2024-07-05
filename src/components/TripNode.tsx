@@ -20,6 +20,8 @@ import {
 import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { Handle, type NodeProps, Position } from "reactflow";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 // function getNodeStatusColor(status: NodeExtend["data"]["status"]) {
 //   const colors = {
@@ -62,6 +64,9 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
 
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const backgroundColor = getNodeStatusColor(data.status, isDarkMode);
+  const [editableBody, setEditableBody] = useState(data.body);
+  const [editableName, setEditableName] = useState(data.name);
+  const [editableDate, setEditableDate] = useState(data.date);
 
   useEffect(() => {
     setIsDarkMode(theme === "dark" || resolvedTheme === "dark");
@@ -91,20 +96,28 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] flex flex-col gap-4">
           <DialogHeader>
-            <DialogTitle>{data.name || "Trip to Yosemite"}</DialogTitle>
-            <DialogDescription>
-              {data.date || "July 4-8, 2024"}
-            </DialogDescription>
+            <DialogTitle className="mt-4">
+              {editableName || "Trip to Yosemite"}
+            </DialogTitle>
           </DialogHeader>
+          <DialogDescription>
+            <Input
+              type="date"
+              value={editableDate}
+              onChange={(e) => setEditableDate(e.target.value)}
+              className="w-full border border-gray-300 rounded px-2 py-1"
+            />
+          </DialogDescription>
           <div className="space-y-4">
             <div>
-              <h3 className="text-lg font-semibold">Trip Details</h3>
-              <p>
-                {data.body ||
-                  "Join us for an unforgettable trip to Yosemite National Park! be exploring the stunning waterfalls, hiking through the breathtaking landscapes, and taking in the serene beauty of this natural wonder."}
-              </p>
+              <h3 className="text-lg font-semibold pb-4">Trip Details</h3>
+              <Textarea
+                value={editableBody}
+                onChange={(e) => setEditableBody(e.target.value)}
+                className="w-full border border-gray-300 rounded px-2 py-1"
+              />
             </div>
           </div>
           <DialogFooter>
