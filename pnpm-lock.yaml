@@ -91,6 +91,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18
     version: 18.3.0
+  '@types/react-transition-group':
+    specifier: ^4.4.10
+    version: 4.4.10
   eslint:
     specifier: ^8
     version: 8.57.0
@@ -1581,6 +1584,12 @@ packages:
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
     dependencies:
       '@types/react': 18.3.3
+
+  /@types/react-transition-group@4.4.10:
+    resolution: {integrity: sha512-hT/+s0VQs2ojCX823m60m5f0sL5idt9SO6Tj6Dg+rdphGPIeJbJ6CxvBYkgkGKrYeDjvIpKTR38UzmtHJOGW3Q==}
+    dependencies:
+      '@types/react': 18.3.3
+    dev: true
 
   /@types/react@18.3.3:
     resolution: {integrity: sha512-hti/R0pS0q1/xx+TsI73XIqk26eBsISZ2R0wUijXIngRK9R/e7Xw/cXVxQK7R5JjW+SV4zGcn5hXjudkN/pLIw==}
