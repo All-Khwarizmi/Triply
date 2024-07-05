@@ -33,7 +33,7 @@ export interface NodeData {
   typeOfTrip: "trip" | "roadtrip";
   endDate?: string;
   isParent: boolean;
-  status?: "new" | "conditional" | "must-do" | "if-time";
+  status: "new" | "conditional" | "must-do" | "if-time";
   children?: NodeExtend[];
 }
 export interface NodeExtend extends Node {
@@ -214,7 +214,6 @@ export class NodeList {
         source: currentNode.data.nodeId,
         target: currentNode.data.nextNode.data.nodeId,
         animated: true,
-        
       });
       currentNode = currentNode.data.nextNode;
     }
