@@ -125,6 +125,25 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
     fitView();
   }
 
+  function addChildNode(parentNodeId: string, node: NodeExtend) {
+    list.addChildNode(parentNodeId, node);
+    setNodes(list.traverse());
+    setEdges(list.edges);
+    fitView();
+  }
+  function removeChildNode(parentNodeId: string, childNodeId: string) {
+    list.removeChildNode(parentNodeId, childNodeId);
+    setNodes(list.traverse());
+    setEdges(list.edges);
+    fitView();
+  }
+  function removeNode(parentNodeId: string, childNodeId: string) {
+    list.removeChildNode(parentNodeId, childNodeId);
+    setNodes(list.traverse());
+    setEdges(list.edges);
+    fitView();
+  }
+
   function saveList() {
     list.save("triply", localStorage);
   }
@@ -133,6 +152,8 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
     saveList,
     updateNodeMetadata,
     addNode,
+    addChildNode,
+    removeChildNode,
     nodes,
     setNodes,
     edges,
