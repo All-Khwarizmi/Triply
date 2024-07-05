@@ -176,7 +176,7 @@ function getRandomElement(arr: string[]) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function generateRandomNodeName() {
+export function generateRandomNodeName() {
   const adjectives = [
     "Beautiful",
     "Cozy",
