@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Plus } from "lucide-react";
 function AddChildNodePopover(props: {
   handleAddChild: ({ childNode }: { childNode: NodeExtend }) => void;
   updateChildNode: (
@@ -54,7 +55,7 @@ function AddChildNodePopover(props: {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
-        <Button>Add Child Node</Button>
+        <Plus />
       </PopoverTrigger>
       <PopoverContent>
         <div className="p-4 space-y-4">

@@ -63,7 +63,7 @@ function AddRoadtripButton(props: AddRoadtripButtonProps) {
     <>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger>
-          <Button variant={"outline"}>Add Roadtrip</Button>
+          <p>Add Roadtrip</p>
         </PopoverTrigger>
         <PopoverContent className="w-auto">
           <div className="p-4 flex flex-col gap-4 w-min">
