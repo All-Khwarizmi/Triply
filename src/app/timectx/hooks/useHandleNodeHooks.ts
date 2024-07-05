@@ -41,41 +41,20 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    let nodeListFromStorage: NodeList | null = null;
-    try {
-      nodeListFromStorage = NodeList.restore("triply", localStorage);
-    } catch (error) {
-      console.error("Error restoring from storage", error);
-    }
-    if (nodeListFromStorage) {
-      console.log("Restoring from storage");
-
-      console.log(nodeListFromStorage.traverse());
-      list = nodeListFromStorage;
-      // Reassign updateNodePosition and updateNodeMetadata functions
-      // biome-ignore lint/complexity/noForEach: <explanation>
-      list.traverse().forEach((node) => {
-        node.data.updateNodePosition = updateNodePosition;
-        node.data.updateNodeMetadata = updateNodeMetadata;
-      });
-      setNodes(list.traverse());
-      setEdges(list.edges);
-    } else {
-      list = new NodeList(
-        createStartNodeExtend({
-          startDate: dayjs(options.tripDates.startDate),
-          updateNodePosition: () => {},
-          updateNodeMetadata,
-        }),
-        createEndNodeExtend({
-          startDate: dayjs(options.tripDates.endDate),
-          updateNodePosition: () => {},
-          updateNodeMetadata,
-        })
-      );
-      setNodes(list.traverse());
-      setEdges(list.edges);
-    }
+    list = new NodeList(
+      createStartNodeExtend({
+        startDate: dayjs(options.tripDates.startDate),
+        updateNodePosition: () => {},
+        updateNodeMetadata,
+      }),
+      createEndNodeExtend({
+        startDate: dayjs(options.tripDates.endDate),
+        updateNodePosition: () => {},
+        updateNodeMetadata,
+      })
+    );
+    setNodes(list.traverse());
+    setEdges(list.edges);
   }, []);
 
   const onNodesChange = useCallback(
