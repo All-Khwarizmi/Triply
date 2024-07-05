@@ -137,13 +137,18 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
     setEdges(list.edges);
     fitView();
   }
-  function removeNode(parentNodeId: string, childNodeId: string) {
-    list.removeChildNode(parentNodeId, childNodeId);
+  function updateChildNode(
+    parentNodeId: string,
+    childNodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) {
+    list.updateChildNode(parentNodeId, childNodeId, metadata);
     setNodes(list.traverse());
     setEdges(list.edges);
     fitView();
   }
-
   function saveList() {
     list.save("triply", localStorage);
   }
@@ -154,6 +159,7 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
     addNode,
     addChildNode,
     removeChildNode,
+    updateChildNode,
     nodes,
     setNodes,
     edges,
