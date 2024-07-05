@@ -84,15 +84,13 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
               <Button
                 variant="ghost"
                 onClick={() => handleRemoveChild(node.id)}
-                className="absolute top-2 right-2"
+                className="absolute top-2 right-2 py-2"
               >
                 <TrashIcon className="w-5 h-5 text-secondary-foreground" />
               </Button>
             </div>
           ))}
-          <AddChildNodePopover
-            handleAddChild={handleAddChild}
-          />
+          <AddChildNodePopover handleAddChild={handleAddChild} />
         </div>
       )}
 
