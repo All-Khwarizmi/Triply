@@ -34,6 +34,7 @@ function AddChildNodePopover(props: {
       startDate: dayjs(tripDate),
       name: tripName,
       body: tripBody,
+      status,
     });
     props.handleAddChild({ childNode: node });
     setOpen(false);
