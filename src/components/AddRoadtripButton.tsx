@@ -15,8 +15,8 @@ import {
 import { Button } from "./ui/button";
 import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
 import {
-  createEndNodeExtend,
   createRoadTripNodeExtend,
+  generateRandomNodeName,
 } from "../../test/node-extend-helper";
 
 interface AddRoadtripButtonProps {
@@ -44,13 +44,17 @@ function AddRoadtripButton(props: AddRoadtripButtonProps) {
     setTripDates(ranges.selection);
   };
   function handleSubmission() {
+    const defaultTripName = generateRandomNodeName();
+    if (!tripName) {
+      setTripName(defaultTripName);
+    }
     const node: NodeExtend = createRoadTripNodeExtend({
       startDate: dayjs(tripDates.startDate),
       endDate: dayjs(tripDates.endDate),
       updateChildNode: props.updateChildNode,
       addChildNode: props.addChildNode,
       removeChildNode: props.removeChildNode,
-      name: tripName,
+      name: tripName === "" ? defaultTripName : tripName,
     });
     props.addNode(node);
   }
@@ -58,12 +62,16 @@ function AddRoadtripButton(props: AddRoadtripButtonProps) {
     <>
       <Popover>
         <PopoverTrigger>
-          <Button>Add Roadtrip</Button>
+          <Button variant={"outline"}>Add Roadtrip</Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto">
           <div className="p-4 flex flex-col gap-4 w-min">
             <Label htmlFor="trip-name">Trip Name</Label>
-            <Input id="trip-name" />
+            <Input
+              id="trip-name"
+              value={tripName}
+              onChange={(e) => setTripName(e.target.value)}
+            />
             <Label htmlFor="trip-dates">Trip Dates</Label>
             <DateRangePicker
               className=" text-black overflow-scroll"
