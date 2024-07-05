@@ -1,6 +1,6 @@
 import type { Dayjs } from "dayjs";
 import type { Node } from "reactflow";
-import type { NodeData } from "./list";
+import type { NodeData, NodeExtend } from "./list";
 
 export type CreateNodeOptions = {
   id?: string;
@@ -24,6 +24,14 @@ export type CreateNodeOptions = {
   ) => void;
   typeOfTrip?: "trip" | "roadtrip";
   status?: "new" | "conditional" | "must-do" | "if-time";
+  removeChildNode?: (parentNodeId: string, childNodeId: string) => void;
+  updateChildNode?: (
+    parentNodeId: string,
+    childNodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
 };
 
 export function createStartNode(options: CreateNodeOptions): Node {
