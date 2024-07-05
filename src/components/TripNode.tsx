@@ -12,7 +12,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import { useTheme } from "next-themes";
 import { Handle, type NodeProps, Position } from "reactflow";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
