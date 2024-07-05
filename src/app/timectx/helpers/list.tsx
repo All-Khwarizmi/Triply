@@ -27,6 +27,15 @@ export interface NodeData {
       Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
     >
   ) => void;
+  updateChildNode?: (
+    parentNodeId: string,
+    childNodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
+  removeChildNode?: (parentNodeId: string, childNodeId: string) => void;
+  addChildNode?: (parentNodeId: string, node: NodeExtend) => void;
   position: { x: number; y: number };
   prevNode: NodeExtend | null;
   nextNode: NodeExtend | null;
