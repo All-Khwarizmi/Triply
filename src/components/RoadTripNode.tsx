@@ -26,22 +26,23 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
     setChildNodes(data.children || []);
   }, [data.children]);
   const handleAddChild = ({ childNode }: { childNode: NodeExtend }) => {
-    // const newId = childNodes.length
-    //   ? childNodes[childNodes.length - 1].id + 1
-    //   : 1;
     if (data.addChildNode) {
       data.addChildNode(data.nodeId, {
         ...childNode,
         data: {
           ...childNode.data,
           name: childNode.data.name || generateRandomNodeName(),
+          isChild: true,
+          parentId: data.nodeId,
         },
       });
     }
   };
 
   const handleRemoveChild = (id: string) => {
-    // setChildNodes(childNodes.filter((node) => node.id !== id));
+    if (data.removeChildNode) {
+      data.removeChildNode(data.nodeId, id);
+    }
   };
 
   const handleOpenDialog = (content: NodeExtend) => {
