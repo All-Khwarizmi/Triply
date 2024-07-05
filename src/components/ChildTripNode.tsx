@@ -16,6 +16,7 @@ import { useTheme } from "next-themes";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
+import { TrashIcon } from "lucide-react";
 
 function getNodeStatusColor(
   status: NodeExtend["data"]["status"],
@@ -72,6 +73,17 @@ export default function TripNode(props: { node: NodeExtend }) {
     }
     setIsDialogOpen(false);
   }
+
+  function handleDelete() {
+    if (props.node.data.removeChildNode) {
+
+      props.node.data.removeChildNode(
+        props.node.data.parentId ?? "",
+        props.node.id
+      );
+    }
+    setIsDialogOpen(false);
+  }
   return (
     <>
       <Card
@@ -80,7 +92,7 @@ export default function TripNode(props: { node: NodeExtend }) {
         className="bg-secondary text-secondary-foreground hover:bg-secondary/90 cursor-pointer transition-colors"
       >
         <CardContent className="flex items-center gap-4 p-4">
-          <div className="bg-secondary-foreground/10 rounded-full p-2">
+          <div className="bg-secondary-foreground/10 rounded-full ">
             <CalendarIcon className="w-6 h-6 text-secondary-foreground" />
           </div>
           <div className="flex-1 space-y-1">
@@ -97,7 +109,7 @@ export default function TripNode(props: { node: NodeExtend }) {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[600px] flex flex-col gap-4">
           <DialogHeader>
-            <DialogTitle className="mt-4">
+            <DialogTitle className="mt-12">
               {editableName || "Trip to Yosemite"}
             </DialogTitle>
           </DialogHeader>
@@ -129,6 +141,13 @@ export default function TripNode(props: { node: NodeExtend }) {
             </div>
           </div>
           <DialogFooter>
+            <Button
+              variant="destructive"
+              onClick={() => handleDelete()}
+              className="absolute top-2 left-2 py-2"
+            >
+              <TrashIcon className="w-5 h-5 text-secondary-foreground" />
+            </Button>
             <Button onClick={handleSave}>Save</Button>
 
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
