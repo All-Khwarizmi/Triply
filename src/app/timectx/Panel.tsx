@@ -1,6 +1,22 @@
+import AddRoadtripButton from "@/components/AddRoadtripButton";
 import React from "react";
 import { useReactFlow, Panel } from "reactflow";
-function PanelMenu(props: { saveList: () => void }) {
+import type { NodeData, NodeExtend } from "./helpers/list";
+
+interface PanelMenuProps {
+  saveList: () => void;
+  updateChildNode: (
+    parentNodeId: string,
+    childNodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
+  removeChildNode: (parentNodeId: string, childNodeId: string) => void;
+  addChildNode: (parentNodeId: string, node: NodeExtend) => void;
+  addNode: (node: NodeExtend) => void;
+}
+function PanelMenu(props: PanelMenuProps) {
   const { zoomIn, zoomOut, setCenter, fitView } = useReactFlow();
   return (
     <Panel
@@ -8,7 +24,12 @@ function PanelMenu(props: { saveList: () => void }) {
       className="flex gap-4  p-4  rounded-lg shadow-md"
     >
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-      <button onClick={() => zoomIn({ duration: 800 })}>zoom in</button>
+      <AddRoadtripButton
+        addNode={props.addNode}
+        updateChildNode={props.updateChildNode}
+        removeChildNode={props.removeChildNode}
+        addChildNode={props.addChildNode}
+      />
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <button onClick={() => zoomOut({ duration: 800 })}>zoom out</button>
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
