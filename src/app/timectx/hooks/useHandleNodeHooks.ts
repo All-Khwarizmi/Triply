@@ -111,6 +111,8 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
     fitView();
   }
   function removeChildNode(parentNodeId: string, childNodeId: string) {
+    console.log("deleting node", { parentNodeId, childNodeId });
+
     list.removeChildNode(parentNodeId, childNodeId);
     setNodes(list.traverse());
     setEdges(list.edges);
