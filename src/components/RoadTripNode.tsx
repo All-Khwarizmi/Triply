@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,26 +11,33 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
-import TripNode from "./TripNode";
 import { Handle, type NodeProps, Position } from "reactflow";
 import ChildTripNode from "./ChildTripNode";
+import { generateRandomNodeName } from "../../test/node-extend-helper";
+import AddChildNodePopover from "./AddChildNodePopover";
 
 export default function RoadTripNode({ data }: NodeProps<NodeData>) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [childNodes, setChildNodes] = useState(data.children || []);
   const [dialogContent, setDialogContent] = useState<NodeExtend | null>(null);
 
-  const handleAddChild = () => {
-    const newId = childNodes.length
-      ? childNodes[childNodes.length - 1].id + 1
-      : 1;
-    // setChildNodes([
-    //   ...childNodes,
-    //   {
-    //     id: newId.toString(),
-
-    //   },
-    // ]);
+  useEffect(() => {
+    console.log("data.children", data.children);
+    setChildNodes(data.children || []);
+  }, [data.children]);
+  const handleAddChild = ({ childNode }: { childNode: NodeExtend }) => {
+    // const newId = childNodes.length
+    //   ? childNodes[childNodes.length - 1].id + 1
+    //   : 1;
+    if (data.addChildNode) {
+      data.addChildNode(data.nodeId, {
+        ...childNode,
+        data: {
+          ...childNode.data,
+          name: childNode.data.name || generateRandomNodeName(),
+        },
+      });
+    }
   };
 
   const handleRemoveChild = (id: string) => {
@@ -52,9 +59,12 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
             <CalendarIcon className="w-6 h-6 text-secondary-foreground" />
           </div>
           <div className="flex-1 space-y-1">
-            <h4 className="text-lg font-medium">Road Trip</h4>
+            <h4 className="text-lg font-medium">
+              {data.name === "" ? "Road Trip" : data.name}
+            </h4>
             <p className="text-sm text-secondary-foreground/80">
-              July 4-20, 2024
+              {/* The start and end date in a range format */}
+              {data.date} - {data.endDate}
             </p>
           </div>
           <ChevronDownIcon
@@ -79,7 +89,7 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
               </Button>
             </div>
           ))}
-          <Button onClick={handleAddChild}>Add New Trip</Button>
+          <AddChildNodePopover handleAddChild={handleAddChild} />
         </div>
       )}
 
