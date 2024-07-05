@@ -41,6 +41,8 @@ export const NodeDataSchema = z.object({
     )
     .optional(),
   position: z.object({ x: z.number(), y: z.number() }),
+  isChild: z.boolean().optional(),
+  parentId: z.string().optional(),
 });
 
 export const NodeSchema = z.object({

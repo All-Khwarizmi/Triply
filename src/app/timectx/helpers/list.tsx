@@ -44,6 +44,8 @@ export interface NodeData {
   isParent: boolean;
   status: "new" | "conditional" | "must-do" | "if-time";
   children?: NodeExtend[];
+  isChild?: boolean;
+  parentId?: string;
 }
 export interface NodeExtend extends Node {
   data: NodeData;
