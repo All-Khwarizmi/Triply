@@ -81,6 +81,8 @@ export function createTripNodeExtend(options: CreateNodeOptions): NodeExtend {
       isParent: false,
       typeOfTrip: "trip",
       status: options.status ?? "new",
+      removeChildNode: options.removeChildNode,
+      updateChildNode: options.updateChildNode,
     },
   };
 }
@@ -96,7 +98,7 @@ interface CreateRoadtripNodeOptions extends CreateNodeOptions {
     >
   ) => void;
   removeChildNode: (parentNodeId: string, childNodeId: string) => void;
-  addChildNode: (parentNodeId: string, node: NodeExtend) => void;
+  addChildNode?: (parentNodeId: string, node: NodeExtend) => void;
 }
 
 export function createRoadTripNodeExtend(
