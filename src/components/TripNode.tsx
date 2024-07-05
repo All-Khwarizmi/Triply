@@ -1,12 +1,6 @@
 "use client";
 
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/1sLT0NOb33B
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,17 +17,6 @@ import { Handle, type NodeProps, Position } from "reactflow";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 
-// function getNodeStatusColor(status: NodeExtend["data"]["status"]) {
-//   const colors = {
-//     new: "#d1e7dd", // Soft green
-//     conditional: "#fff3cd", // Soft yellow
-//     "must-do": "#f8d7da", // Soft red
-//     "if-time": "#dbe9f1", // Soft blue
-//     default: "#f0f0f0", // Neutral gray for undefined statuses
-//   };
-
-//   return colors[status] || colors.default;
-// }
 function getNodeStatusColor(
   status: NodeExtend["data"]["status"],
   isDarkMode = false
