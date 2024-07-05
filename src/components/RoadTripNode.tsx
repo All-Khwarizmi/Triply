@@ -120,13 +120,13 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
       </Dialog>
       <Handle
         type="source"
-        position={Position.Right}
+        position={Position.Top}
         id={data.nodeId}
         style={{ background: "#555" }}
       />
       <Handle
         type="target"
-        position={Position.Left}
+        position={Position.Top}
         id={data.nodeId}
         style={{ background: "#555" }}
       />
