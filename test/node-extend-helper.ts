@@ -59,18 +59,18 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
   };
 }
 
-export function createNodeExtend(node: dayjs.Dayjs): NodeExtend {
+export function createTripNodeExtend(options: CreateNodeOptions): NodeExtend {
   const id = crypto.randomUUID();
   return {
     id,
-    type: "customNode",
+    type: "tripNode",
     position: { x: 0, y: 0 },
     data: {
-      label: node.format("YYYY-MM-DD"),
-      date: node.format("YYYY-MM-DD"),
-      name: "default",
-      body: "Node",
-      slug: "node",
+      label: options.startDate.format("YYYY-MM-DD"),
+      date: options.startDate.format("YYYY-MM-DD"),
+      name: options.name ?? "Trip",
+      body: options.body ?? "The start of the trip",
+      slug: id,
       nodeId: id,
       updateNodePosition: () => {},
       position: { x: 0, y: 0 },
