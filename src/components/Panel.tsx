@@ -45,7 +45,7 @@ function PanelMenu(props: PanelMenuProps) {
         removeNode={props.removeNode}
       />
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-      <button onClick={() => fitView()}>center</button>
+      <button onClick={() => fitView()}>Center</button>
       <SaveTripButton saveTrip={props.saveList} />
     </Panel>
   );

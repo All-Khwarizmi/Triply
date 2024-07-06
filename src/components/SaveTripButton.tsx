@@ -28,13 +28,13 @@ function SaveTripButton(props: { saveTrip: (tripName: string) => void }) {
           onClick={() => {
             setOpen(true);
           }}
-          className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full"
+          className="flex items-center justify-center w-10 h-10  text-white rounded-full"
         >
           Save
         </p>
       </PopoverTrigger>
       <PopoverContent>
-        <div className="p-4">
+        <div className="p-4 flex flex-col gap-4 ">
           <Label>Enter Trip Name</Label>
           <Input
             value={tripName}
