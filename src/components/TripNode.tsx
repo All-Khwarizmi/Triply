@@ -11,35 +11,14 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeData } from "@/app/timectx/helpers/list";
 import { useTheme } from "next-themes";
 import { Handle, type NodeProps, Position } from "reactflow";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-
-function getNodeStatusColor(
-  status: NodeExtend["data"]["status"],
-  isDarkMode = false
-) {
-  const lightColors = {
-    new: "#d1e7dd", // Soft green
-    conditional: "#fff3cd", // Soft yellow
-    "must-do": "#f8d7da", // Soft red
-    "if-time": "#dbe9f1", // Soft blue
-    default: "#f0f0f0", // Neutral gray for undefined statuses
-  };
-
-  const darkColors = {
-    new: "#4a7a63", // Darker green
-    conditional: "#7a6a35", // Darker yellow
-    "must-do": "#7a3d3d", // Darker red
-    "if-time": "#4a6a7a", // Darker blue
-    default: "#3a3a3a", // Darker gray for undefined statuses
-  };
-
-  const colors = isDarkMode ? darkColors : lightColors;
-  return colors[status] || colors.default;
-}
+import { getNodeStatusColor } from "@/utils/status-color";
+import { Label } from "./ui/label";
+import { TrashIcon } from "lucide-react";
 
 export default function TripNode({ data }: NodeProps<NodeData>) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -54,7 +33,23 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
   useEffect(() => {
     setIsDarkMode(theme === "dark" || resolvedTheme === "dark");
   }, [theme, resolvedTheme]);
-
+  function handleSave() {
+    if (data.updateChildNode) {
+      data.updateChildNode(data.parentId ?? "", data.nodeId, {
+        ...data,
+        body: editableBody,
+        name: editableName,
+        date: editableDate,
+      });
+    }
+    setIsDialogOpen(false);
+  }
+  function handleDelete() {
+    if (data.removeChildNode) {
+      data.removeChildNode(data.parentId ?? "", data.nodeId);
+    }
+    setIsDialogOpen(false);
+  }
   return (
     <>
       <Card
@@ -81,15 +76,24 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[600px] flex flex-col gap-4">
           <DialogHeader>
-            <DialogTitle className="mt-4">
+            <DialogTitle className="mt-12">
               {editableName || "Trip to Yosemite"}
             </DialogTitle>
           </DialogHeader>
           <DialogDescription>
+            <Label htmlFor="trip-date">Trip Date</Label>
             <Input
               type="date"
               value={editableDate}
               onChange={(e) => setEditableDate(e.target.value)}
+              className="w-full border border-gray-300 rounded px-2 py-1"
+            />
+          </DialogDescription>
+          <DialogDescription>
+            <Label htmlFor="trip-name">Trip Name</Label>
+            <Input
+              value={editableName}
+              onChange={(e) => setEditableName(e.target.value)}
               className="w-full border border-gray-300 rounded px-2 py-1"
             />
           </DialogDescription>
@@ -104,6 +108,15 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
             </div>
           </div>
           <DialogFooter>
+            <Button
+              variant="destructive"
+              onClick={() => handleDelete()}
+              className="absolute top-2 left-2 py-2"
+            >
+              <TrashIcon className="w-5 h-5 text-secondary-foreground" />
+            </Button>
+            <Button onClick={handleSave}>Save</Button>
+
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
               Close
             </Button>
