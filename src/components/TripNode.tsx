@@ -84,7 +84,7 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[600px] flex flex-col gap-4">
+        <DialogContent className="sm:max-w-[600px] flex flex-col gap-4 p-8">
           <div className="flex justify-center w-full pb-8">
             <DialogHeader>
               <DialogTitle className="mt-12 text-3xl">
