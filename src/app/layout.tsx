@@ -4,8 +4,10 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { TimelineProvider } from "./timectx/Context";
 import ReactFlowProviderWrapper from "./ReactFlowProviderWrapper";
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { Container, Section } from "@/components/hero-five-props";
+import { ModeToggle } from "@/components/ui/ModeToggle";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -35,7 +37,12 @@ export default function RootLayout({
         >
           <main>
             <ReactFlowProviderWrapper>
-              <TimelineProvider>{children}</TimelineProvider>
+              <Section className="h-screen">
+                <Container className="flex justify-end py-0">
+                  <ModeToggle />
+                </Container>
+                <TimelineProvider>{children}</TimelineProvider>
+              </Section>
             </ReactFlowProviderWrapper>
           </main>
         </ThemeProvider>

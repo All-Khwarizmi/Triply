@@ -49,10 +49,7 @@ export default function Hero() {
   };
 
   return (
-    <Section className="h-screen">
-      <Container className="flex justify-end py-0">
-        <ModeToggle />
-      </Container>
+
       <Container>
         <div className="flex flex-col items-center text-center mb-6">
           <Header />
@@ -106,6 +103,6 @@ export default function Hero() {
           )}
         </div>
       </Container>
-    </Section>
+   
   );
 }
