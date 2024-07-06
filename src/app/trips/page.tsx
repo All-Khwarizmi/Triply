@@ -10,8 +10,14 @@ const AllTripsComponent = () => {
 
   useEffect(() => {
     const tripsData = fetchAllTrips(localStorage);
-    setTrips(tripsData);
+    // setTrips(tripsData);
   }, []);
+
+  if (trips.length === 0) {
+    return <div
+      className="text-center text-gray-500 text-xl"
+    >No trips found</div>;
+  }
 
   return (
     <div>
