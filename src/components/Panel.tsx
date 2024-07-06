@@ -48,8 +48,8 @@ function PanelMenu(props: PanelMenuProps) {
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <button onClick={() => fitView()}>Center</button>
       <SaveTripButton saveTrip={props.saveList} />
-      <Link href="/trips">
-        MyTrips
+      <Link className="flex items-center" href="/trips">
+        My Trips
       </Link>
     </Panel>
   );

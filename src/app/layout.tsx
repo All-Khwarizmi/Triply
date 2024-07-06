@@ -37,9 +37,10 @@ export default function RootLayout({
         >
           <main>
             <ReactFlowProviderWrapper>
-              <Section className="h-screen">
+              <Section className="h-screen relative">
                 <Container className="flex justify-end py-0">
-                  <ModeToggle />
+                  <ModeToggle  />
+                  
                 </Container>
                 <TimelineProvider>{children}</TimelineProvider>
               </Section>
