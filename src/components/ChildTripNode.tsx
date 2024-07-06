@@ -18,13 +18,25 @@ import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { TrashIcon } from "lucide-react";
 import { getNodeStatusColor } from "@/utils/status-color";
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 export default function TripNode(props: { node: NodeExtend }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { resolvedTheme, theme } = useTheme();
   const [editableBody, setEditableBody] = useState(props.node.data.body);
   const [editableName, setEditableName] = useState(props.node.data.name);
   const [editableDate, setEditableDate] = useState(props.node.data.date);
+  const [status, setStatus] = useState<NodeExtend["data"]["status"]>(
+    props.node.data.status
+  ); // ["new", "conditional", "must-do", "if-time"
+
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const backgroundColor = getNodeStatusColor(
     props.node.data.status,
@@ -45,6 +57,7 @@ export default function TripNode(props: { node: NodeExtend }) {
           body: editableBody,
           name: editableName,
           date: editableDate,
+          status,
         }
       );
     }
@@ -116,6 +129,34 @@ export default function TripNode(props: { node: NodeExtend }) {
               />
             </div>
           </div>
+          <Select
+            value={status}
+            onValueChange={(e) => {
+              if (
+                e !== "new" &&
+                e !== "conditional" &&
+                e !== "must-do" &&
+                e !== "if-time"
+              )
+                return;
+              setStatus(e);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue>{status}</SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Status</SelectLabel>
+
+                {["new", "conditional", "must-do", "if-time"].map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           <DialogFooter>
             <Button
               variant="destructive"

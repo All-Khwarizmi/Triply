@@ -11,7 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import type { NodeData } from "@/app/timectx/helpers/list";
+import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
 import { useTheme } from "next-themes";
 import { Handle, type NodeProps, Position } from "reactflow";
 import { Input } from "./ui/input";
@@ -19,10 +19,21 @@ import { Textarea } from "./ui/textarea";
 import { getNodeStatusColor } from "@/utils/status-color";
 import { Label } from "./ui/label";
 import { TrashIcon } from "lucide-react";
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 export default function TripNode({ data }: NodeProps<NodeData>) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { resolvedTheme, theme } = useTheme();
+  const [status, setStatus] = useState<NodeExtend["data"]["status"]>(
+    data.status
+  );
 
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const backgroundColor = getNodeStatusColor(data.status, isDarkMode);
@@ -39,6 +50,7 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
       body: editableBody,
       name: editableName,
       date: editableDate,
+      status,
     });
     setIsDialogOpen(false);
   }
@@ -105,6 +117,34 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
               />
             </div>
           </div>
+          <Select
+            value={status}
+            onValueChange={(e) => {
+              if (
+                e !== "new" &&
+                e !== "conditional" &&
+                e !== "must-do" &&
+                e !== "if-time"
+              )
+                return;
+              setStatus(e);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue>{status}</SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Status</SelectLabel>
+
+                {["new", "conditional", "must-do", "if-time"].map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           <DialogFooter>
             <Button
               variant="destructive"

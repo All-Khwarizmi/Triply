@@ -28,7 +28,7 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
   function updateNodeMetadata(
     nodeId: string,
     metadata: Partial<
-      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date" | "status">
     >
   ) {
     console.log("Updating node metadata", { nodeId, metadata });

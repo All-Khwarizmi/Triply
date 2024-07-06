@@ -24,14 +24,14 @@ export interface NodeData {
   updateNodeMetadata: (
     nodeId: string,
     metadata: Partial<
-      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date" | "status">
     >
   ) => void;
   updateChildNode?: (
     parentNodeId: string,
     childNodeId: string,
     metadata: Partial<
-      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date" | "status">
     >
   ) => void;
   removeChildNode?: (parentNodeId: string, childNodeId: string) => void;
@@ -65,7 +65,6 @@ export class NodeList {
     if (!endNode) {
       this._endNode = createEndNodeExtend({
         startDate: dayjs(this._startNode.data.date).add(7, "day"),
-    
       });
     } else {
       this._endNode = endNode;
@@ -182,7 +181,7 @@ export class NodeList {
   updateNodeMetadata(
     nodeId: string,
     metadata: Partial<
-      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date" | "status">
     >
   ) {
     let currentNode: NodeExtend | null = this._startNode;
@@ -264,7 +263,7 @@ export class NodeList {
   save(key: string, db: SaveList) {
     const nodes = this.traverse();
     const edges = this.edges;
-  
+
     db.setItem(
       key,
       JSON.stringify({ nodes: removePrevNextNode(nodes), edges })
