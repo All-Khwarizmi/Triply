@@ -10,7 +10,6 @@ const AllTripsComponent = () => {
 
   useEffect(() => {
     const tripsData = fetchAllTrips(localStorage);
-    console.log("tripsData", tripsData);
     setTrips(tripsData);
   }, []);
 

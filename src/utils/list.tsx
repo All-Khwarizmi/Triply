@@ -337,7 +337,6 @@ export class NodeList {
     for (const edge of edges) {
       const isEdgeValid = EdgeSchema.safeParse(edge);
       if (!isEdgeValid.success) {
-        console.log(isEdgeValid.error.errors);
         isEdgesValid = false;
         break;
       }
@@ -370,7 +369,6 @@ export class NodeList {
     const nodeList = new NodeList(startNode, endNode);
     for (let i = 0; i < nodes.length; i++) {
       if (!nodeList.traverse().find((node) => node.id === nodes[i].id)) {
-        console.log("adding node", parsedNodes[i]);
         nodeList.addNode(parsedNodes[i]);
       }
     }
@@ -386,14 +384,6 @@ export class NodeList {
     let currentNode = this._startNode;
     while (currentNode.data.nextNode) {
       if (currentNode.data.nodeId === parentNodeId) {
-        console.log(
-          "parent start date",
-          currentNode.data.date,
-          "parent end date",
-          currentNode.data.endDate,
-          "child date",
-          node.data.date
-        );
         if (
           !(
             dayjs(node.data.date).isAfter(dayjs(currentNode.data.date)) ||

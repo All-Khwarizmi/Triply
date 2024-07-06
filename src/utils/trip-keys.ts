@@ -16,7 +16,6 @@ export function fetchAllTrips(db: Storage): [string, NodeList][] {
 
   // biome-ignore lint/complexity/noForEach: <explanation>
   triplyKeys.forEach((key) => {
-    console.log("key", key);
     const tripData = NodeList.restore(key, db);
     if (tripData) {
       trips.push([key, tripData]);

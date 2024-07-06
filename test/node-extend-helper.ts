@@ -255,21 +255,16 @@ export function generateRandomNodeName() {
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function isNodeExtend(node: any): node is NodeExtend {
   const isValid = NodeExtendSchema.safeParse(node);
-  console.log("isValid", isValid);
   if (!isValid.success) {
-    console.error(isValid.error.errors);
     return false;
   }
   if (node.data.nextNode && !isNodeExtend(node.data.nextNode)) {
-    console.log("nextNode", node.data.nextNode);
     return false;
   }
   if (node.data.prevNode && !isNodeExtend(node.data.prevNode)) {
-    console.log("prevNode", node.data.prevNode);
     return false;
   }
   if (node.data.typeOfTrip === "roadtrip" && !node.data.endDate) {
-    console.log("endDate", node.data.endDate);
     return false;
   }
   return true;

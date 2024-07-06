@@ -4,6 +4,7 @@ import React from "react";
 import { useReactFlow, Panel } from "reactflow";
 import AddTripButton from "./AddTripButton";
 import SaveTripButton from "./SaveTripButton";
+import Link from "next/link";
 
 interface PanelMenuProps {
   saveList: () => void;
@@ -47,6 +48,9 @@ function PanelMenu(props: PanelMenuProps) {
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <button onClick={() => fitView()}>Center</button>
       <SaveTripButton saveTrip={props.saveList} />
+      <Link href="/trips">
+        MyTrips
+      </Link>
     </Panel>
   );
 }
