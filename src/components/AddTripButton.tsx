@@ -28,6 +28,7 @@ function AddTripButton(props: {
     >
   ) => void;
   addNode: (node: NodeExtend) => void;
+  removeNode: (nodeId: string) => void;
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [date, setDate] = useState<Date>(new Date());
@@ -41,6 +42,7 @@ function AddTripButton(props: {
       body: "",
       status,
       updateNodeMetadata: props.updateNodeMetadata,
+      removeNode: props.removeNode,
     });
     props.addNode(node);
     setOpen(false);

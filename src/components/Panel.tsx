@@ -22,6 +22,7 @@ interface PanelMenuProps {
   removeChildNode: (parentNodeId: string, childNodeId: string) => void;
   addChildNode: (parentNodeId: string, node: NodeExtend) => void;
   addNode: (node: NodeExtend) => void;
+  removeNode: (nodeId: string) => void;
 }
 function PanelMenu(props: PanelMenuProps) {
   const { zoomIn, zoomOut, setCenter, fitView } = useReactFlow();
@@ -35,10 +36,12 @@ function PanelMenu(props: PanelMenuProps) {
         updateChildNode={props.updateChildNode}
         removeChildNode={props.removeChildNode}
         addChildNode={props.addChildNode}
+        removeNode={props.removeNode}
       />
       <AddTripButton
         updateNodeMetadata={props.updateNodeMetadata}
         addNode={props.addNode}
+        removeNode={props.removeNode}
       />
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <button onClick={() => fitView()}>center</button>

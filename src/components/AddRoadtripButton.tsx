@@ -29,7 +29,7 @@ export interface AddRoadtripButtonProps {
       Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
     >
   ): void;
-
+  removeNode: (nodeId: string) => void;
   removeChildNode: (parentNodeId: string, childNodeId: string) => void;
   addChildNode: (parentNodeId: string, node: NodeExtend) => void;
 }
@@ -55,6 +55,7 @@ function AddRoadtripButton(props: AddRoadtripButtonProps) {
       updateChildNode: props.updateChildNode,
       addChildNode: props.addChildNode,
       removeChildNode: props.removeChildNode,
+      removeNode: props.removeNode,
       name: tripName === "" ? defaultTripName : tripName,
     });
     props.addNode(node);

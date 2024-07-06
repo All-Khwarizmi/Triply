@@ -84,6 +84,7 @@ export function createTripNodeExtend(options: CreateNodeOptions): NodeExtend {
       status: options.status ?? "new",
       removeChildNode: options.removeChildNode,
       updateChildNode: options.updateChildNode,
+      removeNode: options.removeNode,
     },
   };
 }

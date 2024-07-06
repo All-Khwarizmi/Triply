@@ -37,6 +37,7 @@ export interface NodeData {
   ) => void;
   removeChildNode?: (parentNodeId: string, childNodeId: string) => void;
   addChildNode?: (parentNodeId: string, node: NodeExtend) => void;
+  removeNode?: (nodeId: string) => void;
   position: { x: number; y: number };
   prevNode: NodeExtend | null;
   nextNode: NodeExtend | null;

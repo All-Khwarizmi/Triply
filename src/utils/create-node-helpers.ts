@@ -32,6 +32,7 @@ export type CreateNodeOptions = {
       Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
     >
   ) => void;
+  removeNode?: (nodeId: string) => void;
 };
 
 export function createStartNode(options: CreateNodeOptions): Node {
