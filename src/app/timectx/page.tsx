@@ -25,6 +25,9 @@ const App: React.FC = () => {
     onNodesChange,
     onEdgesChange,
     updateNodeMetadata,
+    addChildNode,
+    removeChildNode,
+    updateChildNode,
   } = useHandleNodeHooks({
     tripDates: { startDate: new Date(), endDate: new Date() },
   });
@@ -45,7 +48,12 @@ const App: React.FC = () => {
           nodeTypes={nodeTypes}
           fitView
         >
-          <PanelMenu saveList={saveList} />
+          <PanelMenu saveList={saveList}
+            addChildNode={addChildNode}
+            removeChildNode={removeChildNode}
+            updateChildNode={updateChildNode} 
+            addNode={addNode}
+          />
           <Background />
           <Controls />
         </ReactFlow>
