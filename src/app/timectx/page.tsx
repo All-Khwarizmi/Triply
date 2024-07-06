@@ -54,6 +54,8 @@ const App: React.FC = () => {
             removeChildNode={removeChildNode}
             updateChildNode={updateChildNode}
             addNode={addNode}
+            removeNode={() => {}}
+            updateNodeMetadata={updateNodeMetadata}
           />
           <Background />
           <Controls />
