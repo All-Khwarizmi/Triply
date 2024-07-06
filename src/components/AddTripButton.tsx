@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import type { AddRoadtripButtonProps } from "./AddRoadtripButton";
 import type { NodeData, NodeExtend } from "@/utils/list";
 import dayjs from "dayjs";
 import { createTripNodeExtend } from "../../test/node-extend-helper";

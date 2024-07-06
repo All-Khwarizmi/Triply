@@ -3,6 +3,7 @@ import type { NodeData, NodeExtend } from "@/utils/list";
 import React from "react";
 import { useReactFlow, Panel } from "reactflow";
 import AddTripButton from "./AddTripButton";
+import SaveTripButton from "./SaveTripButton";
 
 interface PanelMenuProps {
   saveList: () => void;
@@ -25,7 +26,6 @@ interface PanelMenuProps {
   removeNode: (nodeId: string) => void;
 }
 function PanelMenu(props: PanelMenuProps) {
-
   const { zoomIn, zoomOut, setCenter, fitView } = useReactFlow();
   return (
     <Panel
@@ -46,8 +46,7 @@ function PanelMenu(props: PanelMenuProps) {
       />
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <button onClick={() => fitView()}>center</button>
-      {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-      <button onClick={props.saveList}>save</button>
+      <SaveTripButton saveTrip={props.saveList} />
     </Panel>
   );
 }

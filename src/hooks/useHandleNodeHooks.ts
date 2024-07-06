@@ -132,8 +132,8 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
     setEdges(list.edges);
     fitView();
   }
-  function saveList() {
-    list.save("triply", localStorage);
+  function saveList(tripName?: string) {
+    list.save(tripName ?? "triply", localStorage);
   }
   function removeNode(nodeId: string) {
     list.removeNode(nodeId);
