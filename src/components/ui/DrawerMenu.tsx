@@ -1,5 +1,5 @@
-import AddNodeForm from "@/app/timectx/AddNodeElementNode";
-import DateInput from "@/app/timectx/DateInput";
+import AddNodeForm from "@/components/AddNodeElementNode";
+import DateInput from "@/components/DateInput";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -15,7 +15,7 @@ import { MenuIcon, Minus, Plus } from "lucide-react";
 
 import React from "react";
 import { ModeToggle } from "./ModeToggle";
-import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeExtend, NodeData } from "@/utils/list";
 
 function DrawerMenu(props: {
   addNode: (node: NodeExtend) => void;

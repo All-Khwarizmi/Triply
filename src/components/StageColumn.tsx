@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import type { NodeProps } from "reactflow";
-import { cn } from "../utils/cn";
+import { cn } from "../app/utils/cn";
 
 export const StageColumnNode = ({ data }: NodeProps) => {
   const [height, setHeight] = React.useState(72);

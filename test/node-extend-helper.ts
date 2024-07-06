@@ -1,6 +1,7 @@
-import type { CreateNodeOptions } from "@/app/timectx/helpers/create-node-helpers";
-import type { NodeData, NodeExtend } from "../src/app/timectx/helpers/list";
-import { NodeExtendSchema } from "../src/app/timectx/helpers/schemas";
+import type { CreateNodeOptions } from "@/utils/create-node-helpers";
+import type { NodeExtend, NodeData } from "@/utils/list";
+import { NodeExtendSchema } from "@/utils/schemas";
+
 import type dayjs from "dayjs";
 
 export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
@@ -32,7 +33,6 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
 }
 
 export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
-  
   const updateNodeMetadata = options.updateNodeMetadata ?? (() => {});
   const updateNodePosition = options.updateNodePosition ?? (() => {});
   return {

@@ -1,6 +1,7 @@
-import { expect, test, describe, } from "vitest";
+import { expect, test, describe } from "vitest";
 import dayjs from "dayjs";
-import { NodeList } from "../src/app/timectx/helpers/list";
+import { NodeList } from "@/utils/list";
+
 import {
   NODE_Y_POSITIONS,
   createEndNodeExtend,
@@ -8,8 +9,8 @@ import {
   getObjectMethods,
 } from "./node-extend-helper";
 import type { Edge } from "reactflow";
-import { Database } from "../src/app/timectx/helpers/data";
-import { ListNodeDatabaseSchema } from "../src/app/timectx/helpers/schemas";
+import { ListNodeDatabaseSchema } from "@/utils/schemas";
+import { Database } from "@/utils/data";
 
 describe("ListNode start state", () => {
   const startNode = createStartNodeExtend({

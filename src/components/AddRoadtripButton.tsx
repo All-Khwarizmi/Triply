@@ -13,7 +13,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "./ui/button";
-import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeExtend, NodeData } from "@/utils/list";
+
 import {
   createRoadTripNodeExtend,
   generateRandomNodeName,

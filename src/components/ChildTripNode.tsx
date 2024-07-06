@@ -11,7 +11,8 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import type { NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeExtend } from "@/utils/list";
+
 import { useTheme } from "next-themes";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";

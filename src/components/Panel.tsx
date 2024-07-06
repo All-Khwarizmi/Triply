@@ -1,7 +1,7 @@
 import AddRoadtripButton from "@/components/AddRoadtripButton";
+import type { NodeData, NodeExtend } from "@/utils/list";
 import React from "react";
 import { useReactFlow, Panel } from "reactflow";
-import type { NodeData, NodeExtend } from "./helpers/list";
 
 interface PanelMenuProps {
   saveList: () => void;

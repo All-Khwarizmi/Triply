@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { XIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import type { NodeData } from "./helpers/list";
+import type { NodeData } from "@/utils/list";
 
 const NODE_BG_COLORS = [
   "#4B5563", // Slate Gray

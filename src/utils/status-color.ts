@@ -1,4 +1,4 @@
-import type { NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeExtend } from "./list";
 
 export function getNodeStatusColor(
   status: NodeExtend["data"]["status"],

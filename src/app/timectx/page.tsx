@@ -2,12 +2,12 @@
 import type React from "react";
 import ReactFlow, { Background, Controls, ReactFlowProvider } from "reactflow";
 import "reactflow/dist/style.css";
-import CustomNode from "./CustomNode";
+import CustomNode from "../../components/CustomNode";
 import TimeLineNodeElement from "../timeline/TimelineNodeElement";
-import { StageColumnNode } from "./StageColumn";
-import useHandleNodeHooks from "./hooks/useHandleNodeHooks";
+import { StageColumnNode } from "../../components/StageColumn";
+import useHandleNodeHooks from "../../hooks/useHandleNodeHooks";
 import DrawerMenu from "@/components/ui/DrawerMenu";
-import PanelMenu from "./Panel";
+import PanelMenu from "../../components/Panel";
 import Header from "@/components/ui/Header";
 
 const nodeTypes = {
@@ -48,10 +48,11 @@ const App: React.FC = () => {
           nodeTypes={nodeTypes}
           fitView
         >
-          <PanelMenu saveList={saveList}
+          <PanelMenu
+            saveList={saveList}
             addChildNode={addChildNode}
             removeChildNode={removeChildNode}
-            updateChildNode={updateChildNode} 
+            updateChildNode={updateChildNode}
             addNode={addNode}
           />
           <Background />

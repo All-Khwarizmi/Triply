@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "./ui/button";
 import dayjs from "dayjs";
-import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
 import { createTripNodeExtend } from "../../test/node-extend-helper";
 import {
   Select,
@@ -20,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
+import type { NodeExtend, NodeData } from "@/utils/list";
 function AddChildNodePopover(props: {
   handleAddChild: ({ childNode }: { childNode: NodeExtend }) => void;
   updateChildNode: (

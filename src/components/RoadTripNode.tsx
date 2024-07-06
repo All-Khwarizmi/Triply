@@ -10,7 +10,8 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeData, NodeExtend } from "@/utils/list";
+
 import { Handle, type NodeProps, Position } from "reactflow";
 import ChildTripNode from "./ChildTripNode";
 import { generateRandomNodeName } from "../../test/node-extend-helper";

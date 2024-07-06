@@ -1,4 +1,4 @@
-import type { NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeData, NodeExtend } from "@/utils/list";
 
 export const mockData: NodeExtend[] = [
   {

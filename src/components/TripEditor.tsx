@@ -2,9 +2,9 @@
 import React, { type PropsWithRef } from "react";
 import ReactFlow, { Background, Controls } from "reactflow";
 import "reactflow/dist/style.css";
-import CustomNode from "@/app/timectx/CustomNode";
-import PanelMenu from "@/app/timectx/Panel";
-import useHandleNodeHooks from "@/app/timectx/hooks/useHandleNodeHooks";
+import CustomNode from "@/components/CustomNode";
+import PanelMenu from "@/components/Panel";
+import useHandleNodeHooks from "@/hooks/useHandleNodeHooks";
 import type { Range } from "react-date-range";
 import TripNode from "./TripNode";
 import RoadTripNode from "./RoadTripNode";

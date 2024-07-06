@@ -1,11 +1,12 @@
 // AddNodeForm.tsx
 import type React from "react";
 import { useState } from "react";
-import { useTimelineContext } from "./Context";
+import { useTimelineContext } from "../app/timectx/Context";
 import dayjs from "dayjs";
 import type { Node } from "reactflow";
 import { Button } from "@/components/ui/button";
-import type { NodeData, NodeExtend } from "./helpers/list";
+import type { NodeExtend, NodeData } from "@/utils/list";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 interface AddNodeFormProps {

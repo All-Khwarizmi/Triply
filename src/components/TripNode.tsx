@@ -11,7 +11,8 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import type { NodeData, NodeExtend } from "@/app/timectx/helpers/list";
+import type { NodeData, NodeExtend } from "@/utils/list";
+
 import { useTheme } from "next-themes";
 import { Handle, type NodeProps, Position } from "reactflow";
 import { Input } from "./ui/input";
