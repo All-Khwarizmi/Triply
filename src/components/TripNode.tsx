@@ -45,12 +45,7 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     setIsDarkMode(theme === "dark" || resolvedTheme === "dark");
-    console.log(
-      `
-      tripNode Id: ${data.nodeId}
-      `,
-      data
-    );
+  
   }, [theme, resolvedTheme]);
   function handleSave() {
     data.updateNodeMetadata(data.nodeId, {

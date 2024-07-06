@@ -22,8 +22,9 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
   const [childNodes, setChildNodes] = useState(data.children || []);
   const [dialogContent, setDialogContent] = useState<NodeExtend | null>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    console.log("data.children", data.children);
+    console.log("data", data);
     setChildNodes(data.children || []);
   }, [data.children]);
   const handleAddChild = ({ childNode }: { childNode: NodeExtend }) => {
@@ -50,6 +51,13 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
 
   const handleOpenDialog = (content: NodeExtend) => {
     setDialogContent(content);
+  };
+
+  const handleDelete = () => {
+    if (data.removeNode) {
+      console.log("remove roadtrip data.nodeId", data.nodeId);
+      data.removeNode(data.nodeId);
+    }
   };
 
   return (
@@ -86,11 +94,20 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
               <ChildTripNode node={node} />
             </div>
           ))}
-          <AddChildNodePopover
-            handleAddChild={handleAddChild}
-            updateChildNode={data.updateChildNode || (() => {})}
-            removeChildNode={handleRemoveChild}
-          />
+          <div className="flex gap-4 items-center justify-center mt-4 pr-4">
+            <Button
+              variant="destructive"
+              onClick={() => handleDelete()}
+              className="py-3"
+            >
+              <TrashIcon className="w-5 h-5 text-secondary-foreground" />
+            </Button>
+            <AddChildNodePopover
+              handleAddChild={handleAddChild}
+              updateChildNode={data.updateChildNode || (() => {})}
+              removeChildNode={handleRemoveChild}
+            />
+          </div>
         </div>
       )}
 

@@ -64,7 +64,6 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
 
 export function createTripNodeExtend(options: CreateNodeOptions): NodeExtend {
   const id = crypto.randomUUID();
-  console.log("is remove node method?", options.removeNode !== undefined);
   return {
     id,
     type: "tripNode",
@@ -136,6 +135,7 @@ export function createRoadTripNodeExtend(
       addChildNode: options.addChildNode,
       removeChildNode: options.removeChildNode,
       updateChildNode: options.updateChildNode,
+      removeNode: options.removeNode,
     },
   };
 }

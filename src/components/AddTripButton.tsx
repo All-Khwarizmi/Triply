@@ -30,10 +30,7 @@ function AddTripButton(props: {
   addNode: (node: NodeExtend) => void;
   removeNode: (nodeId: string) => void;
 }) {
-  console.log(
-    "is remove node method in add tripbutton?",
-    props.removeNode !== undefined
-  );
+
 
   const [open, setOpen] = useState<boolean>(false);
   const [date, setDate] = useState<Date>(new Date());

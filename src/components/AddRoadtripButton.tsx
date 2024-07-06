@@ -49,6 +49,7 @@ function AddRoadtripButton(props: AddRoadtripButtonProps) {
     if (!tripName) {
       setTripName(defaultTripName);
     }
+   
     const node: NodeExtend = createRoadTripNodeExtend({
       startDate: dayjs(tripDates.startDate),
       endDate: dayjs(tripDates.endDate),
