@@ -42,8 +42,15 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
   const [editableName, setEditableName] = useState(data.name);
   const [editableDate, setEditableDate] = useState(data.date);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     setIsDarkMode(theme === "dark" || resolvedTheme === "dark");
+    console.log(
+      `
+      tripNode Id: ${data.nodeId}
+      `,
+      data
+    );
   }, [theme, resolvedTheme]);
   function handleSave() {
     data.updateNodeMetadata(data.nodeId, {
@@ -56,8 +63,9 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
     setIsDialogOpen(false);
   }
   function handleDelete() {
-    if (data.removeChildNode) {
-      data.removeChildNode(data.parentId ?? "", data.nodeId);
+    if (data.removeNode) {
+      console.log("remove data.nodeId", data.nodeId);
+      data.removeNode(data.nodeId);
     }
     setIsDialogOpen(false);
   }

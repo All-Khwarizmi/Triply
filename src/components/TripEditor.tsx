@@ -29,6 +29,7 @@ function TripEditor(props: PropsWithRef<TripEditorProps>) {
     onNodesChange,
     onEdgesChange,
     updateNodeMetadata,
+    removeNode,
   } = useHandleNodeHooks(props);
   return (
     <div className="h-[70vh] w-full flex flex-col ">
@@ -46,6 +47,7 @@ function TripEditor(props: PropsWithRef<TripEditorProps>) {
           removeChildNode={removeChildNode}
           addChildNode={addChildNode}
           addNode={addNode}
+          removeNode={removeNode}
           updateNodeMetadata={updateNodeMetadata}
         />
         <Background />

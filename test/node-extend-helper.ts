@@ -28,6 +28,7 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
       isParent: false,
       typeOfTrip: "trip",
       status: "new",
+      removeNode: options.removeNode,
     },
   };
 }
@@ -56,12 +57,14 @@ export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
       typeOfTrip: options.typeOfTrip ?? "trip",
       endDate: options.endDate?.format("YYYY-MM-DD"),
       status: "new",
+      removeNode: options.removeNode,
     },
   };
 }
 
 export function createTripNodeExtend(options: CreateNodeOptions): NodeExtend {
   const id = crypto.randomUUID();
+  console.log("is remove node method?", options.removeNode !== undefined);
   return {
     id,
     type: "tripNode",

@@ -46,11 +46,13 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
         startDate: dayjs(options.tripDates.startDate),
         updateNodePosition: () => {},
         updateNodeMetadata,
+        removeNode,
       }),
       createEndNodeExtend({
         startDate: dayjs(options.tripDates.endDate),
         updateNodePosition: () => {},
         updateNodeMetadata,
+        removeNode,
       })
     );
     setNodes(list.traverse());
@@ -134,6 +136,7 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
     list.save("triply", localStorage);
   }
   function removeNode(nodeId: string) {
+    console.log("deleting node", { nodeId });
     list.removeNode(nodeId);
     setNodes(list.traverse());
     setEdges(list.edges);

@@ -25,6 +25,10 @@ interface PanelMenuProps {
   removeNode: (nodeId: string) => void;
 }
 function PanelMenu(props: PanelMenuProps) {
+  console.log(
+    "is remove node method in Panel?",
+    props.removeNode !== undefined
+  );
   const { zoomIn, zoomOut, setCenter, fitView } = useReactFlow();
   return (
     <Panel
