@@ -79,3 +79,47 @@
       @apply bg-background text-foreground;
     }
   }
+
+
+  .timeline-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.timeline-date {
+  width: 100px;
+  text-align: right;
+  padding-right: 20px;
+  font-weight: bold;
+}
+
+.timeline-content {
+  background: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  width: 2px;
+  height: 100%;
+  background: #c0c0c0;
+  position: absolute;
+  left: 90px;
+  top: 0;
+}
+
+.timeline-item:last-child::before {
+  height: 50%;
+}
