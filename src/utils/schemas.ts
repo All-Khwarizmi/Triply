@@ -55,6 +55,7 @@ export const NodeSchema = z.object({
   sourcePosition: z.string().optional(),
   targetPosition: z.string().optional(),
   hidden: z.boolean().optional(),
+  endDate: z.string().optional(),
   selected: z.boolean().optional(),
   dragging: z.boolean().optional(),
   draggable: z.boolean().optional(),
