@@ -85,71 +85,76 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[600px] flex flex-col gap-4">
-          <DialogHeader>
-            <DialogTitle className="mt-12">
-              {editableName || "Trip to Yosemite"}
-            </DialogTitle>
-          </DialogHeader>
-          <DialogDescription>
+          <div className="flex justify-center w-full pb-8">
+            <DialogHeader>
+              <DialogTitle className="mt-12 text-3xl">
+                {editableName}
+              </DialogTitle>
+            </DialogHeader>
+          </div>
+
+          <DialogDescription className="flex flex-col gap-2">
             <Label htmlFor="trip-date">Trip Date</Label>
             <Input
               type="date"
               value={editableDate}
               onChange={(e) => setEditableDate(e.target.value)}
-              className="w-full border border-gray-300 rounded px-2 py-1"
+              className="w-fullrounded px-2 py-1"
             />
           </DialogDescription>
-          <DialogDescription>
+          <DialogDescription className="flex flex-col gap-2">
             <Label htmlFor="trip-name">Trip Name</Label>
             <Input
               value={editableName}
               onChange={(e) => setEditableName(e.target.value)}
-              className="w-full border border-gray-300 rounded px-2 py-1"
+              className="w-fullrounded px-2 py-1"
             />
           </DialogDescription>
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold pb-4">Trip Details</h3>
-              <Textarea
-                value={editableBody}
-                onChange={(e) => setEditableBody(e.target.value)}
-                className="w-full border border-gray-300 rounded px-2 py-1"
-              />
-            </div>
-          </div>
-          <Select
-            value={status}
-            onValueChange={(e) => {
-              if (
-                e !== "new" &&
-                e !== "conditional" &&
-                e !== "must-do" &&
-                e !== "if-time"
-              )
-                return;
-              setStatus(e);
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue>{status}</SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Status</SelectLabel>
+          <DialogDescription className="flex flex-col gap-2">
+            <Label htmlFor="trip-body">Trip Details</Label>
+            <Textarea
+              value={editableBody}
+              onChange={(e) => setEditableBody(e.target.value)}
+              className="w-fullrounded px-2 py-1"
+            />
+          </DialogDescription>
+          <DialogDescription className="flex flex-col gap-2">
+            <Label htmlFor="status">Status</Label>
+            <Select
+              value={status}
+              onValueChange={(e) => {
+                if (
+                  e !== "new" &&
+                  e !== "conditional" &&
+                  e !== "must-do" &&
+                  e !== "if-time"
+                )
+                  return;
+                setStatus(e);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue>{status}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Status</SelectLabel>
 
-                {["new", "conditional", "must-do", "if-time"].map((item) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <DialogFooter>
+                  {["new", "conditional", "must-do", "if-time"].map((item) => (
+                    <SelectItem key={item} value={item}>
+                      {item}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </DialogDescription>
+
+          <DialogFooter className="pt-8">
             <Button
               variant="destructive"
               onClick={() => handleDelete()}
-              className="absolute top-2 left-2 py-2"
+              className="absolute top-3 left-3 py-3"
             >
               <TrashIcon className="w-5 h-5 text-secondary-foreground" />
             </Button>
