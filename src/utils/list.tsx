@@ -289,7 +289,6 @@ export class NodeList {
     );
     savedTrips.add(key);
     db.setItem("triply-keys", JSON.stringify(Array.from(savedTrips)));
-    
   }
 
   static restore(key: string, db: SaveList): NodeList {
@@ -319,6 +318,7 @@ export class NodeList {
           position: { x: 0, y: 0 },
           body: validNode.data.data.body,
           date: validNode.data.data.date,
+          endDate: validNode.data.data.endDate,
           label: validNode.data.data.label,
           name: validNode.data.data.name,
           slug: validNode.data.data.slug,
@@ -370,6 +370,7 @@ export class NodeList {
     const nodeList = new NodeList(startNode, endNode);
     for (let i = 0; i < nodes.length; i++) {
       if (!nodeList.traverse().find((node) => node.id === nodes[i].id)) {
+        console.log("adding node", parsedNodes[i]);
         nodeList.addNode(parsedNodes[i]);
       }
     }
