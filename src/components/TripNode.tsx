@@ -34,14 +34,12 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
     setIsDarkMode(theme === "dark" || resolvedTheme === "dark");
   }, [theme, resolvedTheme]);
   function handleSave() {
-    if (data.updateChildNode) {
-      data.updateChildNode(data.parentId ?? "", data.nodeId, {
-        ...data,
-        body: editableBody,
-        name: editableName,
-        date: editableDate,
-      });
-    }
+    data.updateNodeMetadata(data.nodeId, {
+      ...data,
+      body: editableBody,
+      name: editableName,
+      date: editableDate,
+    });
     setIsDialogOpen(false);
   }
   function handleDelete() {
