@@ -4,7 +4,11 @@ import type { Edge, Node } from "reactflow";
 import type { SaveList } from "./data";
 // import { isNodeExtend } from "../../../../test/schemas.spec";
 import { EdgeSchema, NodeExtendSchema } from "./schemas";
-import { createEndNodeExtend, determineNodeYPosition, isNodeExtend } from "../../test/node-extend-helper";
+import {
+  createEndNodeExtend,
+  determineNodeYPosition,
+  isNodeExtend,
+} from "../../test/node-extend-helper";
 
 export interface NodeData {
   label: string;
@@ -436,6 +440,24 @@ export class NodeList {
       }
       currentNode = currentNode.data.nextNode;
     }
+  }
+
+  removeNode(nodeId: string) {
+    let currentNode = this._startNode;
+    while (currentNode.data.nextNode) {
+      if (currentNode.data.nodeId === nodeId) {
+        if (currentNode.data.prevNode) {
+          currentNode.data.prevNode.data.nextNode = currentNode.data.nextNode;
+        }
+        if (currentNode.data.nextNode) {
+          currentNode.data.nextNode.data.prevNode = currentNode.data.prevNode;
+        }
+        break;
+      }
+      currentNode = currentNode.data.nextNode;
+    }
+    this.updateNodeXPosition();
+    this.updateEdges();
   }
 }
 

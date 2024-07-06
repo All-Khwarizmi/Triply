@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import { expect, test, describe } from "vitest";
 import { createEndNodeExtend } from "./node-extend-helper";
-import type { NodeExtend } from "@/utils/list";
-import { NodeExtendSchema } from "@/utils/schemas";
+import type { NodeExtend } from "../src/utils/list";
+import { NodeExtendSchema } from "../src/utils/schemas";
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function isNodeExtend(node: any): node is NodeExtend {

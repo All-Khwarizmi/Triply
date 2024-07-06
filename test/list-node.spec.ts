@@ -1,6 +1,6 @@
 import { expect, test, describe } from "vitest";
 import dayjs from "dayjs";
-import { NodeList } from "@/utils/list";
+import { NodeList } from "../src/utils/list";
 
 import {
   NODE_Y_POSITIONS,
@@ -9,8 +9,8 @@ import {
   getObjectMethods,
 } from "./node-extend-helper";
 import type { Edge } from "reactflow";
-import { ListNodeDatabaseSchema } from "@/utils/schemas";
-import { Database } from "@/utils/data";
+import { ListNodeDatabaseSchema } from "../src/utils/schemas";
+import { Database } from "../src/utils/data";
 
 describe("ListNode start state", () => {
   const startNode = createStartNodeExtend({
@@ -23,6 +23,7 @@ describe("ListNode start state", () => {
     id: `${startNode.data.nodeId}-${endNode.data.nodeId}`,
     source: startNode.data.nodeId,
     target: endNode.data.nodeId,
+    animated: true,
   };
   const nodeList = new NodeList(startNode, endNode);
   test("should have a method to get nodes", () => {
@@ -604,5 +605,55 @@ describe("Roadtrip type of custom node workflow", () => {
     expect(roadTripNodeFoundII?.data.children?.[0].data.body).toBe(
       "updated body"
     );
+  });
+
+  test("should have a method to remove a trip", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("removeNode");
+  });
+
+  test("should remove a trip node", () => {
+    const roadTripNode = createEndNodeExtend({
+      typeOfTrip: "roadtrip",
+      id: "node-19",
+      startDate: dayjs(new Date()).add(3, "day"),
+      endDate: dayjs(new Date()).add(7, "day"),
+    });
+    nodeList.addNode(roadTripNode);
+    const childNode = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-20",
+      startDate: dayjs(new Date()).add(4, "day"),
+    });
+
+    const childNodeII = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-21",
+      startDate: dayjs(new Date()).add(5, "day"),
+    });
+
+    const childNodeIII = createEndNodeExtend({
+      typeOfTrip: "trip",
+      id: "node-22",
+      startDate: dayjs(new Date()).add(6, "day"),
+    });
+
+    nodeList.addChildNode("node-19", childNode);
+    nodeList.addChildNode("node-19", childNodeII);
+    nodeList.addChildNode("node-19", childNodeIII);
+
+    const nodes = nodeList.traverse();
+    const roadTripNodeFound = nodes.find((e) => e.id === "node-19");
+    expect(roadTripNodeFound).toBeDefined();
+    expect(roadTripNodeFound?.data.isParent).toBe(true);
+    expect(roadTripNodeFound?.data.children).toBeDefined();
+    expect(roadTripNodeFound?.data.children?.[0].id).toBe("node-20");
+    expect(roadTripNodeFound?.data.children?.[1].id).toBe("node-21");
+    expect(roadTripNodeFound?.data.children?.[2].id).toBe("node-22");
+
+    nodeList.removeNode("node-19");
+    const nodesII = nodeList.traverse();
+    const roadTripNodeFoundII = nodesII.find((e) => e.id === "node-19");
+    expect(roadTripNodeFoundII).toBeUndefined();
   });
 });

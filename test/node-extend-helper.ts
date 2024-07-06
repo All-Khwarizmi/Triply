@@ -1,6 +1,6 @@
 import type { CreateNodeOptions } from "@/utils/create-node-helpers";
 import type { NodeExtend, NodeData } from "@/utils/list";
-import { NodeExtendSchema } from "@/utils/schemas";
+import { NodeExtendSchema } from "../src/utils/schemas";
 
 import type dayjs from "dayjs";
 
