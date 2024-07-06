@@ -136,7 +136,6 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
     list.save("triply", localStorage);
   }
   function removeNode(nodeId: string) {
-    console.log("deleting node", { nodeId });
     list.removeNode(nodeId);
     setNodes(list.traverse());
     setEdges(list.edges);

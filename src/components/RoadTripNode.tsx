@@ -24,7 +24,6 @@ export default function RoadTripNode({ data }: NodeProps<NodeData>) {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    console.log("data", data);
     setChildNodes(data.children || []);
   }, [data.children]);
   const handleAddChild = ({ childNode }: { childNode: NodeExtend }) => {

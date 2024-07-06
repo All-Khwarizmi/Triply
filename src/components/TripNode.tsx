@@ -59,7 +59,6 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
   }
   function handleDelete() {
     if (data.removeNode) {
-      console.log("remove data.nodeId", data.nodeId);
       data.removeNode(data.nodeId);
     }
     setIsDialogOpen(false);
