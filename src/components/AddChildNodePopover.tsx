@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import type { NodeExtend, NodeData } from "@/utils/list";
+import { Textarea } from "./ui/textarea";
 function AddChildNodePopover(props: {
   handleAddChild: ({ childNode }: { childNode: NodeExtend }) => void;
   updateChildNode: (
@@ -59,14 +60,16 @@ function AddChildNodePopover(props: {
       </PopoverTrigger>
       <PopoverContent>
         <div className="p-4 space-y-4">
-          <Label htmlFor="trip-name">Trip Name</Label>
-          <Input
-            id="trip-name"
-            value={tripName}
-            onChange={(e) => setTripName(e.target.value)}
-          />
-          <div>
-            <Label htmlFor="trip-date">Trip Date</Label>
+          <div className="space-y-2">
+            <Label htmlFor="trip-name"> Name</Label>
+            <Input
+              id="trip-name"
+              value={tripName}
+              onChange={(e) => setTripName(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="trip-date"> Date</Label>
             <Input
               id="trip-date"
               type="date"
@@ -75,42 +78,49 @@ function AddChildNodePopover(props: {
             />
           </div>
           <div>
-            <Label htmlFor="trip-body">Trip Body</Label>
-            <Input
-              id="trip-body"
-              value={tripBody}
-              onChange={(e) => setTripBody(e.target.value)}
-            />
+            <div className="space-y-2">
+              <Label htmlFor="trip-body"> Details</Label>
+              <Textarea
+                id="trip-body"
+                value={tripBody}
+                onChange={(e) => setTripBody(e.target.value)}
+              />
+            </div>
           </div>
           <div>
-            <Select
-              value={status}
-              onValueChange={(e) => {
-                if (
-                  e !== "new" &&
-                  e !== "conditional" &&
-                  e !== "must-do" &&
-                  e !== "if-time"
-                )
-                  return;
-                setStatus(e);
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue>{status}</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Status</SelectLabel>
+            <div className="space-y-2">
+              <Label htmlFor="status">Status</Label>
+              <Select
+                value={status}
+                onValueChange={(e) => {
+                  if (
+                    e !== "new" &&
+                    e !== "conditional" &&
+                    e !== "must-do" &&
+                    e !== "if-time"
+                  )
+                    return;
+                  setStatus(e);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue>{status}</SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Status</SelectLabel>
 
-                  {["new", "conditional", "must-do", "if-time"].map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+                    {["new", "conditional", "must-do", "if-time"].map(
+                      (item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <Button onClick={handleSubmission}>Add</Button>
         </div>
