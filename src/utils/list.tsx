@@ -283,6 +283,13 @@ export class NodeList {
       key,
       JSON.stringify({ nodes: removePrevNextNode(nodes), edges })
     );
+    // Keep track of the saved trips saved under the triply-keys key in a Set
+    const savedTrips = new Set<string>(
+      JSON.parse(db.getItem("triply-keys") ?? "[]")
+    );
+    savedTrips.add(key);
+    db.setItem("triply-keys", JSON.stringify(Array.from(savedTrips)));
+    
   }
 
   static restore(key: string, db: SaveList): NodeList {
