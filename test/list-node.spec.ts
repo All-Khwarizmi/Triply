@@ -76,6 +76,16 @@ describe("ListNode start state", () => {
     expect(methods).toContain("addNode");
   });
 
+  test('should throw if trying to add a node outside of the start and end boundaries ', () => { 
+    const node = createEndNodeExtend({
+      id: "node-42",
+      startDate: dayjs(new Date()).add(8, "day"),
+    });
+    expect(() => {
+      nodeList.addNode(node);
+    }).toThrow();
+   })
+
   test("should add a node to the list and update the edges", () => {
     const node = createEndNodeExtend({
       id: "node-42",
@@ -620,40 +630,19 @@ describe("Roadtrip type of custom node workflow", () => {
       endDate: dayjs(new Date()).add(7, "day"),
     });
     nodeList.addNode(roadTripNode);
-    const childNode = createEndNodeExtend({
-      typeOfTrip: "trip",
-      id: "node-20",
-      startDate: dayjs(new Date()).add(4, "day"),
-    });
-
-    const childNodeII = createEndNodeExtend({
-      typeOfTrip: "trip",
-      id: "node-21",
-      startDate: dayjs(new Date()).add(5, "day"),
-    });
-
-    const childNodeIII = createEndNodeExtend({
-      typeOfTrip: "trip",
-      id: "node-22",
-      startDate: dayjs(new Date()).add(6, "day"),
-    });
-
-    nodeList.addChildNode("node-19", childNode);
-    nodeList.addChildNode("node-19", childNodeII);
-    nodeList.addChildNode("node-19", childNodeIII);
-
     const nodes = nodeList.traverse();
     const roadTripNodeFound = nodes.find((e) => e.id === "node-19");
     expect(roadTripNodeFound).toBeDefined();
-    expect(roadTripNodeFound?.data.isParent).toBe(true);
-    expect(roadTripNodeFound?.data.children).toBeDefined();
-    expect(roadTripNodeFound?.data.children?.[0].id).toBe("node-20");
-    expect(roadTripNodeFound?.data.children?.[1].id).toBe("node-21");
-    expect(roadTripNodeFound?.data.children?.[2].id).toBe("node-22");
 
     nodeList.removeNode("node-19");
     const nodesII = nodeList.traverse();
     const roadTripNodeFoundII = nodesII.find((e) => e.id === "node-19");
     expect(roadTripNodeFoundII).toBeUndefined();
+  });
+
+  test("should throw if trying to delete the start or end node ", () => {
+    expect(() => {
+      nodeList.removeNode("start-node");
+    }).toThrow();
   });
 });

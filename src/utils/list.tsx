@@ -109,6 +109,19 @@ export class NodeList {
   }
 
   addNode(node: NodeExtend): void {
+    // Check if the node date is in the range of the trip
+    if (
+      !(
+        dayjs(node.data.date).isAfter(dayjs(this._startNode.data.date)) ||
+        dayjs(node.data.date).isSame(dayjs(this._startNode.data.date))
+      ) ||
+      !(
+        dayjs(node.data.date).isBefore(dayjs(this._endNode.data.date)) ||
+        dayjs(node.data.date).isSame(dayjs(this._endNode.data.date))
+      )
+    ) {
+      throw new Error("Node should be within the trip date range");
+    }
     if (!isNodeExtend(node)) throw new Error("Invalid node data");
     let currentNode = this._startNode;
     while (currentNode.data.nextNode) {
@@ -444,6 +457,9 @@ export class NodeList {
   }
 
   removeNode(nodeId: string) {
+    if (this._startNode.data.nodeId === nodeId || this._endNode.id === nodeId) {
+      throw new Error("Cannot remove start or end node");
+    }
     let currentNode = this._startNode;
     while (currentNode.data.nextNode) {
       if (currentNode.data.nodeId === nodeId) {
