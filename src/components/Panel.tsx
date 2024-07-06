@@ -2,12 +2,19 @@ import AddRoadtripButton from "@/components/AddRoadtripButton";
 import type { NodeData, NodeExtend } from "@/utils/list";
 import React from "react";
 import { useReactFlow, Panel } from "reactflow";
+import AddTripButton from "./AddTripButton";
 
 interface PanelMenuProps {
   saveList: () => void;
   updateChildNode: (
     parentNodeId: string,
     childNodeId: string,
+    metadata: Partial<
+      Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
+    >
+  ) => void;
+  updateNodeMetadata: (
+    nodeId: string,
     metadata: Partial<
       Pick<NodeData, "label" | "body" | "name" | "slug" | "date">
     >
@@ -29,8 +36,10 @@ function PanelMenu(props: PanelMenuProps) {
         removeChildNode={props.removeChildNode}
         addChildNode={props.addChildNode}
       />
-      {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-      <button onClick={() => zoomOut({ duration: 800 })}>zoom out</button>
+      <AddTripButton
+        updateNodeMetadata={props.updateNodeMetadata}
+        addNode={props.addNode}
+      />
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <button onClick={() => fitView()}>center</button>
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}

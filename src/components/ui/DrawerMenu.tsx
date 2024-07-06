@@ -1,5 +1,4 @@
 import AddNodeForm from "@/components/AddNodeElementNode";
-import DateInput from "@/components/DateInput";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -11,7 +10,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { MenuIcon, Minus, Plus } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 
 import React from "react";
 import { ModeToggle } from "./ModeToggle";

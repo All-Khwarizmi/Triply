@@ -78,7 +78,7 @@ export function createTripNodeExtend(options: CreateNodeOptions): NodeExtend {
       prevNode: null,
       nextNode: null,
       dayOfTrip: 1,
-      updateNodeMetadata: () => {},
+      updateNodeMetadata: options.updateNodeMetadata ?? (() => {}),
       isParent: false,
       typeOfTrip: "trip",
       status: options.status ?? "new",

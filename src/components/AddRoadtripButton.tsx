@@ -20,7 +20,7 @@ import {
   generateRandomNodeName,
 } from "../../test/node-extend-helper";
 
-interface AddRoadtripButtonProps {
+export interface AddRoadtripButtonProps {
   addNode: (node: NodeExtend) => void;
   updateChildNode(
     parentNodeId: string,

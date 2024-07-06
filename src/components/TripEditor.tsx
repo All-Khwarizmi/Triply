@@ -46,6 +46,7 @@ function TripEditor(props: PropsWithRef<TripEditorProps>) {
           removeChildNode={removeChildNode}
           addChildNode={addChildNode}
           addNode={addNode}
+          updateNodeMetadata={updateNodeMetadata}
         />
         <Background />
         <Controls />
