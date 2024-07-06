@@ -65,8 +65,7 @@ export class NodeList {
     if (!endNode) {
       this._endNode = createEndNodeExtend({
         startDate: dayjs(this._startNode.data.date).add(7, "day"),
-        updateNodeMetadata: () => {},
-        updateNodePosition: () => {},
+    
       });
     } else {
       this._endNode = endNode;
@@ -265,8 +264,7 @@ export class NodeList {
   save(key: string, db: SaveList) {
     const nodes = this.traverse();
     const edges = this.edges;
-    const startNode = nodes[0];
-    const endNode = nodes[1];
+  
     db.setItem(
       key,
       JSON.stringify({ nodes: removePrevNextNode(nodes), edges })

@@ -32,6 +32,7 @@ export function createStartNodeExtend(options: CreateNodeOptions): NodeExtend {
 }
 
 export function createEndNodeExtend(options: CreateNodeOptions): NodeExtend {
+  
   const updateNodeMetadata = options.updateNodeMetadata ?? (() => {});
   const updateNodePosition = options.updateNodePosition ?? (() => {});
   return {
