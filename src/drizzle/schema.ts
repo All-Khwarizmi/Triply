@@ -6,3 +6,5 @@ export const trips = pgTable("trips", {
   name: varchar("key").unique().notNull(),
   trip: text("value").notNull(),
 });
+
+export type Trip = typeof trips.$inferSelect;
