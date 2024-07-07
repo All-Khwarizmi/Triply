@@ -14,16 +14,15 @@ const AllTripsComponent = () => {
   }, []);
 
   if (trips.length === 0) {
-    return <div
-      className="text-center text-gray-500 text-xl"
-    >No trips found</div>;
+    return (
+      <div className="text-center text-gray-500 text-xl">No trips found</div>
+    );
   }
 
   return (
     <div>
-      {trips.map((trip, index) => (
-        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-        <Timeline key={index} nodes={trip[1].traverse()} name={trip[0]} />
+      {trips.map((trip) => (
+        <Timeline key={trip[0]} nodes={trip[1].traverse()} name={trip[0]} />
       ))}
     </div>
   );
