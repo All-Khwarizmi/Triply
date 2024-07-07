@@ -6,9 +6,7 @@ import AddTripButton from "./AddTripButton";
 import SaveTripButton from "./SaveTripButton";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { remoteDatabase } from "@/drizzle";
-import { setItem } from "@/actions/set-item";
-
+import { useRouter } from "next/navigation";
 interface PanelMenuProps {
   shareTrip: () => Promise<string>;
   saveList: () => void;
@@ -31,6 +29,7 @@ interface PanelMenuProps {
   removeNode: (nodeId: string) => void;
 }
 function PanelMenu(props: PanelMenuProps) {
+  const router = useRouter();
   const { zoomIn, zoomOut, setCenter, fitView } = useReactFlow();
   return (
     <Panel
@@ -59,6 +58,7 @@ function PanelMenu(props: PanelMenuProps) {
         onClick={async () => {
           const id = await props.shareTrip();
           console.log(id);
+          router.push(`/social/${id}`);
         }}
       >
         Share
