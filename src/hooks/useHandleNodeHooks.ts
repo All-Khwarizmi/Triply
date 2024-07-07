@@ -151,7 +151,7 @@ const useHandleNodeHooks = (options: {
     const key = crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
     console.log(key);
     const id = await setItem(key, item.value);
-    return id;
+    return key;
   }
 
   return {
