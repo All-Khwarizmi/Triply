@@ -18,6 +18,7 @@ const nodeTypes = {
 
 const App: React.FC = () => {
   const {
+    shareTrip,
     saveList,
     nodes,
     addNode,
@@ -56,6 +57,7 @@ const App: React.FC = () => {
             addNode={addNode}
             removeNode={() => {}}
             updateNodeMetadata={updateNodeMetadata}
+            shareTrip={shareTrip}
           />
           <Background />
           <Controls />
