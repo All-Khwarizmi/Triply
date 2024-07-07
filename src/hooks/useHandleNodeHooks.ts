@@ -35,10 +35,7 @@ const useHandleNodeHooks = (options: {
       Pick<NodeData, "label" | "body" | "name" | "slug" | "date" | "status">
     >
   ) {
-    console.log("Updating node metadata", { nodeId, metadata });
     list.updateNodeMetadata(nodeId, metadata);
-
-    console.log(list.traverse());
     setNodes(list.traverse());
     setEdges(list.edges);
   }
@@ -121,7 +118,6 @@ const useHandleNodeHooks = (options: {
     fitView();
   }
   function removeChildNode(parentNodeId: string, childNodeId: string) {
-    console.log("deleting node", { parentNodeId, childNodeId });
 
     list.removeChildNode(parentNodeId, childNodeId);
     setNodes(list.traverse());
