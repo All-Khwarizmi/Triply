@@ -5,8 +5,12 @@ import { useReactFlow, Panel } from "reactflow";
 import AddTripButton from "./AddTripButton";
 import SaveTripButton from "./SaveTripButton";
 import Link from "next/link";
+import { Button } from "./ui/button";
+import { remoteDatabase } from "@/drizzle";
+import { setItem } from "@/actions/set-item";
 
 interface PanelMenuProps {
+  shareTrip: () => Promise<string>;
   saveList: () => void;
   updateChildNode: (
     parentNodeId: string,
@@ -51,6 +55,14 @@ function PanelMenu(props: PanelMenuProps) {
       <Link className="flex items-center" href="/trips">
         My Trips
       </Link>
+      <Button
+        onClick={async () => {
+          const id = await props.shareTrip();
+          console.log(id);
+        }}
+      >
+        Share
+      </Button>
     </Panel>
   );
 }
