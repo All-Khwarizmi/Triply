@@ -76,7 +76,7 @@ describe("ListNode start state", () => {
     expect(methods).toContain("addNode");
   });
 
-  test('should throw if trying to add a node outside of the start and end boundaries ', () => { 
+  test("should throw if trying to add a node outside of the start and end boundaries ", () => {
     const node = createEndNodeExtend({
       id: "node-42",
       startDate: dayjs(new Date()).add(8, "day"),
@@ -84,7 +84,7 @@ describe("ListNode start state", () => {
     expect(() => {
       nodeList.addNode(node);
     }).toThrow();
-   })
+  });
 
   test("should add a node to the list and update the edges", () => {
     const node = createEndNodeExtend({
@@ -644,5 +644,18 @@ describe("Roadtrip type of custom node workflow", () => {
     expect(() => {
       nodeList.removeNode("start-node");
     }).toThrow();
+  });
+
+  test("should have a method to get the trip dates", () => {
+    const methods = getObjectMethods(nodeList);
+    expect(methods).toContain("getTripDates");
+  });
+
+  test("should return the start and end date of the trip", () => {
+    const dates = nodeList.getTripDates();
+    expect(
+      dayjs(dates.startDate).isSame(dayjs(new Date()), "day") &&
+        dayjs(dates.endDate).isSame(dayjs(new Date()).add(7, "day"), "day")
+    ).toBeTruthy();
   });
 });

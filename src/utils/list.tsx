@@ -474,6 +474,13 @@ export class NodeList {
     this.updateNodeXPosition();
     this.updateEdges();
   }
+
+  getTripDates() {
+    return {
+      startDate: new Date(this._startNode.data.date),
+      endDate: new Date(this._endNode.data.date),
+    };
+  }
 }
 
 // Function to get rid of prevNde and nextNode
