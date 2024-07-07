@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useMemo, useState } from "react";
 import {
   type Edge,
   type NodeChange,
@@ -28,6 +28,7 @@ const useHandleNodeHooks = (options: {
   const { fitView } = useReactFlow();
   const [nodes, setNodes] = useState<NodeExtend[]>(() => list?.traverse());
   const [edges, setEdges] = useState<Edge[]>(list?.edges);
+  const memoEdges = useMemo(() => edges, [edges]);
   function updateNodeMetadata(
     nodeId: string,
     metadata: Partial<
@@ -159,7 +160,7 @@ const useHandleNodeHooks = (options: {
     updateChildNode,
     nodes,
     setNodes,
-    edges,
+    edges: memoEdges,
     setEdges,
     onNodesChange,
     onEdgesChange,

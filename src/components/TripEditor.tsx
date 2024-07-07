@@ -1,5 +1,5 @@
 "use client";
-import React, { type PropsWithRef } from "react";
+import React, { useMemo, type PropsWithRef } from "react";
 import ReactFlow, { Background, Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "@/components/CustomNode";
@@ -13,11 +13,7 @@ export interface TripEditorProps {
   tripDates: Range;
   nodeList?: NodeList;
 }
-const nodeTypes = {
-  customNode: CustomNode,
-  tripNode: TripNode,
-  roadtrip: RoadTripNode,
-};
+
 function TripEditor(props: PropsWithRef<TripEditorProps>) {
   const {
     saveList,
@@ -35,6 +31,14 @@ function TripEditor(props: PropsWithRef<TripEditorProps>) {
     tripDates: props.tripDates,
     nodeList: props.nodeList,
   });
+  const nodeTypes = useMemo(
+    () => ({
+      customNode: CustomNode,
+      tripNode: TripNode,
+      roadtrip: RoadTripNode,
+    }),
+    []
+  );
   return (
     <div className="h-[70vh] w-full flex flex-col ">
       <ReactFlow
