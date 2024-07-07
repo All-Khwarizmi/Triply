@@ -19,6 +19,7 @@ import { useReactFlow } from "reactflow";
 import type { Range } from "react-date-range";
 import type { NodeExtend, NodeData } from "@/utils/list";
 import { NodeList } from "@/utils/list";
+import { setItem } from "@/actions/set-item";
 let list: NodeList;
 
 const useHandleNodeHooks = (options: {
@@ -118,7 +119,6 @@ const useHandleNodeHooks = (options: {
     fitView();
   }
   function removeChildNode(parentNodeId: string, childNodeId: string) {
-
     list.removeChildNode(parentNodeId, childNodeId);
     setNodes(list.traverse());
     setEdges(list.edges);
@@ -146,7 +146,14 @@ const useHandleNodeHooks = (options: {
     fitView();
   }
 
+  async function shareTrip() {
+    const item = list.save("triply", localStorage);
+    const id = await setItem(item.key, item.value);
+    return id;
+  }
+
   return {
+    shareTrip,
     removeNode,
     saveList,
     updateNodeMetadata,
