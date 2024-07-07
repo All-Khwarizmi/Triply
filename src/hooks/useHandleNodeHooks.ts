@@ -148,7 +148,9 @@ const useHandleNodeHooks = (options: {
 
   async function shareTrip() {
     const item = list.save("triply", localStorage);
-    const id = await setItem(item.key, item.value);
+    const key = crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
+    console.log(key);
+    const id = await setItem(key, item.value);
     return id;
   }
 
