@@ -1,3 +1,4 @@
+"use server";
 export async function setItem(key: string, value: string): Promise<string> {
   try {
     const response = await fetch("/api/trip", {
