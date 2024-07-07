@@ -1,7 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { trips } from "./schema";
-import type { SaveList } from "@/utils/data";
+import { type Trip, trips } from "./schema";
 import { eq } from "drizzle-orm";
 
 const connectionString = process.env.DATABASE_URL as string;
@@ -28,10 +27,10 @@ export class RemoteDatabase {
     console.log(id);
     return id;
   }
-  async getItem(key: string): Promise<string | null> {
+  async getItem(key: string): Promise<Trip | null> {
     const trip = await db.select().from(trips).where(eq(trips.name, key));
     if (trip.length === 0) return null;
-    return trip?.[0].trip || null;
+    return trip?.[0] || null;
   }
 }
 
