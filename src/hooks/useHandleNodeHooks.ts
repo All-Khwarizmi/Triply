@@ -21,7 +21,10 @@ import type { NodeExtend, NodeData } from "@/utils/list";
 import { NodeList } from "@/utils/list";
 let list: NodeList;
 
-const useHandleNodeHooks = (options: { tripDates: Range }) => {
+const useHandleNodeHooks = (options: {
+  tripDates: Range;
+  nodeList?: NodeList;
+}) => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes] = useState<NodeExtend[]>(() => list?.traverse());
   const [edges, setEdges] = useState<Edge[]>(list?.edges);
@@ -41,20 +44,24 @@ const useHandleNodeHooks = (options: { tripDates: Range }) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    list = new NodeList(
-      createStartNodeExtend({
-        startDate: dayjs(options.tripDates.startDate),
-        updateNodePosition: () => {},
-        updateNodeMetadata,
-        removeNode,
-      }),
-      createEndNodeExtend({
-        startDate: dayjs(options.tripDates.endDate),
-        updateNodePosition: () => {},
-        updateNodeMetadata,
-        removeNode,
-      })
-    );
+    if (options.nodeList) {
+      list = options.nodeList;
+    } else {
+      list = new NodeList(
+        createStartNodeExtend({
+          startDate: dayjs(options.tripDates.startDate),
+          updateNodePosition: () => {},
+          updateNodeMetadata,
+          removeNode,
+        }),
+        createEndNodeExtend({
+          startDate: dayjs(options.tripDates.endDate),
+          updateNodePosition: () => {},
+          updateNodeMetadata,
+          removeNode,
+        })
+      );
+    }
     setNodes(list.traverse());
     setEdges(list.edges);
   }, []);

@@ -8,9 +8,10 @@ import useHandleNodeHooks from "@/hooks/useHandleNodeHooks";
 import type { Range } from "react-date-range";
 import TripNode from "./TripNode";
 import RoadTripNode from "./RoadTripNode";
-
+import type { NodeList } from "@/utils/list";
 export interface TripEditorProps {
   tripDates: Range;
+  nodeList?: NodeList;
 }
 const nodeTypes = {
   customNode: CustomNode,
@@ -30,7 +31,10 @@ function TripEditor(props: PropsWithRef<TripEditorProps>) {
     onEdgesChange,
     updateNodeMetadata,
     removeNode,
-  } = useHandleNodeHooks(props);
+  } = useHandleNodeHooks({
+    tripDates: props.tripDates,
+    nodeList: props.nodeList,
+  });
   return (
     <div className="h-[70vh] w-full flex flex-col ">
       <ReactFlow
