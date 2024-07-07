@@ -16,6 +16,7 @@ export interface TripEditorProps {
 
 function TripEditor(props: PropsWithRef<TripEditorProps>) {
   const {
+    shareTrip,
     saveList,
     nodes,
     addNode,
@@ -50,6 +51,7 @@ function TripEditor(props: PropsWithRef<TripEditorProps>) {
         fitView
       >
         <PanelMenu
+          shareTrip={shareTrip}
           saveList={saveList}
           updateChildNode={updateChildNode}
           removeChildNode={removeChildNode}
