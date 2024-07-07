@@ -24,3 +24,11 @@ export function fetchAllTrips(db: Storage): [string, NodeList][] {
 
   return trips;
 }
+
+export function getTrip(db: Storage, key: string): NodeList | null {
+  const tripData = NodeList.restore(key, db);
+  if (tripData) {
+    return tripData;
+  }
+  return null;
+}
