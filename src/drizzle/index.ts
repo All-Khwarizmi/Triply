@@ -29,11 +29,8 @@ export class RemoteDatabase {
     return id;
   }
   async getItem(key: string): Promise<string | null> {
-    const trip = await db
-      .select()
-      .from(trips)
-      .where(eq(trips.name, key))
-      .execute();
+    const trip = await db.select().from(trips).where(eq(trips.name, key));
+    if (trip.length === 0) return null;
     return trip?.[0].trip || null;
   }
 }
