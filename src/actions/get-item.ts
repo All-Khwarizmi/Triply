@@ -1,9 +1,10 @@
 "use server";
 import type { Trip } from "@/drizzle/schema";
+import { BASE_URL } from "@/utils/constants/base-url";
 
 export async function getItem(key: string): Promise<{ data: Trip } | null> {
   try {
-    const response = await fetch(`http://localhost:3000/api/trip?id=${key}`, {
+    const response = await fetch(`${BASE_URL}/api/trip?id=${key}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

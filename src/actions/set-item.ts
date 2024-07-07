@@ -1,7 +1,10 @@
 "use server";
+
+import { BASE_URL } from "@/utils/constants/base-url";
+
 export async function setItem(key: string, value: string): Promise<string> {
   try {
-    const response = await fetch("/api/trip", {
+    const response = await fetch(`${BASE_URL}/api/trip`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
