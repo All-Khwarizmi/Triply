@@ -10,7 +10,7 @@ const AllTripsComponent = () => {
 
   useEffect(() => {
     const tripsData = fetchAllTrips(localStorage);
-    // setTrips(tripsData);
+    setTrips(tripsData);
   }, []);
 
   if (trips.length === 0) {
