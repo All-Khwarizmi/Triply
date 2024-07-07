@@ -12,7 +12,7 @@ export async function setItem(key: string, value: string): Promise<string> {
       throw new Error("Failed to set item");
     }
     const body = await response.json();
-    return body.id;
+    return body.item.id;
   } catch (error) {
     console.log(error);
     return "";
