@@ -13,19 +13,18 @@ export class RemoteDatabase {
   async setItem(
     key: string,
     value: string
-  ): Promise<
-    {
-      id: string;
-      name: string;
-      trip: string;
-    }[]
-  > {
-    const id = await db
+  ): Promise<{
+    id: string;
+    name: string;
+    trip: string;
+  } | null> {
+    const item = await db
       .insert(trips)
       .values({ name: key, trip: value })
       .returning();
-    console.log(id);
-    return id;
+    console.log(item);
+    if (item.length === 0) return null;
+    return item[0];
   }
   async getItem(key: string): Promise<Trip | null> {
     const trip = await db.select().from(trips).where(eq(trips.name, key));
