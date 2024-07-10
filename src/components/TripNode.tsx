@@ -45,7 +45,6 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     setIsDarkMode(theme === "dark" || resolvedTheme === "dark");
-  
   }, [theme, resolvedTheme]);
   function handleSave() {
     data.updateNodeMetadata(data.nodeId, {
@@ -76,10 +75,10 @@ export default function TripNode({ data }: NodeProps<NodeData>) {
           </div>
           <div className="flex-1 space-y-1">
             <h4 className="text-lg font-medium">
-              {data.name || "Trip to Yosemite"}
+              {data.date || "July 4-8, 2024"}
             </h4>
             <p className="text-sm text-secondary-foreground/80">
-              {data.date || "July 4-8, 2024"}
+              {data.name || "Trip to Yosemite"}
             </p>
           </div>
           <ChevronRightIcon className="w-5 h-5 text-secondary-foreground" />
